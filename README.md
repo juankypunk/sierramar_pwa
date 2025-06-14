@@ -1,42 +1,52 @@
-# Sierramar (PWA) Minimal Starter
+# Sierramar PWA
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A Progressive Web Application (PWA) ERP system designed for residential communities management.
 
-## Setup
+## Features
 
-Make sure to install the dependencies:
+- **Member Fee Management**
+  - Track and manage community member fees
+  - Generate and process payment orders
+  - Historical payment records
+
+- **Water Management**
+  - Monitor and bill water consumption
+  - Separate tracking for gardens and residents
+  - Usage statistics and reporting
+
+- **Employee Management**
+  - Time tracking system
+  - Work schedule management
+  - Attendance records
+
+## Technology Stack
+
+- Vue.js 3
+- Nuxt 3
+- TailwindCSS
+- DaisyUI
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+Juan Carlos Moral - juanky@juancarlosmoral.es
+
+## Getting Started
 
 ```bash
-# yarn
-yarn install
-
-# npm
+# Install dependencies
 npm install
 
-# pnpm
-pnpm install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`
-
-```bash
+# Start development server
 npm run dev
-```
 
-## Production
-
-Build the application for production:
-
-```bash
+# Build for production
 npm run build
 ```
 
-Locally preview production build:
+## Contributing
 
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Contributions are welcome. Please feel free to submit a Pull Request.
