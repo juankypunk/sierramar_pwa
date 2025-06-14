@@ -1,0 +1,39 @@
+{
+  "name": "sierramar_pwa",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "start": "node .output/server/index.mjs",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@formkit/icons": "^1.6.9",
+    "@formkit/nuxt": "^1.6.9",
+    "@nuxt/image": "^1.9.0",
+    "@nuxtjs/color-mode": "^3.3.2",
+    "@nuxtjs/leaflet": "^1.2.6",
+    "@nuxtjs/tailwindcss": "^6.13.2",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "@types/node": "^22.13.10",
+    "@vite-pwa/nuxt": "^0.10.6",
+    "@vueuse/core": "^13.0.0",
+    "@vueuse/nuxt": "^13.0.0",
+    "assert": "^2.1.0",
+    "autoprefixer": "^10.4.20",
+    "chart.js": "^4.3.0",
+    "daisyui": "^5.0.4",
+    "jwt-decode": "^4.0.0",
+    "md5": "^2.3.0",
+    "npm": "^11.2.0",
+    "nuxt": "^3.16.0",
+    "postcss": "^8.5.3",
+    "vue-cal": "^4.8.1",
+    "vue-chartjs": "^5.2.0"
+  }
+}
