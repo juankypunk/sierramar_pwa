@@ -1,6 +1,15 @@
 # Sierramar PWA
 
-A Progressive Web Application (PWA) ERP system designed for residential communities management.
+A Progressive Web Application (PWA) ERP system designed for residential communities management. This repository contains the frontend application built with Vue.js/Nuxt3, while the backend API is located in the [sierramar_api](../sierramar_api) repository.
+
+## Project Structure
+
+This project is split into two main components:
+
+- **Frontend (Current repository)**: PWA built with Vue.js 3 and Nuxt 3
+- **Backend ([sierramar_api](../sierramar_api))**: REST API built with Node.js, Express and PostgreSQL.
+
+
 
 ## Features
 
@@ -21,10 +30,20 @@ A Progressive Web Application (PWA) ERP system designed for residential communit
 
 ## Technology Stack
 
+### Frontend
 - Vue.js 3
 - Nuxt 3
 - TailwindCSS
 - DaisyUI
+
+### Backend
+- Node.js
+- Express
+- PostgreSQL
+- JWT Authentication
+- RESTful API
+- nodemailer
+
 
 ## License
 
