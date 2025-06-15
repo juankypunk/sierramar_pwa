@@ -59,6 +59,10 @@ Juan Carlos Moral - juanky@juancarlosmoral.es
 # Install dependencies
 npm install
 
+# Configure environment variables
+cp .env.example .env
+# Edit .env with your configuration
+
 # Start development server
 npm run dev
 
