@@ -1,6 +1,6 @@
 # Sierramar PWA
 
-A Progressive Web Application (PWA) ERP system designed for residential communities management. 
+A Progressive Web Application (PWA) designed as ERP for residential communities management. 
 
 
 
