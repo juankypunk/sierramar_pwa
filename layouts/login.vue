@@ -47,8 +47,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 <template>
     <slot></slot>
     <footer class="footer footer-center p-4 bg-base-200 text-base-content">
-    <aside>
-        <p>Copyright © 2023 - Hecho con ❤️ en Sierramar</p>
+    <aside class="flex flex-col items-center">
+        <p>Copyright © 2025 - <a class="link-primary" href="https://github.com/juankypunk/sierramar_pwa">Sierramar PWA</a></p>
+        <p>Hecho con ❤️ en Sierramar</p>
     </aside>
     </footer>
 </template>
