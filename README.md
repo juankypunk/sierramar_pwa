@@ -1,5 +1,7 @@
 # Sierramar PWA
 
+<img src="./public/images/logo_sierramar.png" title="Sierramar Logo" alt="Sierramar Logo"/>
+
 A Progressive Web Application (PWA) designed as ERP for residential communities management. 
 
 
