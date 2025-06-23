@@ -257,8 +257,8 @@ function isValidIban(node){
       onResponse({ response }) {
       // Process the response data
       if(response.status===200){
-          console.log('desde response (domiciliación):',response._data[0])
-          bankForm.value=response._data[0];
+          console.log('desde response (domiciliación):',response._data)
+          bankForm.value=response._data;
           if(bankForm.value.titular_cc_cuota && bankForm.value.titular_cc_agua){
             dialog_domiciliacion.showModal();
           }
