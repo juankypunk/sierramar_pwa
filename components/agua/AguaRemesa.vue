@@ -396,12 +396,12 @@ onMounted(() => {
             <div>T3(+200): {{ rowdata.m3_t3 }}m3</div>
           </div>
           <div class="py-2">
-            Precio del agua por tramos (IVA 10% incl.):
+            Precio del m3 por tramos (IVA 10% incl.):
           </div>
           <div class="flex justify-start gap-6">
             <div>T1: {{ rowdata.pvpm3 }}€ </div>
-            <div>T2: {{ (rowdata.pvpm3 * rowdata.f_b).toFixed(3) }}€</div>
-            <div>T3: {{ (rowdata.pvpm3 * rowdata.f_c).toFixed(3) }}€</div>
+            <div>T2: {{ parseFloat((rowdata.pvpm3 * rowdata.f_b).toFixed(3)) }}€</div>
+            <div>T3: {{ parseFloat((rowdata.pvpm3 * rowdata.f_c).toFixed(3)) }}€</div>
           </div>
           <div class="py-2">
             Importe de los tramos:
