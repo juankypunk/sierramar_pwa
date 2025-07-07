@@ -18,10 +18,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     const config = useRuntimeConfig();
     const accessToken = useAccessToken();
     useHead({title: 'Socios'})
-    const base_url = ref('https://www.google.com/maps/place/Urbanizacion+Sierramar,+')
-    const urlParcela = computed(()=>{
-        return base_url.value + id_parcela.value;
-    })
     
     const url_residents_contact_csv = computed(() => {
         return config.public.api + `/residents/contact/csv`;

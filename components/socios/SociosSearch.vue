@@ -36,7 +36,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       // Process the response data
       if(response.status===200){
           console.log('desde response:',response._data);
+          console.log('id:',response._data[0].id);
           socios.value = response._data;   
+          console.log('socios.id:',socios.value[0].id);
+
         }else if(response.status===404) {
           console.log('no hay datos');
           socios.value='';
@@ -100,7 +103,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                             </svg>
                         </div>
                         <div v-for="parcela in socio.id_parcela" class="badge badge-success badge-outline">
-                            <NuxtLink :to="{ name: 'socios-id', params: { id: parcela } }">
+                            <NuxtLink v-if="parcela" :to="{ name: 'socios-id', params: { id: parcela } }">
                                 {{ parcela }}
                             </NuxtLink>
                         </div>
@@ -109,7 +112,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                             <span>💧</span>
                         </div>
                         <div v-for="parcela_agua in socio.id_parcela_agua" class="badge badge-info badge-outline">
-                            <NuxtLink :to="{ name: 'agua-id', params: { id: parcela_agua } }">
+                            <NuxtLink v-if="parcela_agua" :to="{ name: 'agua-id', params: { id: parcela_agua } }">
                                 {{ parcela_agua }}
                             </NuxtLink>
                         </div>

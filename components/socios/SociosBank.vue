@@ -46,8 +46,8 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       if(response.status===200){
         console.log('Datos cargados correctamente');
         bankForm.value=data.value ;
-        responded.value = true;
-        success.value = true;
+        //responded.value = false;
+        //success.value = true;
       }else{
         console.log('Error al cargar los datos');
         responded.value = true;
@@ -135,7 +135,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       // Si no hay valor, retornamos false
       if (!nif) return false;
 
-      // Convertimos a mayúsculas y quitamos espacios
+      // Convertimos a mayúsculas y quitamos espacios 
       nif = nif.toUpperCase().trim();
 
       // Expresión regular para validar el formato
