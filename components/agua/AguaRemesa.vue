@@ -11,7 +11,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 -->
 
 <script setup>
-import { kMaxLength } from 'buffer';
 const rowdata = ref({});
 const config = useRuntimeConfig();
 const accessToken = useAccessToken();
@@ -24,6 +23,8 @@ const resetFilter=ref(true);
 const statistics_result = ref({});
 const pendiente_cobro = ref(0);
 const estado_lectura = ref('');
+const checkedIds = ref([]);
+
 
 const url_remittances = computed(() => {
     return config.public.api + `/water/currentremittances`;
@@ -41,10 +42,71 @@ const url_remittances_csv = computed(() => {
     return config.public.api + `/water/currentremittances/csv`;
 });
 
+const url_remittances_vat = computed(() => {
+    return config.public.api + `/water/currentremittances/vat`;
+});
+
+const url_sif = "https://residenciales-sierramar-scp.invo.cash";
+const sif_token = ref('');
 
 
 const searchQuery = ref('');
 const gridColumns = ["id_parcela","titular","l1","l2","m3","m3_t1","m3_t2","m3_t3","importe","domiciliado"];
+
+
+  function sif_login() {
+    fetch(`${url_sif}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: 'juanky.moral@sierramar.es',
+        password: 'vBM46bD^xntD',
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.access_token) {
+          sif_token.value = data.access_token;
+          console.log('SIF login successful:', data);
+        } else {
+          console.error('SIF login failed:', data);
+        }
+      })
+      .catch((error) => {
+        console.error('Error during SIF login:', error);
+      });
+  }
+
+  function send_data2sif(){
+    console.log('desde data2sif:',checkedIds.value.length);
+    if(checkedIds.value.length > 0){
+      console.log('checkids:',checkedIds.value);
+    }
+    const {data,refresh} = useFetch(url_remittances_vat, {
+    headers: {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer ' + accessToken.value,
+      },
+    method: 'POST',
+    body: {
+      "selected_ids": checkedIds.value,
+      "sif_token": sif_token.value,
+    },
+    onResponse({ response }) {
+        // Process the response data
+        if(response.status===200){
+            console.log('datos_iva:',response._data);
+        }else if(response.status===204) {
+          console.log('no hay datos')
+        }else{
+          console.log('error al obtener remesas:',response.status);  
+          //navigateTo('/refresh')
+        }
+      }
+  })
+  }
 
 function getremittances(){
   const {data,refresh} = useFetch(url_remittances,{
@@ -184,6 +246,7 @@ const descargaRemesa = () => {
 onMounted(() => {
     console.log(`the component is now mounted.`);
     getremittances();
+    sif_login();
 })
 </script>
 
@@ -251,9 +314,12 @@ onMounted(() => {
           :data="remittances"
           :columns="gridColumns"
           :filter-key="searchQuery"
+          :multiSelect="true"
           v-model:rowdata="rowdata"
+          v-model:checkedIds="checkedIds"
           table-size="table-xs"
           @update:rowdata="showDialog()"
+          @selected:checkedIds="$event => (checkedIds = $event)"
           >
         </MyGrid>
       </div>
@@ -271,8 +337,9 @@ onMounted(() => {
                                       maximumFractionDigits: 2 
                                   }).format(statistics_result.importe)}} €</span></div>
       </div>
-      <div v-if="estado_lectura==='R'" class="py-5 flex justify-center">
+      <div v-if="estado_lectura==='R'" class="py-5 flex justify-center gap-4">
         <button class="btn" @click="manageRemittances">GENERAR REMESA SEPA</button>
+        <button class="btn" @click="send_data2sif">ENVIAR DATOS</button>
       </div>
     </div>
     <dialog id="dialog_fecha_cobro" class="modal">
