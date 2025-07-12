@@ -72,6 +72,11 @@ onMounted(async () => {
 <template>
     <div class="container mx-auto">
         <div class="flex flex-col items-center justify-center px-6 py-8">
+        <div class="justify-items-center">
+            <figure class=""> 
+              <img class="mx-auto h-32 w-auto" src="/images/logo_sierramar.png" alt="sierramar logo" />
+            </figure>
+        </div>
             <div class="w-full p-6 rounded-lg shadow">
                 <h2 class="mb-1 text-xl font-bold leading-tight tracking-tight">
                     Cambiar contraseña

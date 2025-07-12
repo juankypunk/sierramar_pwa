@@ -80,33 +80,43 @@ const gridColumns = ["id_parcela","titular","l1","l2","m3","m3_t1","m3_t2","m3_t
   }
 
   function send_data2sif(){
-    console.log('desde data2sif:',checkedIds.value.length);
     if(checkedIds.value.length > 0){
       console.log('checkids:',checkedIds.value);
+        const {data,refresh} = useFetch(url_remittances_vat, {
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + accessToken.value,
+          },
+        method: 'POST',
+        body: {
+          "selected_ids": checkedIds.value,
+          "sif_token": sif_token.value,
+        },
+        onResponse({ response }) {
+            // Process the response data
+            if(response.status===200){
+                console.log('datos_iva:',response._data.sifResponse);
+                if(response._data.sifResponse.success){
+                  console.log('Datos enviados correctamente al SIF:', response._data.sifResponse.data.count);
+                  // Puedes mostrar un mensaje de éxito o realizar alguna acción adicional
+                  alert(`Datos enviados correctamente al SIF: ${response._data.sifResponse.data.count} registros procesados.`);
+                }else{
+                  console.error('Error al enviar datos al SIF:', response._data.sifResponse);
+                  // Puedes mostrar un mensaje de error o realizar alguna acción adicional
+                }
+            }else if(response.status===204) {
+              console.log('no hay datos')
+            }else{
+              console.log('error al obtener remesas:',response.status);  
+              //navigateTo('/refresh')
+            }
+          }
+      })
+    }else{
+      console.log('no hay ids seleccionados para enviar al SIF');
+      alert('No hay ids seleccionados para enviar al SIF');
     }
-    const {data,refresh} = useFetch(url_remittances_vat, {
-    headers: {
-      "Content-Type": "application/json",
-      'Authorization': 'Bearer ' + accessToken.value,
-      },
-    method: 'POST',
-    body: {
-      "selected_ids": checkedIds.value,
-      "sif_token": sif_token.value,
-    },
-    onResponse({ response }) {
-        // Process the response data
-        if(response.status===200){
-            console.log('datos_iva:',response._data);
-        }else if(response.status===204) {
-          console.log('no hay datos')
-        }else{
-          console.log('error al obtener remesas:',response.status);  
-          //navigateTo('/refresh')
-        }
-      }
-  })
-  }
+}
 
 function getremittances(){
   const {data,refresh} = useFetch(url_remittances,{
