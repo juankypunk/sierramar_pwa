@@ -128,6 +128,7 @@ export default defineNuxtConfig({
       company: process.env.COMPANY_NAME,
       sifEmail: process.env.SIF_EMAIL || "",
       sifPassword: process.env.SIF_PASSWORD || "",
+      sifUrl: process.env.SIF_URL || "",
     }
   },
   
