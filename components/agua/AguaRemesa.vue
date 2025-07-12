@@ -46,7 +46,9 @@ const url_remittances_vat = computed(() => {
     return config.public.api + `/water/currentremittances/vat`;
 });
 
-const url_sif = "https://residenciales-sierramar-scp.invo.cash";
+const url_sif = computed(() => {
+    return config.public.sifUrl+'/api/auth/login'; // Use the SIF URL from the environment variable
+});
 const sif_token = ref('');
 
 
@@ -55,7 +57,7 @@ const gridColumns = ["id_parcela","titular","l1","l2","m3","m3_t1","m3_t2","m3_t
 
 
   function sif_login() {
-    fetch(`${url_sif}/api/auth/login`, {
+    fetch(url_sif.value, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
