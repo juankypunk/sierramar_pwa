@@ -61,8 +61,8 @@ const gridColumns = ["id_parcela","titular","l1","l2","m3","m3_t1","m3_t2","m3_t
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: 'juanky.moral@sierramar.es',
-        password: 'vBM46bD^xntD',
+        email: config.public.sifEmail, // Use the email from the environment variable
+        password: config.public.sifPassword, // Use the password from the environment variable
       }),
     })
       .then((response) => response.json())

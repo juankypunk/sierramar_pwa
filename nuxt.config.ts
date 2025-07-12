@@ -125,7 +125,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       api: process.env.API_BASE_URL,
-      company: process.env.COMPANY_NAME
+      company: process.env.COMPANY_NAME,
+      sifEmail: process.env.SIF_EMAIL || "",
+      sifPassword: process.env.SIF_PASSWORD || "",
     }
   },
   
