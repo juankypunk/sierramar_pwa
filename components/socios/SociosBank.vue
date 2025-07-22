@@ -190,7 +190,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
           validation-visibility="live"
           :validation-messages="{
             isValidIban: 'IBAN incorrecto...'
-          }"
+          }" 
         />
         <FormKit 
           type="text" 
@@ -202,12 +202,13 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
           type="text" 
           label="NIF titular agua" 
           name="nif_titular_cc_agua"
-          validation="length:9|isValidNif"
+          validation="length:9"
           :validation-rules="{ isValidNif }"
           validation-visibility="live"
           :validation-messages="{
             isValidNif: 'NIF incorrecto. Formato: 12345678A'
           }"
+          disabled="true"
         />
         <FormKit 
           type="text" 
