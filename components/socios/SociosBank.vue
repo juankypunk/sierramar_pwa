@@ -131,30 +131,59 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     
 
     function isNif(nif) {
-      console.log('Validando NIF:', nif);
-      // Si no hay valor, retornamos false
       if (!nif) return false;
-
-      // Convertimos a mayúsculas y quitamos espacios 
       nif = nif.toUpperCase().trim();
 
-      // Expresión regular para validar el formato
-      if (!(/^[0-9]{8}[A-Z]$/.test(nif))) {
-        return false;
+      // NIF: 8 dígitos + letra
+      if (/^[0-9]{8}[A-Z]$/.test(nif)) {
+        const nifLetters = "TRWAGMYFPDXBNJZSQVHLCKE";
+        const number = nif.substring(0, 8);
+        const letter = nif.charAt(8);
+        const expectedLetter = nifLetters.charAt(parseInt(number) % 23);
+        return letter === expectedLetter;
       }
 
-      // Letras válidas para NIFs
-      const nifLetters = "TRWAGMYFPDXBNJZSQVHLCKE";
+      // NIE: X, Y o Z seguido de 7 dígitos y una letra
+      if (/^[XYZ][0-9]{7}[A-Z]$/.test(nif)) {
+        const nifLetters = "TRWAGMYFPDXBNJZSQVHLCKE";
+        const niePrefix = { X: '0', Y: '1', Z: '2' }[nif.charAt(0)];
+        const number = niePrefix + nif.substring(1, 8);
+        const letter = nif.charAt(8);
+        const expectedLetter = nifLetters.charAt(parseInt(number) % 23);
+        return letter === expectedLetter;
+      }
 
-      // Extraer número y letra
-      const number = nif.substring(0, 8);
-      const letter = nif.charAt(8);
+      // CIF: Letra, 7 dígitos y un dígito/letra de control
+      if (/^[ABCDEFGHJKLMNPQRSUVW][0-9]{7}[0-9A-J]$/.test(nif)) {
+        const control = nif.charAt(8);
+        const digits = nif.substring(1, 8);
+        let sumA = 0, sumB = 0;
+        for (let i = 0; i < 7; i++) {
+          let n = parseInt(nif.charAt(i + 1));
+          if (i % 2 === 0) {
+            let prod = n * 2;
+            sumA += Math.floor(prod / 10) + (prod % 10);
+          } else {
+            sumB += n;
+          }
+        }
+        const total = sumA + sumB;
+        const unit = total % 10;
+        const controlDigit = (unit === 0) ? 0 : 10 - unit;
+        const controlLetters = "JABCDEFGHI";
+        if ("PQRSNW".includes(nif[0])) {
+          // Control debe ser letra
+          return control === controlLetters[controlDigit];
+        } else if ("ABEH".includes(nif[0])) {
+          // Control debe ser dígito
+          return control === String(controlDigit);
+        } else {
+          // Puede ser ambos
+          return control === String(controlDigit) || control === controlLetters[controlDigit];
+        }
+      }
 
-      // Calcular letra esperada
-      const expectedLetter = nifLetters.charAt(parseInt(number) % 23);
-
-      // Comparar letra calculada con la proporcionada
-      return letter === expectedLetter;
+      return false;
     }
 </script>
 
@@ -200,15 +229,14 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         />
         <FormKit 
           type="text" 
-          label="NIF titular agua" 
+          label="NIF/NIE/CIF titular agua" 
           name="nif_titular_cc_agua"
-          validation="length:9"
+          validation="length:9|isValidNif"
           :validation-rules="{ isValidNif }"
           validation-visibility="live"
           :validation-messages="{
-            isValidNif: 'NIF incorrecto. Formato: 12345678A'
+            isValidNif: 'Documento incorrecto'
           }"
-          disabled="true"
         />
         <FormKit 
           type="text" 
