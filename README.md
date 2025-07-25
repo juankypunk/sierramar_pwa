@@ -3,7 +3,7 @@
 
 <img src="./public/images/logo_sierramar.png" title="Sierramar Logo" alt="Sierramar Logo" width="100" height="100"/>
 
- A Progressive Web Application (PWA) designed as ERP for residential communities management. 
+ A Progressive Web App (PWA) designed as ERP for residential communities management. 
 
 
 
