@@ -189,7 +189,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 <template>
     <div class="container mx-auto px-5">
-      <FormKit 
+    <!-- name of each tab group should be unique -->
+<div class="tabs tabs-border">
+  <input type="radio" name="my_tabs_2" class="tab" aria-label="Cuotas" checked="checked" />
+  <div class="tab-content border-base-300 bg-base-100 p-10">
+    <FormKit 
         type="form" 
         @submit="handleSubmit" 
         v-model="bankForm"
@@ -221,6 +225,34 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             isValidIban: 'IBAN incorrecto...'
           }" 
         />
+        <FormKit
+          type="date"
+          name="fecha_mandato"
+          label="Fecha del mandato"
+          help=""
+          validation="required"
+        />
+        <FormKit
+          type="text"
+          name="referencia_mandato"
+          label="Referencia del mandato"
+          help="Esta referencia es generada automáticamente y no debe ser modificada."
+          readonly
+        />
+      </FormKit>
+  </div>
+
+  <input type="radio" name="my_tabs_2" class="tab" aria-label="Agua" />
+  <div class="tab-content border-base-300 bg-base-100 p-10">
+    <FormKit 
+        type="form" 
+        @submit="handleSubmit" 
+        v-model="bankForm"
+        submit-label="Actualizar"
+        :submit-attrs="{
+          help: ''
+        }"
+        >
         <FormKit 
           type="text" 
           label="Titular agua" 
@@ -257,12 +289,24 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         />
         <FormKit
           type="date"
-          name="fecha_mandato"
+          name="fecha_mandato_agua"
           label="Fecha del mandato"
           help=""
           validation="required"
         />
+        <FormKit
+          type="text"
+          name="referencia_mandato_agua"
+          label="Referencia del mandato"
+          help="Esta referencia es generada automáticamente y no debe ser modificada."
+          readonly
+        />
       </FormKit>
+  </div>
+
+</div>
+
+
 
       <div v-if="responded">
         <div v-if="success" class="alert alert-success">
