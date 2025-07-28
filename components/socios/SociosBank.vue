@@ -292,7 +292,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
           name="fecha_mandato_agua"
           label="Fecha del mandato"
           help=""
-          validation="required"
+          validation=""
         />
         <FormKit
           type="text"
