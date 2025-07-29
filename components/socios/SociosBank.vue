@@ -22,6 +22,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       return `${config.public.api}/residents/${id_parcela}/bank`
     })
     const bankForm = ref({});
+    const mandato = ref({});
     const responded = ref(false);
     const success = ref(false);
     const failed = ref(false);
@@ -45,7 +46,8 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       console.log('bank_data:',data.value);
       if(response.status===200){
         console.log('Datos cargados correctamente');
-        bankForm.value=data.value ;
+        bankForm.value=data.value.bank ;
+        mandato.value=data.value.mandatos;
         //responded.value = false;
         //success.value = true;
       }else{
@@ -193,7 +195,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 <div class="tabs tabs-border">
   <input type="radio" name="my_tabs_2" class="tab" aria-label="Cuotas" checked="checked" />
   <div class="tab-content border-base-300 bg-base-100 p-10">
-    <FormKit 
+    
+
+      <FormKit 
         type="form" 
         @submit="handleSubmit" 
         v-model="bankForm"
@@ -225,10 +229,22 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             isValidIban: 'IBAN incorrecto...'
           }" 
         />
+
+        <div class="flex justify-start gap-5 py-5">
+          <h3 class="font-bold">Mandato:</h3>  
+          <div v-if="mandato[0] && mandato[0].estado === 'cancelado'" class="px-5 badge badge-error">Cancelado</div>
+          <div v-else >
+            <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-success px-5">Activo</div>
+            <div class="tooltip" data-tip="Último cobro">
+              <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+            </div>
+          </div>
+        </div>
+
         <FormKit
           type="date"
           name="fecha_mandato"
-          label="Fecha del mandato"
+          label="Fecha del mandato" 
           help=""
           validation="required"
         />
@@ -239,7 +255,8 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
           help="Esta referencia es generada automáticamente y no debe ser modificada."
           readonly
         />
-      </FormKit>
+               
+        </FormKit>
   </div>
 
   <input type="radio" name="my_tabs_2" class="tab" aria-label="Agua" />
