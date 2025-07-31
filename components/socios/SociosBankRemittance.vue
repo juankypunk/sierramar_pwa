@@ -11,6 +11,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 -->
 
 <script setup>
+import { warning } from '@formkit/icons';
 import { createFetch } from '@vueuse/core';
 
 const props = defineProps({
@@ -87,20 +88,23 @@ function updateRemittance(myData){
 function insertRemittance(){
   console.log('remittance:',newRemittance.value);
   const { onFetchResponse, error, data } = useMyFetch('new').post(newRemittance.value);   
-    onFetchResponse((response)=>{
-        console.log('desde onFetchResponse',response.status);
-        if(response.status===200){
-          responded.value = true;
-          success.value = true;
-          const myTimeout = setTimeout(clearMessage, 2000);
-          getRemittances();
-        }
-      })
+  onFetchResponse((response)=>{
+    console.log('desde onFetchResponse',response.status);
+    if(response.status===200){
+      responded.value = true;
+      success.value = true;
+      const myTimeout = setTimeout(clearMessage, 2000);
+      getRemittances();
+      // Cerrar el modal
+      document.getElementById('remittance')?.close();
+    }
+  })
 }
 
 function deleteRemittances() {
   console.log('desde deleteRemittances:',checkedIds.value.length);
   if(checkedIds.value.length > 0){
+    confirm('¿Está seguro de eliminar las remesas seleccionadas?') ? '' : (alert('Operación cancelada'), checkedIds.value = []);
     console.log('checkids:',checkedIds.value);
     const { onFetchResponse, error, data } = useMyFetch('delete').post({
       "selected_ids": checkedIds.value
@@ -257,8 +261,8 @@ function isValidIban(node){
       onResponse({ response }) {
       // Process the response data
       if(response.status===200){
-          console.log('desde response (domiciliación):',response._data)
-          bankForm.value=response._data;
+          console.log('desde response (domiciliación):',response._data.bank)
+          bankForm.value=response._data.bank;
           if(bankForm.value.titular_cc_cuota && bankForm.value.titular_cc_agua){
             dialog_domiciliacion.showModal();
           }
@@ -281,12 +285,14 @@ function isValidIban(node){
         newRemittance.value.bic=bankForm.value.bic_cuota;
         newRemittance.value.iban=bankForm.value.iban_cuota;
         newRemittance.value.fecha_mandato=bankForm.value.fecha_mandato;
+        newRemittance.value.referencia_mandato = bankForm.value.referencia_mandato;
       }else{
         console.log('ha elegido agua');
         newRemittance.value.titular=bankForm.value.titular_cc_agua;
         newRemittance.value.bic=bankForm.value.bic_agua;
         newRemittance.value.iban=bankForm.value.iban_agua;
         newRemittance.value.fecha_mandato=bankForm.value.fecha_mandato;
+        newRemittance.value.referencia_mandato = bankForm.value.referencia_mandato_agua;
       }
     }
     
@@ -320,8 +326,8 @@ onMounted(() => {
   </div>
 
   <div class="flex justify-center gap-20 py-10">
-    <button class="btn" @click="manageRemittances">Generar</button>
     <button class="btn" @click="deleteRemittances">Eliminar</button>
+    <button class="btn" @click="manageRemittances">Generar</button>
   </div>
 
   <dialog id="dialog_fecha_cobro" class="modal">
@@ -428,6 +434,13 @@ onMounted(() => {
                 help=""
                 validation="required"
           />
+          <FormKit
+          type="text"
+          name="referencia_mandato"
+          label="Referencia del mandato"
+          help="Esta referencia es generada automáticamente y no debe ser modificada."
+          readonly
+          />
           <FormKit 
             type="number" 
             label="Importe" 
@@ -510,11 +523,18 @@ onMounted(() => {
             }"
           />
           <FormKit
-                type="date"
-                name="fecha_mandato"
-                label="Fecha del mandato"
-                help=""
-                validation="required"
+            type="date"
+            name="fecha_mandato"
+            label="Fecha del mandato"
+            help=""
+            validation="required"
+          />
+          <FormKit
+            type="text"
+            name="referencia_mandato"
+            label="Referencia del mandato"
+            help="Esta referencia es generada automáticamente y no debe ser modificada."
+            readonly
           />
           <FormKit 
             type="number" 
