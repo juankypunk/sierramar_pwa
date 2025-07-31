@@ -309,6 +309,23 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             isValidIban: 'IBAN incorrecto...'
           }"
         />
+
+        <div class="flex justify-start gap-5 py-5">
+          <h3 class="font-bold">Mandato:</h3>  
+          <div v-if="mandato[0] && mandato[0].estado === 'cancelado'">
+            <div class="px-5 badge badge-error">Cancelado</div>
+            <div class="tooltip" data-tip="Último cobro">
+              <div v-if="mandato[0] && mandato[0].estado === 'cancelado'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+            </div>
+          </div>
+          <div v-else >
+            <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-success px-5">Activo</div>
+            <div class="tooltip" data-tip="Último cobro">
+              <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+            </div>
+          </div>
+        </div>
+
         <FormKit
           type="date"
           name="fecha_mandato_agua"
