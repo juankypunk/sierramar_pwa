@@ -21,11 +21,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     const url = computed(() => {
       return `${config.public.api}/residents/${id_parcela}/bank`
     })
+    const originalBankForm = ref({});
     const bankForm = ref({});
     const mandato = ref({});
     const responded = ref(false);
     const success = ref(false);
-    const failed = ref(false);
     
     const useMyFetch = createFetch({
       baseUrl: url.value,
@@ -48,8 +48,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         console.log('Datos cargados correctamente');
         bankForm.value=data.value.bank ;
         mandato.value=data.value.mandatos;
-        //responded.value = false;
-        //success.value = true;
+        originalBankForm.value = JSON.parse(JSON.stringify(data.value.bank)); // copia profunda
       }else{
         console.log('Error al cargar los datos');
         responded.value = true;
@@ -57,24 +56,72 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       }
     })
 
-    //console.log('bankForm despues de cargar:',bankForm.value)
     function handleSubmit(myData){
-      console.log('Submit:',myData)
+      if (!isFormModified()) {
+        console.log('No hay cambios en el formulario');
+        return;
+      }
+      console.log('Formulario modificado, enviando datos...');
       const { onFetchResponse, error, data } = useMyFetch('').post(bankForm.value);
-      
       onFetchResponse((response)=>{
         console.log('desde onFetchResponse',response.status);
         if(response.status===200){
           responded.value = true;
           success.value = true;
           const myTimeout = setTimeout(clearMessage, 2000);
+        } else if(response.status===401){
+          navigateTo('/');
+        } else {
+          responded.value = true;
+          success.value = false;
+          const myTimeout = setTimeout(clearMessage, 2000);
         }
       })
+    }
+
+    // Función para comprobar si hay cambios
+    function isFormModified() {
+      return JSON.stringify(bankForm.value) !== JSON.stringify(originalBankForm.value);
+    }
+
+    function getModifiedFields() {
+      const modified = [];
+      const current = bankForm.value;
+      const original = originalBankForm.value;
+      for (const key in current) {
+        if (current[key] !== original[key]) {
+          modified.push(key);
+        }
+      }
+      return modified;
     }
 
     function clearMessage(){
       responded.value = false
       success.value = false
+    }
+
+    function showConfirmDialog() {
+      if (!isFormModified()) {
+        console.log('No hay cambios en el formulario, no se muestra el diálogo de confirmación');
+        return;
+      }
+      // Mostrar el diálogo de confirmación
+      const dialog = document.getElementById('confirm-update-dialog');
+      if (dialog) {
+        dialog.showModal();
+      } else {
+        console.error('Dialog not found');
+      }
+    }
+    
+    function hideConfirmDialog() {
+      const dialog = document.getElementById('confirm-update-dialog');
+      if (dialog) {
+        dialog.close();
+      } else {
+        console.error('Dialog not found');
+      }
     }
 
     function isValidIban(node){
@@ -192,160 +239,173 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 <template>
     <div class="container mx-auto px-5">
     <!-- name of each tab group should be unique -->
-<div class="tabs tabs-border">
-  <input type="radio" name="my_tabs_2" class="tab" aria-label="Cuotas" checked="checked" />
-  <div class="tab-content border-base-300 bg-base-100 p-10">
-    
+    <div class="tabs tabs-border">
+      <input type="radio" name="my_tabs_2" class="tab" aria-label="Cuotas" checked="checked" />
+      <div class="tab-content border-base-300 bg-base-100 p-10">
+          <FormKit 
+            type="form" 
+            @submit="showConfirmDialog" 
+            v-model="bankForm"
+            submit-label="Actualizar"
+            :submit-attrs="{
+              help: ''
+            }"
+            >
+            <FormKit 
+              type="text" 
+              label="Titular cuota" 
+              name="titular_cc_cuota" 
+              validation=""
+            />
+            <FormKit 
+              type="text" 
+              label="BIC cuota" 
+              name="bic_cuota" 
+              validation=""
+            />
+            <FormKit 
+              type="text" 
+              label="IBAN cuota" 
+              name="iban_cuota" 
+              validation="length:24|isValidIban"
+              :validation-rules="{isValidIban}"
+              validation-visibility="live"
+              :validation-messages="{
+                isValidIban: 'IBAN incorrecto...'
+              }" 
+            />
 
-      <FormKit 
-        type="form" 
-        @submit="handleSubmit" 
-        v-model="bankForm"
-        submit-label="Actualizar"
-        :submit-attrs="{
-          help: ''
-        }"
-        >
-        <FormKit 
-          type="text" 
-          label="Titular cuota" 
-          name="titular_cc_cuota" 
-          validation=""
-        />
-        <FormKit 
-          type="text" 
-          label="BIC cuota" 
-          name="bic_cuota" 
-          validation=""
-        />
-        <FormKit 
-          type="text" 
-          label="IBAN cuota" 
-          name="iban_cuota" 
-          validation="length:24|isValidIban"
-          :validation-rules="{isValidIban}"
-          validation-visibility="live"
-          :validation-messages="{
-            isValidIban: 'IBAN incorrecto...'
-          }" 
-        />
+            <div class="flex justify-start gap-5 py-5">
+              <h3 class="font-bold">Mandato:</h3>  
+              <div v-if="mandato[0] && mandato[0].estado === 'cancelado'">
+                <div class="px-5 badge badge-error">Cancelado</div>
+                <div class="tooltip" data-tip="Último cobro">
+                  <div v-if="mandato[0] && mandato[0].estado === 'cancelado'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+                </div>
+              </div>
+              <div v-else >
+                <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-success px-5">Activo</div>
+                <div class="tooltip" data-tip="Último cobro">
+                  <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+                </div>
+              </div>
+            </div>
 
-        <div class="flex justify-start gap-5 py-5">
-          <h3 class="font-bold">Mandato:</h3>  
-          <div v-if="mandato[0] && mandato[0].estado === 'cancelado'">
-            <div class="px-5 badge badge-error">Cancelado</div>
-            <div class="tooltip" data-tip="Último cobro">
-              <div v-if="mandato[0] && mandato[0].estado === 'cancelado'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+            <FormKit
+              type="date"
+              name="fecha_mandato"
+              label="Fecha del mandato" 
+              help=""
+              validation="required"
+            />
+            <FormKit
+              type="text"
+              name="referencia_mandato"
+              label="Referencia del mandato"
+              help="Esta referencia ha sido generada automáticamente."
+              readonly
+            />
+          </FormKit>
+      </div>
+
+      <input type="radio" name="my_tabs_2" class="tab" aria-label="Agua" />
+      <div class="tab-content border-base-300 bg-base-100 p-10">
+        <FormKit 
+            type="form" 
+            @submit="showConfirmDialog" 
+            v-model="bankForm"
+            submit-label="Actualizar"
+            :submit-attrs="{
+              help: ''
+            }"
+            >
+            <FormKit 
+              type="text" 
+              label="Titular agua" 
+              name="titular_cc_agua" 
+              validation=""
+            />
+            <FormKit 
+              type="text" 
+              label="NIF/NIE/CIF titular agua" 
+              name="nif_titular_cc_agua"
+              validation="length:9|isValidNif"
+              :validation-rules="{ isValidNif }"
+              validation-visibility="live"
+              :validation-messages="{
+                isValidNif: 'Documento incorrecto'
+              }"
+            />
+            <FormKit 
+              type="text" 
+              label="BIC agua" 
+              name="bic_agua" 
+              validation=""
+            />
+            <FormKit 
+              type="text" 
+              label="IBAN agua" 
+              name="iban_agua" 
+              validation="length:24|isValidIban"
+              :validation-rules="{isValidIban}"
+              validation-visibility="live"
+              :validation-messages="{
+                isValidIban: 'IBAN incorrecto...'
+              }"
+            />
+
+            <div class="flex justify-start gap-5 py-5">
+              <h3 class="font-bold">Mandato:</h3>  
+              <div v-if="mandato[0] && mandato[0].estado === 'cancelado'">
+                <div class="px-5 badge badge-error">Cancelado</div>
+                <div class="tooltip" data-tip="Último cobro">
+                  <div v-if="mandato[0] && mandato[0].estado === 'cancelado'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+                </div>
+              </div>
+              <div v-else >
+                <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-success px-5">Activo</div>
+                <div class="tooltip" data-tip="Último cobro">
+                  <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div v-else >
-            <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-success px-5">Activo</div>
-            <div class="tooltip" data-tip="Último cobro">
-              <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
-            </div>
-          </div>
+
+            <FormKit
+              type="date"
+              name="fecha_mandato_agua"
+              label="Fecha del mandato"
+              help=""
+              validation=""
+            />
+            <FormKit
+              type="text"
+              name="referencia_mandato_agua"
+              label="Referencia del mandato"
+              help="Esta referencia ha sido generada automáticamente."
+              readonly
+            />
+          </FormKit>
+      </div>
+    </div>
+
+    <dialog id="confirm-update-dialog" class="modal modal-bottom sm:modal-middle">
+      <form method="dialog" class="modal-box">
+        <h3 class="font-bold text-lg">Confirmar actualización</h3>
+        <p class="py-4">Los siguientes campos han sido modificados:</p>
+        <ul class="list-disc pl-5">
+          <li v-for="field in getModifiedFields()" :key="field">{{ field }}</li>
+        </ul>
+        <p class="py-2 ">Si continuas, se actualizarán los datos bancarios y también se cancelará el mandato actual.</p>
+        <p class="py-2">¿Estás seguro de que quieres actualizar estos datos bancarios?</p>
+        <div class="modal-action">
+          <button type="submit" class="btn btn-primary" @click="handleSubmit(bankForm)">Actualizar</button>
+          <button type="button" class="btn" @click="hideConfirmDialog">Cancelar</button>
         </div>
-
-        <FormKit
-          type="date"
-          name="fecha_mandato"
-          label="Fecha del mandato" 
-          help=""
-          validation="required"
-        />
-        <FormKit
-          type="text"
-          name="referencia_mandato"
-          label="Referencia del mandato"
-          help="Esta referencia es generada automáticamente y no debe ser modificada."
-          readonly
-        />
-               
-        </FormKit>
-  </div>
-
-  <input type="radio" name="my_tabs_2" class="tab" aria-label="Agua" />
-  <div class="tab-content border-base-300 bg-base-100 p-10">
-    <FormKit 
-        type="form" 
-        @submit="handleSubmit" 
-        v-model="bankForm"
-        submit-label="Actualizar"
-        :submit-attrs="{
-          help: ''
-        }"
-        >
-        <FormKit 
-          type="text" 
-          label="Titular agua" 
-          name="titular_cc_agua" 
-          validation=""
-        />
-        <FormKit 
-          type="text" 
-          label="NIF/NIE/CIF titular agua" 
-          name="nif_titular_cc_agua"
-          validation="length:9|isValidNif"
-          :validation-rules="{ isValidNif }"
-          validation-visibility="live"
-          :validation-messages="{
-            isValidNif: 'Documento incorrecto'
-          }"
-        />
-        <FormKit 
-          type="text" 
-          label="BIC agua" 
-          name="bic_agua" 
-          validation=""
-        />
-        <FormKit 
-          type="text" 
-          label="IBAN agua" 
-          name="iban_agua" 
-          validation="length:24|isValidIban"
-          :validation-rules="{isValidIban}"
-          validation-visibility="live"
-          :validation-messages="{
-            isValidIban: 'IBAN incorrecto...'
-          }"
-        />
-
-        <div class="flex justify-start gap-5 py-5">
-          <h3 class="font-bold">Mandato:</h3>  
-          <div v-if="mandato[0] && mandato[0].estado === 'cancelado'">
-            <div class="px-5 badge badge-error">Cancelado</div>
-            <div class="tooltip" data-tip="Último cobro">
-              <div v-if="mandato[0] && mandato[0].estado === 'cancelado'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
-            </div>
-          </div>
-          <div v-else >
-            <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-success px-5">Activo</div>
-            <div class="tooltip" data-tip="Último cobro">
-              <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
-            </div>
-          </div>
-        </div>
-
-        <FormKit
-          type="date"
-          name="fecha_mandato_agua"
-          label="Fecha del mandato"
-          help=""
-          validation=""
-        />
-        <FormKit
-          type="text"
-          name="referencia_mandato_agua"
-          label="Referencia del mandato"
-          help="Esta referencia es generada automáticamente y no debe ser modificada."
-          readonly
-        />
-      </FormKit>
-  </div>
-
-</div>
-
-
+      </form>
+      <form method="dialog" class="modal-backdrop">
+        <button>✕</button>
+      </form>
+    </dialog>
 
       <div v-if="responded">
         <div v-if="success" class="alert alert-success">
