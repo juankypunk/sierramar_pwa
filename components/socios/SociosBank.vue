@@ -90,6 +90,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       const original = originalBankForm.value;
       for (const key in current) {
         if (current[key] !== original[key]) {
+          if(key.includes('agua')){
+            console.log('Campo de agua modificado:', key);
+          }else{
+            console.log('Campo de cuota modificado:', key);
+          }
           modified.push(key);
         }
       }
@@ -237,7 +242,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 </script>
 
 <template>
-    <div class="container mx-auto px-5">
+    <div class="container mx-auto px-5">  
     <!-- name of each tab group should be unique -->
     <div class="tabs tabs-border">
       <input type="radio" name="my_tabs_2" class="tab" aria-label="Cuotas" checked="checked" />
