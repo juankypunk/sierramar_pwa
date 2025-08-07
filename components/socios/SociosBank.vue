@@ -129,6 +129,24 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       }
     }
 
+    function showMandatDialog() {
+      const dialog = document.getElementById('mandat-dialog');
+      if (dialog) {
+        dialog.showModal();
+      } else {
+        console.error('Dialog not found');
+      }
+    } 
+
+    function hideMandatDialog() {
+      const dialog = document.getElementById('mandat-dialog');
+      if (dialog) {
+        dialog.close();
+      } else {
+        console.error('Dialog not found');
+      }
+    }     
+
     function isValidIban(node){
       var iban = node.value
       return isValidIBANNumber(iban)
@@ -284,14 +302,20 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
               <h3 class="font-bold">Mandato:</h3>  
               <div v-if="mandato[0] && mandato[0].estado === 'cancelado'">
                 <div class="px-5 badge badge-error">Cancelado</div>
-                <div class="tooltip" data-tip="Último cobro">
-                  <div v-if="mandato[0] && mandato[0].estado === 'cancelado'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+                <div v-if="mandato[0]" @click="showMandatDialog" class="tooltip cursor-pointer" data-tip="ver">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg> 
                 </div>
               </div>
-              <div v-else >
+              <div v-else class="flex items-center gap-2">
                 <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-success px-5">Activo</div>
-                <div class="tooltip" data-tip="Último cobro">
-                  <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+                <div @click="showMandatDialog" class="tooltip cursor-pointer" data-tip="ver">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg> 
                 </div>
               </div>
             </div>
@@ -363,14 +387,20 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
               <h3 class="font-bold">Mandato:</h3>  
               <div v-if="mandato[0] && mandato[0].estado === 'cancelado'">
                 <div class="px-5 badge badge-error">Cancelado</div>
-                <div class="tooltip" data-tip="Último cobro">
-                  <div v-if="mandato[0] && mandato[0].estado === 'cancelado'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+                <div v-if="mandato[0]" @click="showMandatDialog" class="tooltip cursor-pointer" data-tip="ver">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg> 
                 </div>
               </div>
-              <div v-else >
+              <div v-else class="flex items-center gap-2">
                 <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-success px-5">Activo</div>
-                <div class="tooltip" data-tip="Último cobro">
-                  <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-soft badge-info px-5">{{ mandato[0].ultimo_cobro }}</div>
+                <div v-if="mandato[0]" @click="showMandatDialog" class="tooltip cursor-pointer" data-tip="ver">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg> 
                 </div>
               </div>
             </div>
@@ -405,6 +435,37 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         <div class="modal-action">
           <button type="submit" class="btn btn-primary" @click="handleSubmit(bankForm)">Actualizar</button>
           <button type="button" class="btn" @click="hideConfirmDialog">Cancelar</button>
+        </div>
+      </form>
+      <form method="dialog" class="modal-backdrop">
+        <button>✕</button>
+      </form>
+    </dialog>
+
+    <dialog id="mandat-dialog" class="modal modal-bottom sm:modal-middle">
+      <form method="dialog" class="modal-box">
+        <h3 class="font-bold text-lg">Mandato</h3>
+        <p class="py-4">Aquí puedes ver los detalles del mandato:</p>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>Campo</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(value, key) in mandato[0]" :key="key">
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-action">
+          <button type="button" class="btn" @click="hideMandatDialog">
+            Cerrar
+          </button>
         </div>
       </form>
       <form method="dialog" class="modal-backdrop">
