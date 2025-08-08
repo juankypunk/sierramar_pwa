@@ -455,8 +455,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
     <dialog id="mandat-dialog" class="modal modal-bottom sm:modal-middle">
       <form method="dialog" class="modal-box">
-        <h3 class="font-bold text-lg">Mandato</h3>
-        <p class="py-4">Aquí puedes ver los detalles del mandato:</p>
+        <h3 class="font-bold text-lg">Detalles del Mandato</h3>
         <div class="overflow-x-auto">
           <table class="table table-zebra w-full">
             <thead>
