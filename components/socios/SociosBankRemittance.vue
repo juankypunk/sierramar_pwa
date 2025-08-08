@@ -292,7 +292,7 @@ function isValidIban(node){
         newRemittance.value.bic=bankForm.value.bic_agua;
         newRemittance.value.iban=bankForm.value.iban_agua;
         newRemittance.value.fecha_mandato=bankForm.value.fecha_mandato;
-        newRemittance.value.referencia_mandato = bankForm.value.referencia_mandato_agua;
+        newRemittance.value.referencia_mandato = bankForm.value.referencia_mandato_agua ? bankForm.value.referencia_mandato_agua : bankForm.value.referencia_mandato;
       }
     }
     

@@ -40,22 +40,29 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       },
     })
     
-    const { onFetchResponse, error, data } = useMyFetch('').get().json();
-    onFetchResponse((response)=>{
-      console.log('desde onFetchResponse',response);
-      console.log('bank_data:',data.value);
-      if(response.status===200){
-        console.log('Datos cargados correctamente');
-        bankForm.value=data.value.bank ;
-        mandato.value=data.value.mandatos;
-        originalBankForm.value = JSON.parse(JSON.stringify(data.value.bank)); // copia profunda
-      }else{
-        console.log('Error al cargar los datos');
-        responded.value = true;
-        success.value = false;
-      }
-    })
+    function getBankData() {
+      console.log('Cargando datos bancarios para la parcela:', id_parcela);
+      const { onFetchResponse, error, data } = useMyFetch('').get().json();
+      onFetchResponse((response)=>{
+        console.log('desde onFetchResponse',response);
+        console.log('bank_data:',data.value);
+        if(response.status===200){
+          console.log('Datos cargados correctamente');
+          bankForm.value=data.value.bank ;
+          mandato.value=data.value.mandatos;
+          originalBankForm.value = JSON.parse(JSON.stringify(data.value.bank)); // copia profunda
+        }else{
+          console.log('Error al cargar los datos');
+          responded.value = true;
+          success.value = false;
+        }
+      })
+    }
 
+    onMounted(() => {
+      getBankData();
+    });
+    
     function handleSubmit(myData){
       if (!isFormModified()) {
         console.log('No hay cambios en el formulario');
@@ -69,6 +76,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
           responded.value = true;
           success.value = true;
           const myTimeout = setTimeout(clearMessage, 2000);
+          getBankData(); // Recargar datos bancarios
         } else if(response.status===401){
           navigateTo('/');
         } else {
@@ -311,7 +319,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
               </div>
               <div v-else class="flex items-center gap-2">
                 <div v-if="mandato[0] && mandato[0].estado === 'activo'" class="badge badge-success px-5">Activo</div>
-                <div @click="showMandatDialog" class="tooltip cursor-pointer" data-tip="ver">
+                <div v-if="mandato[0]" @click="showMandatDialog" class="tooltip cursor-pointer" data-tip="ver">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -430,8 +438,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         <ul class="list-disc pl-5">
           <li v-for="field in getModifiedFields()" :key="field">{{ field }}</li>
         </ul>
-        <p class="py-2 ">Si continuas, se actualizarán los datos bancarios y también se cancelará el mandato actual.</p>
-        <p class="py-2">¿Estás seguro de que quieres actualizar estos datos bancarios?</p>
+        <p class="py-2 ">Si continuas, se actualizarán los datos bancarios pero también se cancelará el mandato actual. </p>
+        <p class="py-2 font-semibold">
+          Para poder seguir cobrando, será necesario crear un nuevo mandato y solicitar la firma del titular.
+        </p>
+        <p class="py-2">¿Estás seguro de que quieres actualizar los datos bancarios?</p>
         <div class="modal-action">
           <button type="submit" class="btn btn-primary" @click="handleSubmit(bankForm)">Actualizar</button>
           <button type="button" class="btn" @click="hideConfirmDialog">Cancelar</button>
