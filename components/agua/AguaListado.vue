@@ -109,7 +109,7 @@ const updateNewDateReadings = () => {
 }
 
 const searchQuery = ref('');
-const gridColumns = ["orden","e","id_parcela","titular", "l1","l2","m3","c","avg","importe","notas"];
+const gridColumns = ["orden","e","id_parcela","titular", "l1","l2","m3","c","media","mediana","importe","notas"];
 
 function showDialog(data){
     lectura_detail.showModal();
