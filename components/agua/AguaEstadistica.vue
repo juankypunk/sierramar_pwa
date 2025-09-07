@@ -35,7 +35,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     const fechas = ref([]);
     const consumo = ref([]);
     const importe = ref([]);
-    const media = ref([]);
+    const mediana = ref([]);
 
     const responded = ref(false);
     const success = ref(false);
@@ -105,10 +105,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             console.log('response status estadisticas:',response.status)
             if(response.status===200){
                 statistics.value=response._data;
+                console.log('data estadisticas:',response._data);
                 rowStatisticsData.value=response._data[0];
                 fechas.value = response._data.map(item => item.lectura);
                 consumo.value = response._data.map(item => item.m3);
-                media.value= response._data.map(item => item.avg)
+                mediana.value= response._data.map(item => item.mediana)
                 importe.value = response._data.map(item => item.importe);
                 getReadings();
             }else{
@@ -162,13 +163,20 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 <div class="stat">
                     <div class="stat-title">Consumo de agua RESIDENTES <span class="badge">{{ rowStatisticsData.lectura }} </span></div>
                     <div class="stat-value flex justify-center gap-6 py-10">
-                        <span class="px-3 text-4xl text-blue-600">{{rowStatisticsData.m3}} m3</span>
-                        <span class="px-3 text-4xl text-gray-400">{{rowStatisticsData.importe}} €</span>
+                        <span class="px-3 text-4xl text-blue-600">{{new Intl.NumberFormat('es-ES', { 
+                                      minimumFractionDigits: 0,
+                                      maximumFractionDigits: 0 
+                                  }).format(rowStatisticsData.m3)}} m3</span>
+                        <span class="px-3 text-4xl text-gray-400">{{new Intl.NumberFormat('es-ES', { 
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2 
+                                  }).format(rowStatisticsData.importe)}} €</span>
                     </div>
                     <div class="stat-desc flex justify-center py-5">
-                        <span class="badge badge-lg">max: {{ rowStatisticsData.max}}m3</span>
-                        <span class="badge badge-lg">min: {{rowStatisticsData.min }}m3</span>
-                        <span class="badge badge-lg">avg: {{ rowStatisticsData.avg}}m3</span>
+                        <span class="badge badge-lg">max: {{ rowStatisticsData.max}} m3</span>
+                        <span class="badge badge-lg">min: {{rowStatisticsData.min }} m3</span>
+                        <span class="badge badge-lg">media: {{ rowStatisticsData.avg}} m3</span>
+                        <span class="badge badge-lg">mediana: {{ rowStatisticsData.mediana}} m3</span>
                     </div>
                 </div>
             </div>

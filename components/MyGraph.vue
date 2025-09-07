@@ -36,7 +36,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         console.log(response);
         const fechas = response._data.map(item => item.fecha_f);
         const consumption = response._data.map(item => item.m3);
-        const neighbors = response._data.map(item => item.avg);
+        const neighbors = response._data.map(item => item.mediana);
         console.log('fechas:',fechas);
         console.log('consumo:',consumption);
         console.log('vecinos:',neighbors);
