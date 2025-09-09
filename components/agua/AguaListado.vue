@@ -243,7 +243,7 @@ onMounted(() => {
           <div class="px-2">
           <FormKit 
             type="checkbox"
-            label="Estado de lectura"
+            label="Estado"
             placeholder="Estado de lectura..."
             v-model="estado"
             :options="[
