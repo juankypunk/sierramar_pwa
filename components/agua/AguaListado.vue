@@ -226,7 +226,7 @@ onMounted(() => {
         Click aquí para filtrar resultados...
       </div>
       <div class="collapse-content"> 
-        <div class="flex justify-between px-5">
+        <div class="flex justify-start">
           <div class="px-5">
             <FormKit 
               type="search"
@@ -237,18 +237,9 @@ onMounted(() => {
               suffix-icon="search"
             />
           </div>  
-          <div class="px-5">
-            <FormKit 
-            type="checkbox"
-            label="Mostrar todo"
-            placeholder="Eliminar filtros..."
-            v-model="resetFilter"
-            @update:model-value="getCurrentReadings()"
-          />
-          </div>
         </div>
         
-        <div class="flex justify-between">
+        <div class="flex justify-start">
           <div class="px-5">
           <FormKit 
             type="checkbox"
@@ -286,7 +277,15 @@ onMounted(() => {
             @update:model-value="handleRadioChange()"
             />
           </div>
-         
+         <div class="px-5">
+            <FormKit 
+            type="checkbox"
+            label="Todo"
+            placeholder="Eliminar filtros..."
+            v-model="resetFilter"
+            @update:model-value="getCurrentReadings()"
+          />
+          </div>
       </div>
     </div>
   </div>
