@@ -17,14 +17,14 @@ const rowdata = ref({});
 const config = useRuntimeConfig();
 const accessToken = useAccessToken();
 const readings = ref([]);
-const filtro = ref('sin_filtro');
+const filtro = ref();
 const estado = ref(['A','R','C']);
 const estado_lectura = ref('');
 const fecha_nueva_lectura = ref('');
 const averiado = ref();
 const inactivo = ref();
 const domicilia_bco = ref();
-const resetFilter=ref(false);
+const resetFilter=ref(true);
 const locked = ref(false);
 const lectura_completa = ref(false);
 
@@ -51,17 +51,24 @@ const useMyFetch = createFetch({
 
 const getCurrentReadings = () => {
   //console.log('filtro:',filtro.value);
-  averiado.value = (filtro.value=='averiados') ? true : false;
-  inactivo.value = (filtro.value=='inactivos') ? true : false;
-  domicilia_bco.value = (filtro.value=='sin_domiciliar') ? false : true;
-  resetFilter.value = (filtro.value=='sin_filtro') ? true : false;
+  
+  if(resetFilter.value==true){
+    domicilia_bco.value = undefined;
+    averiado.value = undefined;
+    inactivo.value = undefined;
+    filtro.value = undefined;
+  }else{
+    averiado.value = (filtro.value=='averiados') ? true : undefined;
+    inactivo.value = (filtro.value=='inactivos') ? true : undefined;
+  }
+  //resetFilter.value = (filtro.value=='sin_filtro') ? true : false;
   // listado de lectura actual
   const { onFetchResponse, error, data } = useMyFetch('/currentreading').post({
           "estado": estado.value,
           "averiado": averiado.value,
           "inactivo": inactivo.value,
           "domicilia_bco": domicilia_bco.value,
-          "reset_filter":resetFilter.value
+          "reset_filter": resetFilter.value
         }).json();
   onFetchResponse((response)=>{
         console.log('desde onFetchResponse',data.value);
@@ -78,6 +85,12 @@ const getCurrentReadings = () => {
         }
   })
 }
+
+function handleRadioChange() {
+  resetFilter.value = false;
+  getCurrentReadings();
+}
+
 
 const protectCurrentReadings = () => {
   console.log('cerrado:',locked.value);
@@ -213,7 +226,8 @@ onMounted(() => {
         Click aquí para filtrar resultados...
       </div>
       <div class="collapse-content"> 
-        <div>
+        <div class="flex justify-between px-5">
+          <div class="px-5">
             <FormKit 
               type="search"
               placeholder="Busca por nombre o parcela..."
@@ -222,8 +236,20 @@ onMounted(() => {
               help="Por ejemplo: 'garc' o '001'" 
               suffix-icon="search"
             />
+          </div>  
+          <div class="px-5">
+            <FormKit 
+            type="checkbox"
+            label="Mostrar todo"
+            placeholder="Eliminar filtros..."
+            v-model="resetFilter"
+            @update:model-value="getCurrentReadings()"
+          />
+          </div>
         </div>
-        <div class="flex justify-start gap-1">
+        
+        <div class="flex justify-between">
+          <div class="px-5">
           <FormKit 
             type="checkbox"
             label="Estado de lectura"
@@ -235,6 +261,19 @@ onMounted(() => {
               ]"
               @update:model-value="getCurrentReadings()"
           />
+          </div>
+          <div class="px-5">
+            <FormKit 
+            type="radio"
+            label="Domiciliación"
+            v-model="domicilia_bco"
+            :options="[
+                {label: 'Domiciliados', value:true},
+                {label: 'Sin domiciliar', value:false}
+              ]"
+            @update:model-value="handleRadioChange()"
+            />
+          </div>
           <div class="px-5">
             <FormKit 
             type="radio"
@@ -243,12 +282,11 @@ onMounted(() => {
             :options="[
                 {label: 'Averiados', value:'averiados'},
                 {label: 'Inactivos', value:'inactivos'},
-                {label: 'Sin domiciliar', value:'sin_domiciliar'},
-                {label: 'Ver todos', value:'sin_filtro'},
               ]"
-            @update:model-value="getCurrentReadings()"
+            @update:model-value="handleRadioChange()"
             />
-          </div> 
+          </div>
+         
       </div>
     </div>
   </div>
