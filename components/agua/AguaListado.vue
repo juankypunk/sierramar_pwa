@@ -240,7 +240,7 @@ onMounted(() => {
         </div>
         
         <div class="flex justify-start">
-          <div class="px-5">
+          <div class="px-2">
           <FormKit 
             type="checkbox"
             label="Estado de lectura"
@@ -253,7 +253,7 @@ onMounted(() => {
               @update:model-value="getCurrentReadings()"
           />
           </div>
-          <div class="px-5">
+          <div class="px-2">
             <FormKit 
             type="radio"
             label="Domiciliación"
@@ -265,7 +265,7 @@ onMounted(() => {
             @update:model-value="handleRadioChange()"
             />
           </div>
-          <div class="px-5">
+          <div class="px-2">
             <FormKit 
             type="radio"
             label="Mostrar"
@@ -277,7 +277,7 @@ onMounted(() => {
             @update:model-value="handleRadioChange()"
             />
           </div>
-         <div class="px-5">
+         <div class="px-2">
             <FormKit 
             type="checkbox"
             label="Todo"
