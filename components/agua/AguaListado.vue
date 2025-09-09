@@ -247,8 +247,8 @@ onMounted(() => {
             placeholder="Estado de lectura..."
             v-model="estado"
             :options="[
-                {label: '🟢 Sin leer', value:'A'},
-                {label: '🟠 Leídas', value:'R'}
+                {label: '🟢', value:'A'},
+                {label: '🟠', value:'R'}
               ]"
               @update:model-value="getCurrentReadings()"
           />
