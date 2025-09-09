@@ -259,8 +259,8 @@ onMounted(() => {
             label="Domiciliación"
             v-model="domicilia_bco"
             :options="[
-                {label: 'Domiciliados', value:true},
-                {label: 'Sin domiciliar', value:false}
+                {label: 'Sí', value:true},
+                {label: 'No', value:false}
               ]"
             @update:model-value="handleRadioChange()"
             />
