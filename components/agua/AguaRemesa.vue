@@ -24,6 +24,11 @@ const statistics_result = ref({});
 const pendiente_cobro = ref(0);
 const estado_lectura = ref('');
 const checkedIds = ref([]);
+const datos_seleccionados = ref(0);
+const datos_enviados = ref(0);
+const importe_total_enviado = ref(0);
+const datos_recibidos = ref(0);
+const importe_total_recibido = ref(0);
 
 
 const url_remittances = computed(() => {
@@ -99,9 +104,15 @@ const gridColumns = ["id_parcela","titular","l1","l2","m3","m3_t1","m3_t2","m3_t
             if(response.status===200){
                 console.log('datos_iva:',response._data.sifResponse);
                 if(response._data.sifResponse.success){
-                  console.log('Datos enviados correctamente al SIF:', response._data.sifResponse.data.count);
+                  console.log('Datos recibidas correctamente (SIF):', response._data.sifResponse.data.count);
+                  datos_seleccionados.value = response._data.selected_ids.length;
+                  datos_enviados.value = response._data.datosEnviados;
+                  importe_total_enviado.value = response._data.totalEnviado;
+                  datos_recibidos.value = response._data.datosRecibidos;
+                  importe_total_recibido.value = response._data.totalRecibido;
                   // Puedes mostrar un mensaje de éxito o realizar alguna acción adicional
-                  alert(`Datos enviados correctamente al SIF: ${response._data.sifResponse.data.count} registros procesados.`);
+                  dialog_resultado_sif.showModal();
+                  checkedIds.value = []; // Limpiar selección después de enviar
                 }else{
                   console.error('Error al enviar datos al SIF:', response._data.sifResponse);
                   // Puedes mostrar un mensaje de error o realizar alguna acción adicional
@@ -440,6 +451,52 @@ onMounted(() => {
           </div>
     </dialog>
     
+    <dialog id="dialog_resultado_sif" class="modal">
+          <div class="modal-box">
+              <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+              </form>
+              <h3 class="font-bold text-lg">Envío de datos al SIF</h3>
+              <div class="py-4">
+                <table class="table table-zebra w-full">
+                  <thead>
+                    <tr>
+                      <th>Concepto</th>
+                      <th>Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Registros seleccionados</td>
+                      <td>{{ datos_seleccionados }}</td>
+                    </tr>
+                    <tr>
+                      <td>Registros enviados</td>
+                      <td>{{ datos_enviados }}</td>
+                    </tr>
+                    <tr>
+                      <td>Total enviado</td>
+                      <td>{{ new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(importe_total_enviado) }} €</td>
+                    </tr>
+                    <tr>
+                      <td>Registros recibidos</td>
+                      <td>{{ datos_recibidos }}</td>
+                    </tr>
+                    <tr>
+                      <td>Total recibido</td>
+                      <td>{{ new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(importe_total_recibido) }} €</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>     
+              <div class="modal-action">
+                  <form method="dialog">
+                      <!-- if there is a button in form, it will close the modal -->
+                      <button class="btn btn-primary">Aceptar</button>
+                  </form>
+              </div>
+          </div>
+    </dialog>
     
     <dialog id="remittance_detail" class="modal">
       <div class="modal-box">
