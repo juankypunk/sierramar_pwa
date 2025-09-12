@@ -29,6 +29,8 @@ const datos_enviados = ref(0);
 const importe_total_enviado = ref(0);
 const datos_recibidos = ref(0);
 const importe_total_recibido = ref(0);
+const loadingSif = ref(false);
+
 
 
 const url_remittances = computed(() => {
@@ -89,6 +91,7 @@ const gridColumns = ["id_parcela","titular","l1","l2","m3","m3_t1","m3_t2","m3_t
   function send_data2sif(){
     if(checkedIds.value.length > 0){
       console.log('checkids:',checkedIds.value);
+          loadingSif.value = true; // activar loading
         const {data,refresh} = useFetch(url_remittances_vat, {
         headers: {
           "Content-Type": "application/json",
@@ -100,6 +103,7 @@ const gridColumns = ["id_parcela","titular","l1","l2","m3","m3_t1","m3_t2","m3_t
           "sif_token": sif_token.value,
         },
         onResponse({ response }) {
+          loadingSif.value = false; // desactivar loading al terminar
             // Process the response data
             if(response.status===200){
                 console.log('datos_iva:',response._data.sifResponse);
@@ -362,7 +366,10 @@ onMounted(() => {
       </div>
       <div v-if="estado_lectura==='R'" class="py-5 flex justify-center gap-4">
         <button class="btn" @click="manageRemittances">GENERAR REMESA SEPA</button>
-        <button class="btn" @click="send_data2sif">ENVIAR DATOS</button>
+        <button class="btn" @click="send_data2sif">
+            ENVIAR DATOS
+            <span v-if="loadingSif" class="loading loading-spinner loading-xs ml-2"></span>
+        </button>
       </div>
     </div>
     <dialog id="dialog_fecha_cobro" class="modal">
