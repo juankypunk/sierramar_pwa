@@ -159,16 +159,36 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 <form method="dialog">
                     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
-                <h3 class="font-bold text-lg">Datos de contacto</h3>
-                <div class="">   
-                    <div class="px-4">Titular:  {{ rowdata.titular }}</div>
-                    <div class="px-4">Email: {{ rowdata.email }}</div>
-                    <div class="px-4">Teléf1:  {{ rowdata.telef1 }}</div>
-                    <div class="px-4">Teléf2:  {{ rowdata.telef2 }}</div>
-                    <div class="px-4">Teléf3:  {{ rowdata.telef3 }}</div>
-                    <div class="px-4">Domicilio:  {{ rowdata.domicilio }}</div>
-                    <div class="px-4">Localidad:  {{ rowdata.localidad }}</div>
-                </div> 
+                <div class="tabs tabs-border">
+                    <input type="radio" name="my_tabs_2" class="tab" aria-label="Contacto" checked="checked" />
+                    <div class="tab-content border-base-300 bg-base-100 p-10">
+                        <table class="table table-sm table-zebra w-full">
+                            <tbody>
+                                <tr><td class="font-bold">Titular</td><td>{{ rowdata.titular }}</td></tr>
+                                <tr><td class="font-bold">Email</td><td>{{ rowdata.email }}</td></tr>
+                                <tr><td class="font-bold">Teléf1</td><td>{{ rowdata.telef1 }}</td></tr>
+                                <tr><td class="font-bold">Teléf2</td><td>{{ rowdata.telef2 }}</td></tr>
+                                <tr><td class="font-bold">Teléf3</td><td>{{ rowdata.telef3 }}</td></tr>
+                                <tr><td class="font-bold">Domicilio</td><td>{{ rowdata.domicilio }}</td></tr>
+                                <tr><td class="font-bold">Localidad</td><td>{{ rowdata.localidad }}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <input type="radio" name="my_tabs_2" class="tab" aria-label="Banco" />
+                    <div class="tab-content border-base-300 bg-base-100 p-10">
+                        <table class="table table-sm table-zebra w-full">
+                            <tbody>
+                                <tr><td class="font-bold">NIF Titular agua</td><td>{{ rowdata.nif_titular_cc_agua }}</td></tr>
+                                <tr><td class="font-bold">Titular cc agua</td><td>{{ rowdata.titular_cc_agua }}</td></tr>
+                                <tr><td class="font-bold">BIC agua</td><td>{{ rowdata.bic_agua }}</td></tr>
+                                <tr><td class="font-bold">IBAN agua</td><td>{{ rowdata.iban_agua }}</td></tr>
+                                <tr><td class="font-bold">Titular cc cuota</td><td>{{ rowdata.titular_cc_cuota }}</td></tr>
+                                <tr><td class="font-bold">BIC cuota</td><td>{{ rowdata.bic_cuota }}</td></tr>
+                                <tr><td class="font-bold">IBAN cuota</td><td>{{ rowdata.iban_cuota }}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>  
             </div>
         </dialog>
     </div>
