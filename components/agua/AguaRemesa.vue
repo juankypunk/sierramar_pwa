@@ -114,9 +114,9 @@ const gridColumns = ["id_parcela","titular","l1","l2","m3","m3_t1","m3_t2","m3_t
                   importe_total_enviado.value = response._data.totalEnviado;
                   datos_recibidos.value = response._data.datosRecibidos;
                   importe_total_recibido.value = response._data.totalRecibido;
-                  // Puedes mostrar un mensaje de éxito o realizar alguna acción adicional
-                  dialog_resultado_sif.showModal();
                   checkedIds.value = []; // Limpiar selección después de enviar
+                  // mensaje de éxito con los resultados
+                  dialog_resultado_sif.showModal();
                 }else{
                   console.error('Error al enviar datos al SIF:', response._data.sifResponse);
                   // Puedes mostrar un mensaje de error o realizar alguna acción adicional
