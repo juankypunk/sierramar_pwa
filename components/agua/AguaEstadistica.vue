@@ -151,7 +151,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 <template>
     <div class="container mx-auto">
         <div class="p-4" style="height: 400px; width:auto">
-            <h2 class="text-3xl font-bold">Historial de consumo de agua</h2>
+            <h2 class="text-3xl font-bold">Historial de consumo</h2>
             <div v-if="consumo.length" class="" >
             <div class="stats shadow flex justify-between">
                 <div class="stat">
