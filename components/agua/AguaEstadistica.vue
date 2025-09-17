@@ -28,6 +28,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     const readings = ref([]);
     const rowStatisticsData=ref({});
     const rowReadingsData=ref({});
+    const collapseStatistics = ref(null);
 
     const gridStatisticsColumns = ["lectura","m3","max","min","avg","stddev","importe","domiciliado"];
     const gridReadingsColumns = ["e","id_parcela", "titular","l1","l2","m3","avg","stddev","averiado","inactivo","domicilia_bco","importe","notas"];
@@ -137,20 +138,44 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       success.value = false
     }
 
+    function handleStatisticsRowUpdate() {
+        if (collapseStatistics.value) {
+            collapseStatistics.value.open = false;
+        }
+        getReadings();
+    }
+
 
 </script>
 
 <template>
     <div class="container mx-auto">
+        <div class="p-4" style="height: 400px; width:auto">
+            <h2 class="text-3xl font-bold">Historial de consumo de agua</h2>
+            <div v-if="consumo.length" class="" >
+            <div class="stats shadow flex justify-between">
+                <div class="stat">
+                    <div class="stat-title">Distribución anual del consumo</div>
+                    <div class="stat-value flex justify-center flex-col">
+                        <Bar :data="chartData" :options="chartOptions" />        
+                    </div>
+                    <div class="stat-desc flex flex-col">  
+                        (Últimos 5 años)    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div>
-            <details class="collapse collapse-arrow">
-                <summary class="collapse-title text-xl font-medium">Lecturas de agua (selecciona una fecha)</summary>
+            <details ref="collapseStatistics" class="collapse collapse-arrow">
+                <summary class="collapse-title text-xl font-medium">Estadísticas de consumo (selecciona aquí una lectura)</summary>
                 <div v-if="statistics" class="collapse-content"> 
                     <MyGrid
                         :data="statistics"
                         :columns="gridStatisticsColumns"
                         v-model:rowdata="rowStatisticsData"
-                        @update:rowdata="showReadings()"
+                        @update:rowdata="handleStatisticsRowUpdate"
                         table-size="table-xs"
                     >
                     </MyGrid>     
@@ -161,7 +186,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         <div v-if="rowStatisticsData">
             <div class="stats shadow w-full">
                 <div class="stat">
-                    <div class="stat-title">Consumo de agua RESIDENTES <span class="badge">{{ rowStatisticsData.lectura }} </span></div>
+                    <div class="stat-title">Consumo de agua RESIDENTES <span class="badge badge-success">{{ rowStatisticsData.lectura }} </span></div>
                     <div class="stat-value flex justify-center gap-6 py-10">
                         <span class="px-3 text-4xl text-blue-600">{{new Intl.NumberFormat('es-ES', { 
                                       minimumFractionDigits: 0,
@@ -197,21 +222,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             </div>
         </details>
         
-        
-        <div v-if="consumo.length" class="" style="height: 400px; width:auto">
-            <div class="stats shadow flex justify-between">
-                <div class="stat">
-                    <div class="stat-title">Distribución anual del consumo</div>
-                    <div class="stat-value flex justify-center flex-col">
-                        <Bar :data="chartData" :options="chartOptions" />        
-                    </div>
-                    <div class="stat-desc flex flex-col">  
-                        (Últimos 5 años)    
-                    </div>
-                </div>
-            </div>
-        </div>
-        
         <dialog id="lectura_fecha" class="modal">
             <div class="modal-box">
                 <form method="dialog">
@@ -234,6 +244,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 <span>Lo siento, algo ha ido mal 😕</span>
             </div>
         </div>
-        
     </div>
+</div>
 </template>
