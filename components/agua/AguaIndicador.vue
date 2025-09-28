@@ -21,8 +21,14 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         return props.m3;
     })
 
-    const t1 = ref(props.t1);
-    const t2 = ref(props.t2);
+    const t1 = computed(()=>{
+        return props.t1;
+    })
+
+    const t2 = computed(()=>{
+        return props.t2;
+    })
+
     const m3_a = ref(0);
     const m3_b = ref(0);
     const m3_c = ref(0);
@@ -57,7 +63,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         
 
     onMounted(()=>{
-        console.log('montado, m3:',m3.value);
+        console.log('montado, t1:',t1.value,'t2:',t2.value,'m3:',m3.value); 
         calcula_tramos();
     })
 
@@ -71,7 +77,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         <div class="tooltip" :data-tip="m3_b + ' m3'">
             <progress class="progress progress-warning w-24" :value="m3_b" :max="t2"></progress>
         </div>
-        <div class="tooltip" :data-tip="m3_c + ' m3'">  
+        <div class="tooltip" :data-tip="m3_c + ' m3'">
             <progress class="progress progress-error w-24" :value="m3_c" max="100"></progress>
         </div>
     </div>

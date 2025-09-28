@@ -510,64 +510,7 @@ onMounted(() => {
         <form method="dialog">
           <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-        <h3 class="font-bold text-lg">Detalles remesa agua</h3>
-        <div v-if="rowdata.id_parcela">
-          <div class="flex justify-start gap-4">
-            <div>Parcela: {{ rowdata.id_parcela }} </div> 
-            <div>Titular: {{ rowdata.titular }}</div>
-          </div>          
-          <div class="flex justify-start gap-4">
-            <div>Fecha: {{ rowdata.fecha }} </div> 
-            <div>Lect. ant.: {{ rowdata.l1 }}</div>
-            <div>Lect. act.: {{ rowdata.l2 }}</div>
-          </div>
-          <div class="py-2 flex flex-col">
-            <div>
-              Consumo de agua: {{ rowdata.m3 }}m3
-            </div>
-            <div class="flex justify-center">
-              <AguaIndicador
-              :m3="parseInt(rowdata.m3)"
-              :t1="parseInt(rowdata.t1)"
-              :t2="parseInt(rowdata.t2)"
-            />
-            </div>
-          </div>
-          <div class="flex justify-between py-2">
-            <div>T1(0-125m3): {{ rowdata.m3_t1 }}m3 </div>
-            <div>T2(126-200m3): {{ rowdata.m3_t2 }}m3</div>
-            <div>T3(+200): {{ rowdata.m3_t3 }}m3</div>
-          </div>
-          <div class="py-2">
-            Precio del m3 por tramos (IVA 10% incl.):
-          </div>
-          <div class="flex justify-start gap-6">
-            <div>T1: {{ rowdata.pvpm3 }}€ </div>
-            <div>T2: {{ parseFloat((rowdata.pvpm3 * rowdata.f_b).toFixed(3)) }}€</div>
-            <div>T3: {{ parseFloat((rowdata.pvpm3 * rowdata.f_c).toFixed(3)) }}€</div>
-          </div>
-          <div class="py-2">
-            Importe de los tramos:
-          </div>
-          <div class="flex justify-start gap-4">
-            <div>T1: {{ parseFloat(rowdata.p_m3_a).toFixed(2) }}€ </div>
-            <div>T2: {{ parseFloat(rowdata.p_m3_b).toFixed(2) }}€</div>
-            <div>T3: {{ parseFloat(rowdata.p_m3_c).toFixed(2) }}€</div>
-            <div class="px-12">Total: {{ parseFloat(rowdata.importe).toFixed(2) }}€</div>
-          </div>
-          <div class="py-2">
-            Domiciliado en cuenta:
-          </div>
-          <div class="flex justify-start gap-4">
-            <div>BIC: {{rowdata.bic}}</div>
-            <div>IBAN: {{rowdata.iban}}</div>
-          </div>
-                    
-          <div class="py-5">
-            <p>Editado por: {{ rowdata.user_modif }}</p>
-            <p>Último cambio: {{ rowdata.ult_modif }}</p>
-          </div>
-        </div>
+        <AguaDetalleRemesa :rowdata="rowdata" />
       </div>
     </dialog>
   </div>

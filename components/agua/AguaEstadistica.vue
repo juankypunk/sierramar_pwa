@@ -26,12 +26,15 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
     const statistics = ref([]);
     const readings = ref([]);
+    const remittances = ref([]);
     const rowStatisticsData=ref({});
-    const rowReadingsData=ref({});
+    const rowReadingData=ref({});
+    const rowRemittanceData=ref({});
     const collapseStatistics = ref(null);
 
     const gridStatisticsColumns = ["lectura","m3","max","min","avg","stddev","importe","domiciliado"];
-    const gridReadingsColumns = ["e","id_parcela", "titular","l1","l2","m3","avg","stddev","averiado","inactivo","domicilia_bco","importe","notas"];
+    const gridReadingsColumns = ["e","id_parcela", "titular","l1","l2","m3","avg","averiado","inactivo","domicilia_bco","importe","notas"];
+    const gridRemittancesColumns = ["id_parcela","titular","l1","l2","m3","m3_t1","m3_t2","m3_t3","importe","domiciliado"];
 
     const fechas = ref([]);
     const consumo = ref([]);
@@ -88,10 +91,14 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         const { onFetchResponse, error, data } = useMyFetch('').post({lectura: rowStatisticsData.value.lectura}).json();
         onFetchResponse((response)=>{
             console.log('desde onFetchResponse',data.value);
-            readings.value=data.value;
+            readings.value=data.value.readings;
+            remittances.value=data.value.remittances;
             responded.value = true;
             success.value = true;
             const myTimeout = setTimeout(clearMessage, 3000);
+            return () => {
+                clearTimeout(myTimeout);
+            }
         })
     }
 
@@ -123,15 +130,42 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             //useRouter().push('/refresh')
         }
     })  
+/*
+    const {data2 } = useFetch(url_remittances,{
+        headers: {
+            'Authorization': 'Bearer ' + accessToken.value,
+        },
+        method: 'GET',
+        key: 'detalle_remesa_lectura',
+        onResponse({response}){
+            console.log('response status detalle_remesa_lectura:',response.status)
+            if(response.status===200){
+                statistics.value=response._data;
+                console.log('data detalle_remesa_lectura:',response._data);
+
+            }else{
+                navigateTo('/')
+            }
+        },
+        onResponseError({request, response, options}){
+            console.log('error onReponseError:',response._data);
+            navigateTo('/')
+        }
+    })
+
+    */
 
     onMounted(() => {
         console.log(`the component is now mounted.`);
     })
     
-    function showReadings(){
-        getReadings();
-        //lectura_fecha.showModal();
+    function showReading(){
+        detalles_lectura.showModal();
     }
+    function showRemittance(){
+        detalles_remesa.showModal();
+    }
+
 
     function clearMessage(){
       responded.value = false
@@ -210,27 +244,57 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
         <details class="collapse collapse-arrow">
             <summary class="collapse-title text-xl font-medium">Listado lectura <span class="badge">{{ rowStatisticsData.lectura }} </span> (click para abrir)</summary>
-            <div v-if="rowReadingsData" class="py-10">
+           <div class="tabs tabs-border">
+                    <input type="radio" name="my_tabs_2" class="tab" aria-label="Lectura" checked="checked" />
+                    <div class="tab-content border-base-300 bg-base-100 p-10">
+           
+            <div v-if="readings.length" class="">
                 <MyGrid
                     :data="readings"
                     :columns="gridReadingsColumns"
-                    v-model:rowdata="rowReadingsData"
-                    @update:rowdata="console.log('hola')"
+                    v-model:rowdata="rowReadingData"
+                    @update:rowdata="showReading"
                     table-size="table-xs"
                 >
                 </MyGrid>
             </div>
+             </div>
+                    <input type="radio" name="my_tabs_2" class="tab" aria-label="Remesa" />
+                    <div class="tab-content border-base-300 bg-base-100 p-10">
+                    <div v-if="remittances.length" class="">
+                        <MyGrid
+                            :data="remittances"
+                            :columns="gridRemittancesColumns"
+                            v-model:rowdata="rowRemittanceData"
+                            @update:rowdata="showRemittance"
+                            table-size="table-xs"
+                        >
+                        </MyGrid>
+                    </div>
+                    </div>
+           </div>
         </details>
         
-        <dialog id="lectura_fecha" class="modal">
+        <dialog id="detalles_lectura" class="modal">
             <div class="modal-box">
                 <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
                 <div class="flex justify-center">
-                <h3 class="font-bold text-2xl">Lectura fecha {{ rowStatisticsData.lectura}}</h3>
+                <AguaDetalleLectura :rowdata="rowReadingData"></AguaDetalleLectura>
                 </div>
                 
+            </div>
+        </dialog>
+
+        <dialog id="detalles_remesa" class="modal">
+            <div class="modal-box">
+                <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <div class="flex justify-center">
+                    <AguaDetalleRemesa :rowdata="rowRemittanceData"></AguaDetalleRemesa>
+                </div>
             </div>
         </dialog>
 
