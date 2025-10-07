@@ -130,30 +130,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             //useRouter().push('/refresh')
         }
     })  
-/*
-    const {data2 } = useFetch(url_remittances,{
-        headers: {
-            'Authorization': 'Bearer ' + accessToken.value,
-        },
-        method: 'GET',
-        key: 'detalle_remesa_lectura',
-        onResponse({response}){
-            console.log('response status detalle_remesa_lectura:',response.status)
-            if(response.status===200){
-                statistics.value=response._data;
-                console.log('data detalle_remesa_lectura:',response._data);
-
-            }else{
-                navigateTo('/')
-            }
-        },
-        onResponseError({request, response, options}){
-            console.log('error onReponseError:',response._data);
-            navigateTo('/')
-        }
-    })
-
-    */
 
     onMounted(() => {
         console.log(`the component is now mounted.`);

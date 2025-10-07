@@ -41,6 +41,8 @@ import { createFetch } from '@vueuse/core';
     const responded = ref(false);
     const success = ref(false);
     const failed = ref(false);
+    const collapseStatistics = ref(null);
+
 
 
     const chartData = computed(()=>{
@@ -148,16 +150,21 @@ import { createFetch } from '@vueuse/core';
 
     onMounted(() => {
         console.log(`the component is now mounted.`);
+
     })
     
-    function showReadings(){
-        getDues();
-    }
-
     function clearMessage(){
       responded.value = false
       success.value = false
     }
+
+    function handleStatisticsRowUpdate() {
+        if (collapseStatistics.value) {
+            collapseStatistics.value.open = false;
+        }
+        getDues();
+    }
+
 
 </script>
 
@@ -201,7 +208,7 @@ import { createFetch } from '@vueuse/core';
         </div>
 
         <div>
-            <details class="collapse collapse-arrow">
+            <details ref="collapseStatistics" class="collapse collapse-arrow">
                 <summary class="collapse-title text-xl font-medium">Cuotas recaudadas (click para seleccionar)</summary>
                 <div v-if="statistics" class="collapse-content"> 
                     (Haz click sobre una fila para seleccionar una cuota)
@@ -209,8 +216,8 @@ import { createFetch } from '@vueuse/core';
                         :data="statistics"
                         :columns="gridStatisticsColumns"
                         v-model:rowdata="rowStatisticsData"
-                        @update:rowdata="showReadings()"
-                        table-size="table-xs"
+                        @update:rowdata="handleStatisticsRowUpdate"
+                        table-size="table-xs"   
                     >
                     </MyGrid>     
                 </div>
