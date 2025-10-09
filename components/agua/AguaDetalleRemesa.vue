@@ -28,10 +28,10 @@
             />
             </div>
           </div>
-          <div class="flex justify-between py-2">
-            <div>T1(0-125m3): {{ props.rowdata.m3_t1 }}m3 </div>
-            <div>T2(126-200m3): {{ props.rowdata.m3_t2 }}m3</div>
-            <div>T3(+200): {{ props.rowdata.m3_t3 }}m3</div>
+          <div class="flex justify-center gap-4">
+            <div>T1: {{ props.rowdata.m3_t1 }}m3 </div>
+            <div>T2: {{ props.rowdata.m3_t2 }}m3</div>
+            <div>T3: {{ props.rowdata.m3_t3 }}m3</div>
           </div>
           <div class="py-2">
             Precio del m3 por tramo:
@@ -45,7 +45,7 @@
             Desglose del consumo:
           </div>
         
-        <table class="table table-sm table-zebra w-full">
+        <table class="table table-md table-zebra w-full">
           <thead>
             <tr>
               <th>Tramo</th>
