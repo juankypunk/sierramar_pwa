@@ -17,8 +17,12 @@
             <div>Lect. act.: {{ props.rowdata.l2 }}</div>
           </div>
           <div class="py-2 flex flex-col">
-            <div>
-              Consumo de agua: {{ props.rowdata.m3 }}m3
+            <div class="stat">
+                <div class="stat-value">
+                    <div class="flex justify-center w-full gap-2">
+                        <span class="text-4xl text-blue-600">{{ props.rowdata.m3 }} m3</span>
+                    </div>        
+                </div>
             </div>
             <div class="flex justify-center">
               <AguaIndicador
@@ -29,23 +33,14 @@
             </div>
           </div>
           <div class="flex justify-center gap-4">
-            <div>T1: {{ props.rowdata.m3_t1 }}m3 </div>
-            <div>T2: {{ props.rowdata.m3_t2 }}m3</div>
-            <div>T3: {{ props.rowdata.m3_t3 }}m3</div>
-          </div>
-          <div class="py-2">
-            Precio del m3 por tramo:
-          </div>
-          <div class="flex justify-start gap-6">
-            <div>T1: {{ props.rowdata.pvpm3 }}€ </div>
-            <div>T2: {{ parseFloat((props.rowdata.pvpm3 * props.rowdata.f_b).toFixed(3)) }}€</div>
-            <div>T3: {{ parseFloat((props.rowdata.pvpm3 * props.rowdata.f_c).toFixed(3)) }}€</div>
+            <div class="px-5">{{ props.rowdata.m3_t1 }} m3</div>
+            <div class="px-5">{{ props.rowdata.m3_t2 }} m3</div>
+            <div class="px-5">{{ props.rowdata.m3_t3 }} m3</div>
           </div>
           <div class="py-2">
             Desglose del consumo:
-          </div>
-        
-        <table class="table table-md table-zebra w-full">
+          </div>      
+        <table class="table table-sm table-zebra w-full">
           <thead>
             <tr>
               <th>Tramo</th>

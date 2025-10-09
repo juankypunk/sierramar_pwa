@@ -213,6 +213,13 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
             <h3 class="font-bold text-lg">Desglose del consumo</h3>
+            <div class="stat">
+                <div class="stat-value">
+                    <div class="flex justify-center w-full gap-2">
+                        <span class="text-4xl text-blue-600">{{ m3 }}m3</span>
+                    </div>        
+                </div>
+            </div>
             <div v-if="m3 > 0" class="flex justify-center">
               <AguaIndicador
               :m3="parseInt(m3)"
@@ -225,7 +232,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                     <span class="px-5">{{ m3_b }} m3</span>
                     <span class="px-5">{{ m3_c }} m3</span>
             </div>
-            <table class="table table-md table-zebra w-full">
+            <table class="table table-sm table-zebra w-full">
             <thead>
                 <tr>
                 <th>Tramo</th>
