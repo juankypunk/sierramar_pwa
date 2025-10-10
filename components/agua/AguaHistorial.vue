@@ -133,14 +133,7 @@ onMounted(() => {
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
-      <h3 class="font-bold text-lg">Lectura parcela {{ rowdata.id_parcela }}</h3>
-      <div class="flex justify-start py-4">
-        <div class="px-4">Fecha: {{ rowdata.lectura }}</div>
-        <div class="px-4">L1:  {{ rowdata.l1 }}</div>
-        <div class="px-4">L2:  {{ rowdata.l2 }}</div>
-        <div class="px-4">m3:  {{ rowdata.m3 }}</div>
-        <div class="px-4">domiciliado:  {{ rowdata.domiciliado }}</div>
-      </div> 
+        <AguaDetalleRemesa :rowdata="rowdata" /> 
       <form method="dialog">
       <div class="flex justify-end">
         <button class="btn" @click="getReceipt">Ver recibo (PDF)</button>

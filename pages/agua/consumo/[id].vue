@@ -197,13 +197,13 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                   </div>
                 </div>
                 <div>
-                  Titular: {{ currentRemittance.titular }}
-                </div>
-                <div>
                   <div v-if="currentRemittance.iban">
                     Domiciliado en cuenta terminada en:
                     {{ currentRemittance.iban.substr(20).padStart(10, '*') }}
                   </div>
+                </div>
+                <div>
+                  Titular cuenta: {{ currentRemittance.titular }}
                 </div>
               </div>
             </div>
