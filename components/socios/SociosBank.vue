@@ -21,6 +21,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     const url = computed(() => {
       return `${config.public.api}/residents/${id_parcela}/bank`
     })
+    const url_sif=computed(() => {
+      return `${config.public.sifUrl}/customers`
+    })
     const originalBankForm = ref({});
     const bankForm = ref({});
     const mandato = ref({});
@@ -347,6 +350,12 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
       <input type="radio" name="my_tabs_2" class="tab" aria-label="Agua" />
       <div class="tab-content border-base-300 bg-base-100 p-10">
+        <div class="flex justify-start mb-5 gap-5">
+          <h3 class="font-bold">Cliente SIF:</h3>
+          <div v-if="bankForm.id"  @click="navigateTo(`${url_sif}/${bankForm.id}`,{external:true})" class="tooltip cursor-pointer" data-tip="Editar datos en SIF">
+            <div class="badge badge-info px-5">ID: {{bankForm.id}}</div>
+          </div>
+        </div>
         <FormKit 
             type="form" 
             @submit="showConfirmDialog" 
