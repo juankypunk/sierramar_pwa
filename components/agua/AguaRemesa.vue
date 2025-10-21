@@ -224,6 +224,9 @@ const manageRemittances = () => {
     dialog_fecha_cobro.showModal();
 }
 
+const manageData2Sif = () => {
+    dialog_resultado_sif.showModal();
+} 
 const creaRemesa = () => {
   if(fecha_cobro.value){
     const {data} = useFetch(url_remesa,{
@@ -366,10 +369,7 @@ onMounted(() => {
       </div>
       <div v-if="estado_lectura==='R'" class="py-5 flex justify-center gap-4">
         <button class="btn" @click="manageRemittances">GENERAR REMESA SEPA</button>
-        <button class="btn" @click="send_data2sif">
-            ENVIAR DATOS
-            <span v-if="loadingSif" class="loading loading-spinner loading-xs ml-2"></span>
-        </button>
+        <button class="btn" @click="manageData2Sif">ENVIAR DATOS</button>
       </div>
     </div>
     <dialog id="dialog_fecha_cobro" class="modal">
@@ -464,7 +464,9 @@ onMounted(() => {
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
               </form>
               <h3 class="font-bold text-lg">Envío de datos al SIF</h3>
-              <div class="py-4">
+              <p class="py-4">Hay <span class="font-bold">{{ checkedIds.length }}</span> registros seleccionados pendientes de enviar al SIF.</p>
+              <div v-if="datos_enviados" class="py-4">
+              <h3>Último envío de datos al SIF:</h3>
                 <table class="table table-zebra w-full">
                   <thead>
                     <tr>
@@ -495,11 +497,17 @@ onMounted(() => {
                     </tr>
                   </tbody>
                 </table>
-              </div>     
+              </div>
+              <div v-if="checkedIds.length > 0 && !datos_enviados" class="py-4">
+                <p>¿Quieres continuar?</p>
+              </div>
               <div class="modal-action">
                   <form method="dialog">
                       <!-- if there is a button in form, it will close the modal -->
-                      <button class="btn btn-primary">Aceptar</button>
+                      <button class="btn btn-primary" :disabled="loadingSif" @click="send_data2sif">
+                        Aceptar             
+                        <span v-if="loadingSif" class="loading loading-spinner loading-xs ml-2"></span>
+                      </button>
                   </form>
               </div>
           </div>
