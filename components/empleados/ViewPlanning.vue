@@ -224,7 +224,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                      <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
             </div>
-            <span v-if="inicio" lass="">
+            <span v-if="inicio" class="">
                 {{ inicio.format('DD-MM-YYYY') }}
              </span>
             <span>-</span>
