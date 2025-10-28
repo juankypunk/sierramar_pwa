@@ -224,11 +224,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                      <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
             </div>
-            <span class="">
+            <span v-if="inicio" lass="">
                 {{ inicio.format('DD-MM-YYYY') }}
              </span>
             <span>-</span>
-            <span class=""> 
+            <span v-if="fin" class="">
                  {{ fin.format('DD-MM-YYYY') }}        
             </span>
             <div @click="increaseMonth()" >
@@ -390,9 +390,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       <form method="dialog">    
         <!-- if there is a button in form, it will close the modal -->
         <div class="flex justify-between">
-            <button @click="updatePlanning()" class="btn btn-outline btn-info">Aceptar</button>
-            <button class="btn">Cancelar</button>
             <button @click="deleteEvent()" class="btn btn-outline btn-error">Eliminar</button>
+            <button class="btn">Cancelar</button>
+            <button @click="updatePlanning()" class="btn btn-outline btn-info">Aceptar</button>
         </div>
       </form>
     </div>
