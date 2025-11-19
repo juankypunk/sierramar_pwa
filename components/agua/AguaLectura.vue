@@ -214,7 +214,7 @@ function configMeter(){
             </div>
             <div class="stats shadow flex justify-center w-full">
                 <div class="stat">
-                    <div class="flex justify-between">
+                    <div class="flex justify-center gap-5">
                         <div v-if="props.navegable">
                             <span v-if="currentReadingForm.orden > 1" class="" @click="goBack()">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -266,6 +266,9 @@ function configMeter(){
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="flex justify-center py-5">
+                <span class="text-gray-500 text-2xl">{{ currentReadingForm.m3 }} m3</span>
             </div>
             <div class="flex justify-center">
                 <AguaIndicador v-if="currentReadingForm.m3" 

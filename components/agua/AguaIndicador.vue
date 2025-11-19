@@ -70,6 +70,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 </script>
 
 <template>
+    <div class="flex justify-center py-2">
+
+    </div>
+
     <div class="py-2">
         <div class="tooltip" :data-tip="m3_a + ' m3'">
             <progress class="progress progress-success w-24" :value="m3_a" :max="t1"></progress>
@@ -80,5 +84,17 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         <div class="tooltip" :data-tip="m3_c + ' m3'">
             <progress class="progress progress-error w-24" :value="m3_c" max="100"></progress>
         </div>
+        <div class="flex justify-center stat-desc py-5 gap-16">
+            <div>
+            {{ m3_a }} m3
+            </div>
+            <div>
+            {{ m3_b }} m3
+            </div>
+            <div>
+            {{ m3_c }} m3
+            </div>
+        </div>
     </div>
+    
 </template>

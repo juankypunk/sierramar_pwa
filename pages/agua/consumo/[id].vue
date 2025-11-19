@@ -110,19 +110,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                   :t2="parseInt(currentRemittance.t2)"
                 />
               </div>
-              <div class="stat-desc py-5">
-                <div class="flex justify-center gap-5">
-                  <div>
-                    T1(0-125m3): {{ currentRemittance.m3_t1 }}m3
-                  </div>
-                  <div>
-                    T2(126-200m3): {{ currentRemittance.m3_t2 }}m3
-                  </div>
-                  <div>
-                    T3(+200): {{ currentRemittance.m3_t3 }}m3
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div class="stat py-5">

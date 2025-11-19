@@ -32,11 +32,6 @@
             />
             </div>
           </div>
-          <div class="flex justify-center gap-4">
-            <div class="px-5">{{ props.rowdata.m3_t1 }} m3</div>
-            <div class="px-5">{{ props.rowdata.m3_t2 }} m3</div>
-            <div class="px-5">{{ props.rowdata.m3_t3 }} m3</div>
-          </div>
           <div class="py-2">
             Desglose del consumo:
           </div>      
