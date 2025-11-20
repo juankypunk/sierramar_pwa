@@ -7,11 +7,11 @@
     <div class="container mx-auto">
         <h3 class="font-bold text-lg">Detalles remesa agua</h3>
         <div v-if="props.rowdata.id_parcela">
-          <div class="flex justify-start gap-4">
+          <div class="flex justify-start gap-4 text-sm">
             <div>Parcela: {{ props.rowdata.id_parcela }} </div> 
             <div>Titular: {{ props.rowdata.titular }}</div>
           </div>          
-          <div class="flex justify-start gap-4">
+          <div class="flex justify-start gap-4 text-sm">
             <div>Fecha: {{ props.rowdata.fecha }} </div> 
             <div>Lect. ant.: {{ props.rowdata.l1 }}</div>
             <div>Lect. act.: {{ props.rowdata.l2 }}</div>
@@ -66,24 +66,24 @@
           </tbody>
         </table>
         <div class="divider"></div>
-            <div class="flex justify-end gap-2 py-2">
+            <div class="flex justify-end gap-2 py-2 text-sm">
                 <div>Subtotal: {{props.rowdata.subtotal }}</div>
             </div>
-            <div class="flex justify-end gap-2 py-2">
+            <div class="flex justify-end gap-2 py-2 text-sm">
                 <div>IVA ({{ props.rowdata.iva }}%): {{props.rowdata.impuesto }}</div>
             </div>
-            <div class="flex justify-end gap-2">
-                <div>Total: {{props.rowdata.importe }}</div>
-            </div> 
+            <div class="flex justify-end gap-2 text-sm">
+                <div><strong>Total: {{props.rowdata.importe }}</strong></div>
+            </div>
             <div class="divider"></div>
-          <div class="py-2">
+          <div class="py-2 text-sm">
             Domiciliado en cuenta:
           </div>
-          <div class="flex justify-start gap-4">
+          <div class="flex justify-start gap-4 text-sm">
             <div>BIC: {{props.rowdata.bic}}</div>
             <div>IBAN: {{props.rowdata.iban}}</div>
           </div>
-          <div class="py-5">
+          <div class="py-5 text-sm">
             <p>Editado por: {{ props.rowdata.user_modif }}</p>
             <p>Último cambio: {{ props.rowdata.ult_modif }}</p>
           </div>
