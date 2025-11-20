@@ -11,7 +11,7 @@
             <div>Parcela: {{ props.rowdata.id_parcela }} </div> 
             <div>Titular: {{ props.rowdata.titular }}</div>
           </div>          
-          <div class="flex justify-start gap-4 text-sm">
+          <div class="flex justify-start gap-4 text-xs">
             <div>Fecha: {{ props.rowdata.fecha }} </div> 
             <div>Lect. ant.: {{ props.rowdata.l1 }}</div>
             <div>Lect. act.: {{ props.rowdata.l2 }}</div>
