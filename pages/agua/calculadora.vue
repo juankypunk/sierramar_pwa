@@ -124,18 +124,12 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                         :t2="parseInt(t2)"
                     />
                 </div>
-                <div v-if="m3 > 0" class="px-4 py-0">
-                    <span class="px-5">{{ m3_a }} m3</span>
-                    <span class="px-5">{{ m3_b }} m3</span>
-                    <span class="px-5">{{ m3_c }} m3</span>
-                </div>
                 <div class="flex justify-center py-2">
                     <button  @click="showDetails()" class="btn btn-wide">Detalles</button> 
                 </div>
             </div>
 
-                           
-        </div>    
+        </div>
     </div>
     <dialog id="ajustes" class="modal">
         <div class="modal-box">
@@ -226,11 +220,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
               :t1="parseInt(t1)"
               :t2="parseInt(t2)"
             />
-            </div>
-            <div v-if="m3 > 0" class="flex justify-center px-4 py-0">
-                    <span class="px-5">{{ m3_a }} m3</span>
-                    <span class="px-5">{{ m3_b }} m3</span>
-                    <span class="px-5">{{ m3_c }} m3</span>
             </div>
             <table class="table table-sm table-zebra w-full">
             <thead>

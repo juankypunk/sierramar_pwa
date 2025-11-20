@@ -208,8 +208,7 @@ function configMeter(){
 
 <template>
     <div class="container mx-auto">
-        <div class="py-5">
-            <div class="flex justify-center px-5 py-5 gap-10">
+            <div class="flex justify-center px-5 gap-10">
                 <div v-if="props.navegable">
                     <span v-if="currentReadingForm.orden > 1" class="" @click="goBack()">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -217,7 +216,7 @@ function configMeter(){
                         </svg>
                     </span>
                 </div>
-                <h3 class="font-bold text-2xl">Lectura P-{{ currentReadingForm.id_parcela }}</h3>
+                <h3 v-if="props.navegable" class="font-bold text-2xl">Lectura P-{{ currentReadingForm.id_parcela }}</h3>
                 <div v-if="props.navegable">
                     <span  v-if="currentReadingForm.orden < readings.length" @click="goForward()">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -334,7 +333,6 @@ function configMeter(){
                     </FormKit>
                 </div>
             </div>       
-        </div>
         
         <dialog id="historial" class="modal">
           <div class="modal-box">
