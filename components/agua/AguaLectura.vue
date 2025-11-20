@@ -217,7 +217,7 @@ function configMeter(){
                         </svg>
                     </span>
                 </div>
-                <h3 class="font-bold text-2xl">Lectura parcela {{ currentReadingForm.id_parcela }}</h3>
+                <h3 class="font-bold text-2xl">Lectura P-{{ currentReadingForm.id_parcela }}</h3>
                 <div v-if="props.navegable">
                     <span  v-if="currentReadingForm.orden < readings.length" @click="goForward()">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
