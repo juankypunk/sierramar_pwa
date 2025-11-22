@@ -415,22 +415,28 @@ onMounted(() => {
               </form>
               <h3 class="font-bold text-lg">Remesa de agua</h3>
               <div v-if="statistics_result" class="py-4">
-                <div>Domiciliado: {{ new Intl.NumberFormat('es-ES', { 
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2 
-                                  }).format(statistics_result.domiciliado)}} €
-                </div>
-                                  
-                <div>Pendiente de cobro: {{ new Intl.NumberFormat('es-ES', { 
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2 
-                                  }).format(pendiente_cobro) }} €
-                </div>
-                <div>Total Gral.: {{ new Intl.NumberFormat('es-ES', { 
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2 
-                                  }).format(statistics_result.importe) }} €
-                </div>
+                <table class="table table-zebra w-full">
+                  <thead>
+                    <tr>
+                      <th>Concepto</th>
+                      <th>Importe</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Domiciliado</td>
+                      <td>{{ new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(statistics_result.domiciliado) }} €</td>
+                    </tr>
+                    <tr>
+                      <td>Pendiente de cobro</td>
+                      <td>{{ new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(pendiente_cobro) }} €</td>
+                    </tr>
+                    <tr>
+                      <td>Total Gral.</td>
+                      <td>{{ new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(statistics_result.importe) }} €</td>
+                    </tr>
+                  </tbody>
+                </table>               
               </div>
               <div class="modal-action">
                   <form method="dialog">

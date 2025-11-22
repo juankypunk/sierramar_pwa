@@ -100,7 +100,7 @@ function capitalize(str) {
 
 <template>
 <div class="overflow-y-auto overflow-x-auto">
-    <div class="flex justify-end">Filas: {{ filteredData.length }}</div>
+    <div class="flex justify-end"><span class="badge badge-ghost">{{ filteredData.length }} resultados</span></div>
     <table v-if="filteredData.length" class="table table-zebra" :class="tableSize">
     <thead>
       <tr>
@@ -132,7 +132,7 @@ function capitalize(str) {
     </tbody>
   </table>
   <p v-else>Ningún resultado.</p>
-  <div class="flex justify-end">Filas: {{ filteredData.length }}</div>
+  <div class="flex justify-end"><span class="badge badge-ghost">{{ filteredData.length }} resultados</span></div>
 </div>
 </template>
 
