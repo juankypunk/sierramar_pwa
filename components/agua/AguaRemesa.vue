@@ -300,43 +300,57 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="flex justify-start gap-4 place-items-center py-5">
-      <FormKit 
-        type="search"
-        placeholder="Busca por nombre..."
-        label="Titular" 
-        v-model="searchQuery"  
-        help="Por ejemplo: 'garc'" 
-        suffix-icon="search"
-      />
-      <FormKit 
-        type="select"
-        label="Ordenar por" 
-        help="ordena el listado" 
-        v-model="ordena_columna"
-        @onchange="getremittances"
-        :options="{
-          'r_id_parcela': 'Parcela',
-          'r_m3': 'M3',
-        }"
-      />
-      <div class="px-2">
-            <FormKit
-            type="checkbox"
-            label="Domiciliados"
-            help=""
-            name="domicilia_bco"
-            v-model="domicilia_bco"
+    <div class="collapse bg-base-100">
+      <input type="checkbox" /> 
+      <div class="collapse-title text-xl font-medium">
+        Click aquí para filtrar resultados...
+      </div>
+      <div class="collapse-content"> 
+        <div class="flex justify-start">
+          <div class="px-5">
+            <FormKit 
+              type="search"
+              placeholder="Busca por nombre o parcela..."
+              label="Titular o parcela" 
+              v-model="searchQuery"  
+              help="Por ejemplo: 'garc' o '001'" 
+              suffix-icon="search"
             />
+          </div>
+          <div class="px-5">
+            <FormKit 
+              type="select"
+              label="Ordenar por" 
+              help="ordena el listado" 
+              v-model="ordena_columna"
+              @onchange="getremittances"
+              :options="{
+                'r_id_parcela': 'Parcela',
+                'r_m3': 'M3',
+              }"
+            />
+          </div>
         </div>
-        <div class="px-2">
+        <div class="flex justify-start">
+          <div class="px-5">
             <FormKit
-            type="checkbox"
-            label="Ver todo"
-            help=""
-            v-model="resetFilter"
+              type="checkbox"
+              label="Domiciliados"
+              help=""
+              name="domicilia_bco"
+              v-model="domicilia_bco"
             />
-        </div> 
+          </div>
+          <div class="px-5">
+            <FormKit
+              type="checkbox"
+              label="Ver todo"
+              help=""
+              v-model="resetFilter"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div v-if="remittances" class="py-5"> 
       <div>    

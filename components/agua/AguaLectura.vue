@@ -289,7 +289,7 @@ function configMeter(){
                         >
                         <FormKit 
                         type="number" 
-                        label="Lectura actual" 
+                        :label="'Lectura actual ('+currentReadingForm.fecha+')'" 
                         name="l2" 
                         number
                         :delay="300"
