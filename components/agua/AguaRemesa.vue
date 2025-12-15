@@ -484,7 +484,6 @@ onMounted(() => {
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
               </form>
               <h3 class="font-bold text-lg">Envío de datos al SIF</h3>
-              <p class="py-4">Hay <span class="font-bold">{{ checkedIds.length }}</span> registros seleccionados pendientes de enviar al SIF.</p>
               <div v-if="datos_enviados" class="py-4">
               <h3>Último envío de datos al SIF:</h3>
                 <table class="table table-zebra w-full">
@@ -518,17 +517,18 @@ onMounted(() => {
                   </tbody>
                 </table>
               </div>
+              <p class="py-4">Hay <span class="font-bold">{{ checkedIds.length }}</span> registros seleccionados pendientes de enviar al SIF.</p>            
               <div v-if="checkedIds.length > 0 && !datos_enviados" class="py-4">
                 <p>¿Quieres continuar?</p>
-              </div>
-              <div class="modal-action">
-                  <form method="dialog">
-                      <!-- if there is a button in form, it will close the modal -->
-                      <button class="btn btn-primary" :disabled="loadingSif" @click="send_data2sif">
-                        Aceptar             
-                        <span v-if="loadingSif" class="loading loading-spinner loading-xs ml-2"></span>
-                      </button>
-                  </form>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <!-- if there is a button in form, it will close the modal -->
+                        <button class="btn btn-primary" :disabled="loadingSif" @click="send_data2sif">
+                          Aceptar             
+                          <span v-if="loadingSif" class="loading loading-spinner loading-xs ml-2"></span>
+                        </button>
+                    </form>
+                </div>
               </div>
           </div>
     </dialog>
