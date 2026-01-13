@@ -181,7 +181,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 /* Different color for different event types. */
 .vuecal__event.vig_577 {background-color: rgba(132, 200, 245, 0.966);border: 1px solid rgb(139, 155, 187);color: #fff;}
 .vuecal__event.vig_571 {background-color: rgba(226, 191, 241, 0.9);border: 1px solid rgba(166, 148, 184, 0.808);color: #fff;}
-.vuecal__event.vig_573 {background-color: rgb(155, 216, 143);border: 1px solid rgb(190, 230, 186);color: #fff;}
+.vuecal__event.vig_581 {background-color: rgb(155, 216, 143);border: 1px solid rgb(190, 230, 186);color: #fff;}
 .vuecal__event.extraHours {background-color: rgb(231, 199, 92);border: 1px solid rgb(223, 230, 186);color: #fff;}
 .vuecal__event.holidays {background-color: rgb(231, 199, 92);border: 1px solid rgb(223, 230, 186);color: #fff;}
 
