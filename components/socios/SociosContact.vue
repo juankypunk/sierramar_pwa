@@ -126,19 +126,19 @@ import { createFetch } from '@vueuse/core';
           type="text" 
           label="Teléfono 1" 
           name="telef1" 
-          validation="length:0,9"
+          validation="required|matches:/^\+?[\d\s\-\(\)]+$/"
         />
         <FormKit 
           type="text" 
           label="Teléfono 2" 
           name="telef2" 
-          validation="length:0,9"
+          validation="matches:/^\+?[\d\s\-\(\)]+$/"
         />
         <FormKit 
           type="text" 
           label="Teléfono 3" 
           name="telef3" 
-          validation="length:0,9"
+          validation="matches:/^\+?[\d\s\-\(\)]+$/"
         />
       </FormKit>
       <div v-if="responded">
