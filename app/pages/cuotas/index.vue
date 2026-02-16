@@ -24,22 +24,29 @@ import CuotasHistorial from '~/components/cuotas/CuotasHistorial.vue';
 
 <template>
     <div class="container mx-auto px-5">
-        <div role="tablist" class="tabs tabs-bordered tabs-md">
+        <div class="tabs tabs-border tabs-md">
+            <label class="tab">
             <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Cuotas" checked />
-            <div role="tabpanel" class="tab-content py-10">
+                Cuotas
+            </label>
+            <div class="tab-content py-10">
                 <CuotasListado />  
             </div>
-
+            <label class="tab">
             <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Remesa" />
-            <div role="tabpanel" class="tab-content py-10">
+                Remesa
+            </label>
+            <div class="tab-content py-10">
                 <CuotasRemesa />
             </div>
-            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Historial" />
-           
-            <div role="tabpanel" class="tab-content py-10">
+                
+            <label class="tab"> 
+                <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Historial" />
+                Historial
+            </label>
+            <div class="tab-content py-10">
                 <CuotasHistorial />
-            </div>
-        
+            </div>        
         </div>    
     </div>
 </template>
