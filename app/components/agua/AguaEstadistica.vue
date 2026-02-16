@@ -71,29 +71,26 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         }
     })
 
-<<<<<<< HEAD:components/agua/AguaEstadistica.vue
-    const useMyFetch = createFetch({
-        baseUrl: url_readings.value,
-        options: {
-        async beforeFetch({ options }) {
-        options.headers.Authorization = `Bearer ${accessToken.value}`
-        return { options }
-        },
-        },
-        fetchOptions: {
-        mode: 'cors',
-        },
-    })
-
-    const getReadings = () => {
-        // listado de lectura 
-        console.log('la fecha listado:',rowStatisticsData.value.lectura);
-        //console.log('la fecha select:',fecha_lectura.value);
-        const { onFetchResponse, error, data } = useMyFetch('').post({lectura: rowStatisticsData.value.lectura}).json();
-        onFetchResponse((response)=>{
-            console.log('desde onFetchResponse',data.value);
-            readings.value=data.value.readings;
-            remittances.value=data.value.remittances;
+    const getReadings = async () => {
+        // listado de lectura
+        console.log('la fecha listado:', rowStatisticsData.value);
+        const { data, error } = await useFetch(url_readings.value, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken.value,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ lectura: rowStatisticsData.value.lectura }),
+            key: 'lectura_' + rowStatisticsData.value.lectura,
+        });
+        if (error.value) {
+            responded.value = true;
+            success.value = false;
+            failed.value = true;
+            console.log('Error getReadings:', error.value);
+        } else if (data.value) {
+            readings.value = data.value.readings;
+            remittances.value = data.value.remittances;
 =======
     const getReadings = async () => {
         // listado de lectura
