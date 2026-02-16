@@ -91,41 +91,14 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         } else if (data.value) {
             readings.value = data.value.readings;
             remittances.value = data.value.remittances;
-=======
-    const getReadings = async () => {
-        // listado de lectura
-        console.log('la fecha listado:', rowStatisticsData.value);
-        const { data, error } = await useFetch(url_readings.value, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + accessToken.value,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ lectura: rowStatisticsData.value.lectura }),
-            key: 'lectura_' + rowStatisticsData.value.lectura,
-        });
-        if (error.value) {
-            responded.value = true;
-            success.value = false;
-            failed.value = true;
-            console.log('Error getReadings:', error.value);
-        } else if (data.value) {
-            readings.value = data.value.readings;
-            remittances.value = data.value.remittances;
->>>>>>> development:app/components/agua/AguaEstadistica.vue
             responded.value = true;
             success.value = true;
             failed.value = false;
             const myTimeout = setTimeout(clearMessage, 3000);
             return () => {
                 clearTimeout(myTimeout);
-<<<<<<< HEAD:components/agua/AguaEstadistica.vue
-            }
-        })
-=======
             };
         }
->>>>>>> development:app/components/agua/AguaEstadistica.vue
     }
 
 
