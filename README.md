@@ -11,7 +11,7 @@
 
 This project is split into two main components:
 
-- **Frontend (Current repository)**: PWA built with Vue.js 3 and Nuxt 3
+- **Frontend (Current repository)**: PWA built with Vue.js 3 and Nuxt 4
 - **Backend ([sierramar_api](https://github.com/juankypunk/sierramar_api))**: REST API built with Node.js, Express and PostgreSQL.
 
 
@@ -37,7 +37,7 @@ This project is split into two main components:
 
 ### Frontend
 - Vue.js 3
-- Nuxt 3
+- Nuxt 4
 - TailwindCSS
 - DaisyUI
 
