@@ -37,24 +37,36 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         </div>
     </div>
 
-    <div role="tablist" class="tabs tabs-bordered">
-        <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Ubicación" checked />
-        <div role="tabpanel" class="tab-content py-10">
+    <div class="tabs tabs-border">
+        <label class="tab">
+            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Ubicación" checked />
+            Ubicación
+        </label>
+        <div class="tab-content py-10 ">
             <MyMap v-if="route.params.id" :id_parcela="route.params.id"/>
         </div>
 
-        <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Contacto" />
-        <div role="tabpanel" class="tab-content py-10">
+        <label class="tab">
+            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Contacto" />
+            Contacto
+        </label>
+        <div class="tab-content py-10">
             <SociosContact :id_parcela="route.params.id"/>
         </div>
 
-        <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Domiciliación" />
-        <div role="tabpanel" class="tab-content py-10">
+        <label class="tab">
+             <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Domiciliación" />
+             Domiciliación
+        </label>
+        <div class="tab-content py-10">
             <SociosBank :id_parcela="route.params.id"/>
         </div>
 
-        <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Cuotas" />
-        <div role="tabpanel" class="tab-content py-10">
+        <label class="tab">
+             <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Cuotas" />
+             Cuotas
+        </label>
+        <div class="tab-content py-10">
             <SociosDues :id_parcela="route.params.id"/>
         </div>
     </div>

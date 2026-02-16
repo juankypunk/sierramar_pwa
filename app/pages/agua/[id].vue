@@ -40,7 +40,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             </div>
         </div>
     </div>
-    <div role="tablist" class="tabs tabs-bordered">
+    <div class="tabs tabs-border">
         <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Consumo" checked />
         <div role="tabpanel" class="tab-content py-0">
           <AguaLectura 

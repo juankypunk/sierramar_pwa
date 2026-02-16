@@ -27,7 +27,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         return config.public.api + `/water/statistics/${id_parcela}/${years.value}`;    
     });
     
-    const {data } = await useFetch(url,{
+    const {data, error, refresh} = await useFetch(url,{
       headers: {
         'Authorization': 'Bearer ' + accessToken.value,
       },
@@ -88,23 +88,22 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
   <div class="container mx-auto">
     <div class="px-1">
         <div>
+          <pre wrap>Años de lecturas: {{ years }}</pre>
+          <FormKit
+            v-model="years"
+            type="range"
+            number
+            label=""  
+            min="1"
+            max="5"
+            help="(Usa el deslizador para ver más años de lecturas)"
+            v-on:update:model-value="refresh()"
+          />
+        </div>
           <div v-if="myConsumption.length" style="height:400px; width:auto" >
             <Bar :data="chartData" :options="chartOptions" />
           </div>
-          <div style="padding-left: 10px">
-              <FormKit
-              v-model="years"
-              type="range"
-              number
-              label=""  
-              min="1"
-              max="10"
-              help="Usa el deslizador para ver más años de lecturas"
-              />
-              <pre wrap>Años de lecturas: {{ years }}</pre>
-          </div>
         </div>
     </div>
-  </div>
     
 </template>

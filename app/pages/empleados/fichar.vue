@@ -1,6 +1,6 @@
 <script setup>
   import {jwtDecode} from 'jwt-decode'
-  import { useTimeAgoEs } from '../composables/useTimeAgoEs.js'
+  import { useTimeAgoEs } from '~/composables/useTimeAgoEs.js'
 
   definePageMeta({
         middleware: ["auth"],

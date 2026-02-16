@@ -125,7 +125,7 @@ const searchQuery = ref('');
 const gridColumns = ["orden","e","id_parcela","titular", "l1","l2","m3","c","media","mediana","importe","notas"];
 
 function showDialog(data){
-    lectura_detail.showModal();
+    dialog_lectura_detail.showModal();
 }
 
 function manageNewDate(){
@@ -301,7 +301,7 @@ onMounted(() => {
         </MyGrid>
   </div>
     
-    <dialog id="lectura_detail" class="modal">
+    <dialog id="dialog_lectura_detail" class="modal">
       <div class="modal-box">
         <form method="dialog">
           <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>

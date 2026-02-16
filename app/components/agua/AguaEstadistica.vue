@@ -71,6 +71,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         }
     })
 
+<<<<<<< HEAD:components/agua/AguaEstadistica.vue
     const useMyFetch = createFetch({
         baseUrl: url_readings.value,
         options: {
@@ -93,24 +94,51 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             console.log('desde onFetchResponse',data.value);
             readings.value=data.value.readings;
             remittances.value=data.value.remittances;
+=======
+    const getReadings = async () => {
+        // listado de lectura
+        console.log('la fecha listado:', rowStatisticsData.value);
+        const { data, error } = await useFetch(url_readings.value, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken.value,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ lectura: rowStatisticsData.value.lectura }),
+            key: 'lectura_' + rowStatisticsData.value.lectura,
+        });
+        if (error.value) {
+            responded.value = true;
+            success.value = false;
+            failed.value = true;
+            console.log('Error getReadings:', error.value);
+        } else if (data.value) {
+            readings.value = data.value.readings;
+            remittances.value = data.value.remittances;
+>>>>>>> development:app/components/agua/AguaEstadistica.vue
             responded.value = true;
             success.value = true;
+            failed.value = false;
             const myTimeout = setTimeout(clearMessage, 3000);
             return () => {
                 clearTimeout(myTimeout);
+<<<<<<< HEAD:components/agua/AguaEstadistica.vue
             }
         })
+=======
+            };
+        }
+>>>>>>> development:app/components/agua/AguaEstadistica.vue
     }
 
 
-    const {data } = useFetch(url_water_statistics_current,{
+    const {data} = useFetch(url_water_statistics_current,{
         headers: {
             'Authorization': 'Bearer ' + accessToken.value,
         },
         method: 'GET',
-        key: 'estadisticas_lecturas',
         onResponse({response}){
-            console.log('response status estadisticas:',response.status)
+            console.log('response status estadisticas:',response._data)
             if(response.status===200){
                 statistics.value=response._data;
                 console.log('data estadisticas:',response._data);
@@ -119,7 +147,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 consumo.value = response._data.map(item => item.m3);
                 mediana.value= response._data.map(item => item.mediana)
                 importe.value = response._data.map(item => item.importe);
-                getReadings();
+                //getReadings();
             }else{
                 //navigateTo('/refresh')
                 //useRouter().push('/refresh')
@@ -133,6 +161,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
     onMounted(() => {
         console.log(`the component is now mounted.`);
+        console.log('url_water_statistics_current:', url_water_statistics_current.value);
+        console.log('accessToken:', accessToken.value);
+        //getReadings();
     })
     
     function showReading(){

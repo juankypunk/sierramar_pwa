@@ -72,7 +72,8 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 onMounted(() => {
   console.log('mounted')
   if (!isAuthenticated.value) {
-    navigateTo('/login')
+    console.log('no autenticado, redirigiendo a login')
+    //navigateTo('/login')
   } 
 })
 </script>
@@ -89,6 +90,7 @@ onMounted(() => {
     </div>    
   </div>
 </div>
+
 <!--
 <div class="hero bg-base-200 min-h-screen">
   <div class="hero-content text-center">

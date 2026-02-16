@@ -42,9 +42,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     function closeDrawer() {
         const drawer = document.getElementById('my-drawer-3')
         if (drawer) drawer.checked = false
-    }
-
-    
+    }   
 </script>
 
 <template>
@@ -104,7 +102,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                         </ul>
                     </div>
                 </div>
-    </div>
+            </div>
             <!-- Page content here -->
             <slot/>
         </div> 

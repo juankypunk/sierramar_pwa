@@ -24,28 +24,44 @@ import AguaEstadistica from '~/components/agua/AguaEstadistica.vue';
 
 <template>
     <div class="container mx-auto px-5">
-        <div role="tablist" class="tabs tabs-bordered tabs-md">
-            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Lectura" checked />
-            <div role="tabpanel" class="tab-content py-10">
+        <div class="tabs tabs-border">
+            <label class="tab">
+                <input type="radio" name="water_tabs" role="tab" class="tab" aria-label="Lectura" checked />
+                Lectura
+            </label>
+            <div class="tab-content py-10">
                 <AguaListado />  
             </div>
-            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Remesa" />
-            <div role="tabpanel" class="tab-content py-10">
+
+            <label class="tab">
+                <input type="radio" name="water_tabs" role="tab" class="tab" aria-label="Remesa" />
+                Remesa
+            </label>
+            <div class="tab-content py-10">
                 <AguaRemesa />
             </div>
 
-            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Historial" />
-            <div role="tabpanel" class="tab-content py-10">
+            <label class="tab">
+                <input type="radio" name="water_tabs" role="tab" class="tab" aria-label="Historial" />
+                Historial
+            </label>
+            <div class="tab-content py-10">
                 <AguaEstadistica />
             </div>
 
-            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Riego" />
-            <div role="tabpanel" class="tab-content py-10">
+            <label class="tab">
+                <input type="radio" name="water_tabs" role="tab" class="tab" aria-label="Riego" />            
+                Riego
+            </label>
+            <div class="tab-content py-10">
                 <AguaListadoRiego />
             </div>
 
-            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Suministro" />
-            <div role="tabpanel" class="tab-content py-10">
+            <label class="tab">
+                <input type="radio" name="water_tabs" role="tab" class="tab" aria-label="Suministro" />
+                Suministro
+            </label>
+            <div class="tab-content py-10">
                 <AguaSuministroListado />
             </div>
         </div>    
