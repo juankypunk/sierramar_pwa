@@ -40,6 +40,9 @@ This project is split into two main components:
 - Nuxt 4
 - TailwindCSS
 - DaisyUI
+- Leaflet
+- Chart.js
+
 
 ### Backend
 - Node.js
