@@ -24,14 +24,14 @@ export default defineNuxtConfig({
   },
   
   pwa: {
-    strategies: 'generateSW',
+    strategies: 'injectManifest',
     registerType: 'autoUpdate',
     manifest: {
       name: "Sierramar",
       short_name: "Sierramar",
       description: "Sierramar PWA",
       theme_color: "#ffffff",
-      start_url: "/",
+      start_url: "/app",
       display: "standalone",
       background_color: "#ffffff",
       lang: "es",
@@ -104,7 +104,7 @@ export default defineNuxtConfig({
       suppressWarnings: true,
       navigateFallback: '/',
       navigateFallbackAllowlist: [/^\/$/],
-      type: "module",
+      type: "classic",
     },
   },
   runtimeConfig: {
@@ -114,6 +114,7 @@ export default defineNuxtConfig({
       sifEmail: process.env.SIF_EMAIL || "",
       sifPassword: process.env.SIF_PASSWORD || "",
       sifUrl: process.env.SIF_URL || "",
+      vapidKey: process.env.NUXT_PUBLIC_VAPID_KEY || "",
     }
   },
   image: {

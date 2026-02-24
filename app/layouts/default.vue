@@ -12,6 +12,23 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 <script setup>
     import {jwtDecode} from "jwt-decode"
+    import { usePushSubscription } from '~/composables/usePushSubscription'
+    const pushEnabled = ref(false)
+    const pushStatus = ref('')
+
+    async function handlePushSubscription() {
+        pushStatus.value = ''
+        const token = useAccessToken().value
+        const result = await usePushSubscription(token)
+        if (result.error) {
+            pushStatus.value = result.error
+            pushEnabled.value = false
+            console.error('Error al gestionar la suscripción push:', result.error)
+        } else {
+            pushStatus.value = 'Notificaciones activadas'
+            pushEnabled.value = true
+        }
+    }
     const { logout, isAuthenticated } = useAuth()
     const user_data = ref(jwtDecode(useAccessToken().value))
     const remember_me = useCookie('remember_me')
@@ -104,6 +121,13 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                                 <span class="label-text">Recuérdame:</span> 
                                     <input name="remember_me" type="checkbox" v-model="remember_me" class="checkbox" />
                                 </label>
+                            </div>
+                            <div class="form-control mt-2">
+                                <label class="label cursor-pointer">
+                                    <span class="label-text">Notificaciones push:</span>
+                                    <input type="checkbox" class="checkbox" v-model="pushEnabled" @change="handlePushSubscription" />
+                                </label>
+                                <span v-if="pushStatus" class="text-xs text-gray-500 ml-2">{{ pushStatus }}</span>
                             </div>
                             
                         </ul>
