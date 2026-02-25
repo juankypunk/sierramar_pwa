@@ -31,7 +31,7 @@ export default defineNuxtConfig({
       short_name: "Sierramar",
       description: "Sierramar PWA",
       theme_color: "#ffffff",
-      start_url: "/app",
+      start_url: "/",
       display: "standalone",
       background_color: "#ffffff",
       lang: "es",
