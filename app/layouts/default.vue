@@ -15,18 +15,42 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     import { usePushSubscription } from '~/composables/usePushSubscription'
     const pushEnabled = ref(false)
     const pushStatus = ref('')
+    const { subscribe, unsubscribe, checkStatus } = usePushSubscription()
+
+    onMounted(async () => {
+        const token = useAccessToken().value
+        if (token) {
+            const status = await checkStatus(token)
+            console.log('Estado de suscripción push:', status.length > 0 ? status : 'No suscrito')
+            if (status && status.length > 0) {
+                pushEnabled.value = true
+                pushStatus.value = 'Notificaciones activadas'
+            }
+        }
+    })
 
     async function handlePushSubscription() {
         pushStatus.value = ''
         const token = useAccessToken().value
-        const result = await usePushSubscription(token)
-        if (result.error) {
-            pushStatus.value = result.error
-            pushEnabled.value = false
-            console.error('Error al gestionar la suscripción push:', result.error)
+        
+        if (pushEnabled.value) {
+            const result = await subscribe(token)
+            if (result.error) {
+                pushStatus.value = result.error
+                pushEnabled.value = false
+                console.error('Error al gestionar la suscripción push:', result.error)
+            } else {
+                pushStatus.value = 'Notificaciones activadas'
+            }
         } else {
-            pushStatus.value = 'Notificaciones activadas'
-            pushEnabled.value = true
+            const result = await unsubscribe(token)
+            if (result.error) {
+                pushStatus.value = result.error
+                pushEnabled.value = true
+                console.error('Error al desuscribir push:', result.error)
+            } else {
+                pushStatus.value = 'Notificaciones desactivadas'
+            }
         }
     }
     const { logout, isAuthenticated } = useAuth()
@@ -108,24 +132,27 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                                 </span>
                             </li>
                             <li>
-                                <span 
-                                    @click="handleLogout"
-                                    class="text-gray-600 hover:text-gray-900"
-                                >
+                                <span @click="handleLogout">
                                     Cerrar sesión
                                 </span>
                             </li>
                             <div class="divider">Preferencias</div>             
-                            <div class="form-control">
-                                <label class="label cursor-pointer">
-                                <span class="label-text">Recuérdame:</span> 
-                                    <input name="remember_me" type="checkbox" v-model="remember_me" class="checkbox" />
+                            <div class="form-control py-5">
+                                <label>
+                                    <span class="label-text">Recuérdame:</span>
+                                    <span class="px-5"> 
+                                        <input name="remember_me" type="checkbox" v-model="remember_me"   
+                                        class="toggle checked:border-blue-500 checked:bg-blue-400 checked:text-blue-800"/>
+                                    </span> 
+                                    
                                 </label>
                             </div>
-                            <div class="form-control mt-2">
-                                <label class="label cursor-pointer">
-                                    <span class="label-text">Notificaciones push:</span>
-                                    <input type="checkbox" class="checkbox" v-model="pushEnabled" @change="handlePushSubscription" />
+                            <div class="form-control">
+                                <label>
+                                    <span class="label-text">Notificaciones:</span>
+                                    <span class="px-5"> 
+                                        <input type="checkbox" class="toggle checked:border-blue-500 checked:bg-blue-400 checked:text-blue-800" v-model="pushEnabled" @change="handlePushSubscription" />
+                                    </span> 
                                 </label>
                                 <span v-if="pushStatus" class="text-xs text-gray-500 ml-2">{{ pushStatus }}</span>
                             </div>
