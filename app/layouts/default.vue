@@ -21,7 +21,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         const token = useAccessToken().value
         if (token) {
             const status = await checkStatus(token)
-            console.log('Estado de suscripción push:', status.length > 0 ? status : 'No suscrito')
+            console.log('Estado de suscripción push para este dispositivo:', status)
             if (status && status.length > 0) {
                 pushEnabled.value = true
                 pushStatus.value = 'Notificaciones activadas'

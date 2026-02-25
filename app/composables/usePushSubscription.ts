@@ -5,6 +5,7 @@ export const usePushSubscription = () => {
   const config = useRuntimeConfig();
   const apiBase = config.public.api;
   const endpoint = `${apiBase}/push/push-subscription`;
+  const endpointCheck = `${apiBase}/push/get-subscriptions`;
 
   const subscribe = async (token: string) => {
     if (!('serviceWorker' in navigator)) return { error: 'Service Worker no soportado' }
@@ -79,16 +80,35 @@ export const usePushSubscription = () => {
   }
 
   const checkStatus = async (token: string) => {
+    let subscriptionEndpoint = null
+    if ('serviceWorker' in navigator) {
+      const registration = await navigator.serviceWorker.ready
+      const subscription = await registration.pushManager.getSubscription()
+      if (subscription) {
+        subscriptionEndpoint = subscription.endpoint
+      }
+    }
+
+    // Si este navegador no tiene una suscripción, no puede estar registrado en el servidor.
+    if (!subscriptionEndpoint) {
+      return { hasSubscription: false }
+    }
+
     try {
-      const res = await fetch(endpoint, {
-        method: 'GET',
+      // Usamos POST para enviar el endpoint en el body y comprobar una suscripción específica.
+      // El backend puede diferenciar esta petición de una de creación
+      // si solo recibe el 'endpoint' y no las 'keys'.
+      const res = await fetch(endpointCheck, {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
-        }
+        },
+        body: JSON.stringify({ endpoint: subscriptionEndpoint })
       })
       if (res.ok) {
         const data = await res.json()
-        return data // { hasSubscription: true/false }
+        return data // Espera una respuesta como { hasSubscription: true/false }
       }
       return { hasSubscription: false }
     } catch (e) {
