@@ -137,20 +137,20 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                                 </span>
                             </li>
                             <div class="divider">Preferencias</div>             
-                            <div class="form-control py-5">
-                                <label>
+                            <div class="form-control px-5 py-2">
+                                <label class="flex justify-between">
                                     <span class="label-text">Recuérdame:</span>
-                                    <span class="px-5"> 
+                                    <span> 
                                         <input name="remember_me" type="checkbox" v-model="remember_me"   
                                         class="toggle checked:border-blue-500 checked:bg-blue-400 checked:text-blue-800"/>
                                     </span> 
                                     
                                 </label>
                             </div>
-                            <div class="form-control">
-                                <label>
+                            <div class="form-control px-5 py-2">
+                                <label class="flex justify-between">
                                     <span class="label-text">Notificaciones:</span>
-                                    <span class="px-5"> 
+                                    <span> 
                                         <input type="checkbox" class="toggle checked:border-blue-500 checked:bg-blue-400 checked:text-blue-800" v-model="pushEnabled" @change="handlePushSubscription" />
                                     </span> 
                                 </label>
