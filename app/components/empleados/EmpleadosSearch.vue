@@ -95,7 +95,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
           {{ emp.name.split(" ")[0] }}
         </div>
         <div class="collapse-content"> 
-          <div class="card-actions justify-start px-5">
+          <div class="card-actions justify-start px-2">
               <NuxtLink :to="{ name: 'empleados-ver_cuadrante_id', params: { id: emp.id } }">
               <span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -110,8 +110,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                   </svg>
                 </span>
-              </NuxtLink>
-        
+              </NuxtLink>        
 
               <div class="divider divider-horizontal"></div>
 
