@@ -55,7 +55,7 @@ async function sendPushNotification(formData, node) {
 
 <template>
   <div class="container mx-auto p-5">
-    <h3 class="text-lg font-bold mb-4">Enviar Notificación Push al Usuario {{ user_id }}</h3>
+    <h3 class="text-lg font-bold mb-4">Notificación Push al Usuario {{ user_id }}</h3>
     <FormKit type="form" @submit="sendPushNotification" submit-label="Enviar Notificación">
       <FormKit type="text" name="title" label="Título" placeholder="Título de la notificación" validation="required" />
       <FormKit type="textarea" name="body" label="Mensaje" placeholder="Contenido del mensaje" validation="required" />
