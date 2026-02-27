@@ -126,33 +126,48 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         
         <div v-if="socios.length" class="join join-vertical w-full">
             <div v-for="socio in socios" class="collapse collapse-arrow join-item border border-base-300">
-                <input type="radio" name="acordeon-socios"  /> 
+                <input type="radio" name="my-accordion-4"  /> 
                 <div class="collapse-title text-xl font-medium">
                     {{ socio.name }}
-                </div>
+                </div>  
                 <div class="collapse-content"> 
-                    <div class="card-actions justify-between">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
-                            </svg>
+                    <div class="card-actions justify-between">                      
+                        <div class="dropdown dropdown-right dropdown-center">
+                            <div tabindex="0" role="button" class="btn m-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
+                                </svg>
+                            </div>
+                            <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                                <div v-for="parcela in socio.id_parcela" >
+                                    <li class="badge badge-soft badge-success">
+                                        <NuxtLink  v-if="parcela" :to="{ name: 'socios-id', params: { id: parcela } }">
+                                            {{ parcela }}
+                                        </NuxtLink>
+                                    </li>
+                                </div>
+                            </ul>
                         </div>
-                        <div v-for="parcela in socio.id_parcela" class="badge badge-success badge-outline">
-                            <NuxtLink v-if="parcela" :to="{ name: 'socios-id', params: { id: parcela } }">
-                                {{ parcela }}
-                            </NuxtLink>
-                        </div>
+
                         <div class="divider divider-horizontal"></div>
-                        <div>
-                            <span>💧</span>
-                        </div>
-                        <div v-for="parcela_agua in socio.id_parcela_agua" class="badge badge-info badge-outline">
-                            <NuxtLink v-if="parcela_agua" :to="{ name: 'agua-id', params: { id: parcela_agua } }">
-                                {{ parcela_agua }}
-                            </NuxtLink>
+                        
+                        <div class="dropdown dropdown-right dropdown-center">
+                            <div tabindex="0" role="button" class="btn m-1">
+                                <span>💧</span>    
+                            </div>
+                            <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                                <div v-for="parcela_agua in socio.id_parcela_agua" >
+                                    <li class="badge badge-soft badge-accent">
+                                        <NuxtLink  v-if="parcela_agua" :to="{ name: 'agua-id', params: { id: parcela_agua } }">
+                                            {{ parcela_agua }}
+                                        </NuxtLink>
+                                    </li>
+                                </div>
+                            </ul>
                         </div>
                         
                         <div class="divider divider-horizontal"></div>
+                        
                         <div>
                             <NuxtLink :to="{ name: 'usuarios-id', params: { id: socio.id } }">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -169,7 +184,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
                         <div class="divider divider-horizontal"></div>
 
-                        <svg @click="openEmailModal(socio.id)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 cursor-pointer">
+                        <svg @click="openEmailModal(emp.id)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 cursor-pointer">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                         </svg>
                     </div>
