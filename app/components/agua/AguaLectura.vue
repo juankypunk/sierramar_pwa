@@ -88,7 +88,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                     console.log('no hay datos')
                 }else{
                     console.log('error al obtener lecturas:',response.status);
-                    //navigateTo('/refresh')
+                    //navigateTo('/')
                 }
             }
         })

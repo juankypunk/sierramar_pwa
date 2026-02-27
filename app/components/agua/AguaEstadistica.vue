@@ -119,14 +119,12 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 importe.value = response._data.map(item => item.importe);
                 //getReadings();
             }else{
-                //navigateTo('/refresh')
-                //useRouter().push('/refresh')
+                navigateTo('/')
             }
         },
         onResponseError({request, response, options}){
             console.log('error onReponseError:',response._data);
-            //useRouter().push('/refresh')
-        }
+            navigateTo('/')}
     })  
 
     onMounted(() => {

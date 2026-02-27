@@ -45,7 +45,7 @@ const gridColumns = ["lectura","l1","l2","m3","notas"];
           console.log('no hay datos')
           readings.value = ''
         }else{
-          navigateTo('/refresh')
+          navigateTo('/')
         }
       }
   })

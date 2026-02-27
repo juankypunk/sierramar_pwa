@@ -72,7 +72,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 }else if(response.status===204) {
                     console.log('no hay datos')
                 }else{
-                    //navigateTo('/refresh')
+                    //navigateTo('/')
                 }
             }
         })
@@ -99,7 +99,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 }else if(response.status===204) {
                     console.log('no hay datos')
                 }else{
-                    //navigateTo('/refresh')
+                    navigateTo('/')
                 }
             }
         })

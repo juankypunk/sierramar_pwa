@@ -79,7 +79,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
           console.log('no hay datos');
           socios.value='';
         }else{
-          //navigateTo('/refresh');
+          //navigateTo('/');
         }
       }
     })  
@@ -99,7 +99,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
           console.log('no hay datos')
           listado_socios.value = ''
         }else{
-          //navigateTo('/refresh')
+          navigateTo('/')
         }
       }
   })

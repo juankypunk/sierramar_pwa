@@ -50,7 +50,7 @@ function getremittances(){
           console.log('no hay datos')
           remittances.value = ''
         }else{  
-          //navigateTo('/refresh')
+          //navigateTo('/')
         }
       }
   })
@@ -69,7 +69,7 @@ const {statistics} = useFetch(url_statistics_current_remittances,{
                 statistics_result.value=response._data;
                 console.log('estadisticas de la remesa:',statistics_result.value.fecha);
             }else{
-                //navigateTo('/refresh')
+                //navigateTo('/')
                 //useRouter().push('/refresh')
             }
         },
@@ -148,7 +148,7 @@ const creaRemesa = () => {
         }else if(response.status===204) {
             console.log('no hay datos');
         }else{
-            //navigateTo('/refresh');
+            navigateTo('/');
         }
         }
     })

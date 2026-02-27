@@ -34,7 +34,7 @@ const {refresh} = useFetch(url_fichajes,{
           console.log('no hay datos')
         }else{
           console.log('error al cargar los fichajes:',response)
-          //navigateTo('/refresh')
+          //navigateTo('/')
         }
       }
   });
@@ -61,7 +61,7 @@ const {refresh} = useFetch(url_fichajes,{
             refresh()
         }else{
           //alert('Upps...la sesión ha terminado, inténtalo de nuevo')
-          navigateTo('/refresh')
+          navigateTo('/')
         }
       },
       onResponseError({request, response, options}){
@@ -87,7 +87,7 @@ const {refresh} = useFetch(url_fichajes,{
             refresh()
         }else{
           //alert('Upps...la sesión ha terminado, inténtalo de nuevo')
-          navigateTo('/refresh')
+          navigateTo('/')
         }
       },
       onResponseError({request, response, options}){

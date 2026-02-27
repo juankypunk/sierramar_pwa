@@ -125,7 +125,7 @@ const gridColumns = ["id_parcela","titular","l1","l2","m3","m3_t1","m3_t2","m3_t
               console.log('no hay datos')
             }else{
               console.log('error al obtener remesas:',response.status);  
-              //navigateTo('/refresh')
+              //navigateTo('/')
             }
           }
       })
@@ -158,7 +158,7 @@ function getremittances(){
           remittances.value = ''
         }else{
           console.log('error al obtener remesas:',response.status);  
-          //navigateTo('/refresh')
+          //navigateTo('/')
         }
       }
   })
@@ -178,7 +178,7 @@ const {statistics} = useFetch(url_statistics_current_remittances,{
                 pendiente_cobro.value=response._data[0].importe - response._data[0].domiciliado;
                 console.log('estadisticas de la remesa:',statistics_result.value.lectura);
             }else{
-                navigateTo('/refresh')
+                navigateTo('/')
                 //useRouter().push('/refresh')
             }
         },
@@ -247,7 +247,7 @@ const creaRemesa = () => {
         }else if(response.status===204) {
             console.log('no hay datos');
         }else{
-            //navigateTo('/refresh');
+            navigateTo('/');
         }
         }
     })

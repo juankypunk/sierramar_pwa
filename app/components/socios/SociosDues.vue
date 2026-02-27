@@ -56,7 +56,7 @@ function getCurrentDue(){
         }else if(response.status===204) {
           console.log('no hay datos')
         }else{
-          //navigateTo('/refresh')
+          //navigateTo('/')
         }
       }
   })
@@ -78,7 +78,7 @@ function showdues() {
           console.log('no hay datos')
           dues.value = ''
         }else{
-          navigateTo('/refresh')
+          navigateTo('/')
         }
       }
   })
@@ -101,7 +101,7 @@ function handleSubmit(myData){
             success.value = true
         }else if(response.status==403){
             // token caducado
-            navigateTo('/refresh')
+            navigateTo('/')
         }else{
             console.log('todo mal')
             responded.value = true

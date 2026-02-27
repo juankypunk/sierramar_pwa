@@ -89,7 +89,7 @@ function getSignings() {
           fichajes.value = ''
           workedhours.value = 0
         }else{
-          //navigateTo('/refresh')
+          //navigateTo('/')
         }
       }
   })
@@ -115,7 +115,7 @@ function getWorkedHours(){
         console.log('no hay datos')
         workedhours.value = 0
       }else{
-        //navigateTo('/refresh')
+        //navigateTo('/')
       }
     }
   })
@@ -141,7 +141,7 @@ function getExtraWorkedHours(){
         console.log('no hay datos')
         extraworkedhours.value = 0
       }else{
-        //navigateTo('/refresh')
+        //navigateTo('/')
       }
     }
   })

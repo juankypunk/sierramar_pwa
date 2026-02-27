@@ -25,7 +25,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             </div>
         </div>
         <div class="navbar-center">
-            <button class="btn btn-ghost btn-circle" @click="navigateTo('/refresh')" >
+            <button class="btn btn-ghost btn-circle" @click="navigateTo('/')" >
                 <div class="w-10 rounded-full" >
                     <img src="/images/logo_sierramar.png" />
                 </div>
