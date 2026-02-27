@@ -138,7 +138,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
                                 </svg>
                             </div>
-                            <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                            <ul tabindex="-1" class="dropdown-content menu">
                                 <div v-for="parcela in socio.id_parcela" >
                                     <li class="badge badge-soft badge-success">
                                         <NuxtLink  v-if="parcela" :to="{ name: 'socios-id', params: { id: parcela } }">
@@ -154,9 +154,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                             <div tabindex="0" role="button" class="btn m-1">
                                 <span>💧</span>    
                             </div>
-                            <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                            <ul tabindex="-1" class="dropdown-content menu">
                                 <div v-for="parcela_agua in socio.id_parcela_agua" >
-                                    <li class="badge badge-soft badge-accent">
+                                    <li class="badge badge-soft badge-info">
                                         <NuxtLink  v-if="parcela_agua" :to="{ name: 'agua-id', params: { id: parcela_agua } }">
                                             {{ parcela_agua }}
                                         </NuxtLink>
