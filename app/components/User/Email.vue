@@ -15,6 +15,7 @@ const accessToken = useAccessToken()
 
 // --- Obtener el email del usuario al iniciar el componente ---
 const userEmail = ref('')
+const userName = ref('') // Opcional: para mostrar el nombre del usuario en el título o mensaje de éxito
 const userFetchError = ref(null)
 const { data: userData, error: fetchError } = await useFetch(`${config.public.api}/users/${props.user_id}`, {
   headers: {
@@ -27,10 +28,11 @@ const { data: userData, error: fetchError } = await useFetch(`${config.public.ap
 if (fetchError.value) {
   userFetchError.value = 'No se pudo cargar el email del usuario.'
   } else if (Array.isArray(userData.value) && userData.value.length > 0) {
-  // El endpoint devuelve un array, por lo que accedemos al primer elemento.
-  userEmail.value = userData.value[0].email;
+    // El endpoint devuelve un array, por lo que accedemos al primer elemento.
+    userEmail.value = userData.value[0].email;
+    userName.value = userData.value[0].name || '' // Asumiendo que el nombre también viene en la respuesta
 } else {
-  userFetchError.value = 'No se encontró el email para este usuario o la respuesta no es válida.';
+    userFetchError.value = 'No se encontró el email para este usuario o la respuesta no es válida.';
 }
 
 const useMyFetch = createFetch({
@@ -72,12 +74,12 @@ async function sendEmail(formData, node) {
 
 <template>
   <div class="container mx-auto p-5">
-    <h3 class="text-lg font-bold mb-4">Enviar Correo al Usuario {{ user_id }}</h3>
+    <h3 class="text-lg font-bold mb-4">Enviar correo a {{userName }}</h3>
     
     <div v-if="userFetchError" class="alert alert-error"><span>{{ userFetchError }}</span></div>
 
     <FormKit v-else type="form" @submit="sendEmail" submit-label="Enviar Correo">
-      <FormKit type="email" name="to" label="Destinatario" :value="userEmail" readonly validation="required|email" />
+      <FormKit type="email" name="to" label="Email" :value="userEmail" readonly validation="required|email" />
       <FormKit type="text" name="subject" label="Asunto" placeholder="Asunto del correo" validation="required" />
       <FormKit type="textarea" name="html" label="Mensaje (HTML permitido)" placeholder="Escribe aquí tu mensaje..." validation="required" :rows="10" />
     </FormKit>
