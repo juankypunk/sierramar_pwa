@@ -274,7 +274,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     <div class="container mx-auto px-5">  
     <!-- name of each tab group should be unique -->
     <div class="tabs tabs-border">
-      <input type="radio" name="my_tabs_2" class="tab" aria-label="Cuotas" checked="checked" />
+      <label class="tab">
+            <input type="radio" name="my_tabs_2" class="tab" checked="checked" />
+          Cuotas
+      </label>
       <div class="tab-content border-base-300 bg-base-100 p-10">
           <FormKit 
             type="form" 
@@ -348,7 +351,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
           </FormKit>
       </div>
 
-      <input type="radio" name="my_tabs_2" class="tab" aria-label="Agua" />
+      <label class="tab">
+      <input type="radio" name="my_tabs_2" class="tab" />
+      Agua
+      </label>
       <div class="tab-content border-base-300 bg-base-100 p-10">
         <div class="flex justify-start mb-5 gap-5">
           <h3 class="font-bold">Cliente SIF:</h3>
