@@ -72,7 +72,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         return;
       }
       console.log('Formulario modificado, enviando datos...');
-      const { onFetchResponse, error, data } = useMyFetch('').post(bankForm.value);
+      const payload = { ...bankForm.value };
+      payload.cancel_mandate = shouldCancelMandate();
+      const { onFetchResponse, error, data } = useMyFetch('').post(payload);
       onFetchResponse((response)=>{
         console.log('desde onFetchResponse',response.status);
         if(response.status===200){
@@ -110,6 +112,16 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         }
       }
       return modified;
+    }
+
+    function shouldCancelMandate() {
+      const modified = getModifiedFields();
+      const nifFields = ['nif_titular', 'nif_titular_cc_agua'];
+      const causingFields = modified.filter(field => !nifFields.includes(field));
+      console.log('--- Debug shouldCancelMandate ---');
+      console.log('Campos modificados:', modified);
+      console.log('Campos que provocan cancelación:', causingFields);
+      return causingFields.length > 0;
     }
 
     function clearMessage(){
@@ -296,6 +308,17 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             />
             <FormKit 
               type="text" 
+              label="NIF/NIE/CIF titular" 
+              name="nif_titular"
+              validation="length:9|isValidNif"
+              :validation-rules="{ isValidNif }"
+              validation-visibility="live"
+              :validation-messages="{
+                isValidNif: 'Documento incorrecto'
+              }"
+            />
+            <FormKit 
+              type="text" 
               label="BIC cuota" 
               name="bic_cuota" 
               validation=""
@@ -453,8 +476,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         <ul class="list-disc pl-5">
           <li v-for="field in getModifiedFields()" :key="field">{{ field }}</li>
         </ul>
-        <p class="py-2 ">Si continuas, se actualizarán los datos bancarios pero también se cancelará el mandato actual. </p>
-        <p class="py-2 font-semibold">
+        <p class="py-2 text-red-400 font-semibold" v-if="shouldCancelMandate()">Si continuas, se actualizarán los datos bancarios pero también se cancelará el mandato actual. </p>
+        <p class="py-2 text-green-400 font-semibold" v-else>Si continuas, se actualizarán los datos bancarios sin cancelar el mandato actual.</p>
+        <p class="py-2 font-semibold" v-if="shouldCancelMandate()">
           Para poder seguir cobrando, será necesario crear un nuevo mandato y solicitar la firma del titular.
         </p>
         <p class="py-2">¿Estás seguro de que quieres actualizar los datos bancarios?</p>
