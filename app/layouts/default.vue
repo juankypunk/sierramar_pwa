@@ -216,6 +216,18 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                         </div>
                         </label>
                     </li>
+                    <li>
+                        <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay" >
+                        <div class="flex justify-start gap-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </span>
+                            <span class="badge" @click="navigateTo('/junta/registro_jornada')">Registro de jornadas</span>
+                        </div>
+                        </label>
+                    </li>
                 </div>
                
                 <div v-if="user_data.roles.includes('admin')">

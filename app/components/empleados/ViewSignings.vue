@@ -30,10 +30,10 @@ const fin = computed(() => {
   return new Date(current_year.value,current_month.value + 1)
 })
 const inicio_str = computed(() => {
-  return inicio.value.toISOString().split('T')[0]
+  return inicio.value.toLocaleDateString('es-ES').replace(/\//g, '-')  // DD-MM-YYYY
 })
 const fin_str = computed(() => {
-  return fin.value.toISOString().split('T')[0]
+  return fin.value.toLocaleDateString('es-ES').replace(/\//g, '-')  // DD-MM-YYYY
 })
 const myMap = ref('https://www.google.com/maps/place/')
 const link_entrada = ref('')

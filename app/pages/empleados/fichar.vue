@@ -1,5 +1,5 @@
 <script setup>
-  import {jwtDecode} from 'jwt-decode'
+import {jwtDecode} from 'jwt-decode'
   import { useTimeAgoEs } from '~/composables/useTimeAgoEs.js'
 
   definePageMeta({
@@ -12,7 +12,11 @@
   console.log('ruta:',route.name)
   const { coords, locatedAt, error } = useGeolocation()
   const empleado = useLocalStorage('empleado','hola empleado')
-  const url1 = config.public.api + '/employees/' + user_data.id + '/lastsigning'
+  const url_lastsigning = config.public.api + '/employees/' + user_data.id + '/lastsigning'
+  const url_events = config.public.api + '/employees/' + user_data.id + '/events'
+  const url_signing = config.public.api + '/employees/sign';
+  const url_incidents = config.public.api + '/employees/' + user_data.id + '/getincidents'
+
   const estadoFichaje = ref('')
   const buttonColor = ref('')
   const ultimoFichaje = ref('')
@@ -22,9 +26,10 @@
   const mylink = ref('')
   const fichajeOk = ref (false)
   const timeAgo = ref('')
+  const incidents_count  = ref(0) 
 
   // datos del último fichaje
-    const {refresh} = useFetch(url1,{
+    const {refresh} = useFetch(url_lastsigning,{
     headers: {
       'Authorization': 'Bearer ' + accessToken.value,
       },
@@ -54,6 +59,33 @@
 
   console.log('ultimo estado:',ultimoFichaje.value.accion)
 
+  const getPlanning = async () => {
+    const {data} = await useFetch(url_events,{
+      headers: {
+        'Authorization': 'Bearer ' + accessToken.value,
+        },
+      method: 'POST',
+      body: {
+        "range_start": "3-3-2026",
+        "range_end": "4-3-2026",
+        "label": "normal",
+      },
+    });
+    console.log('events:',data.value);
+  }
+  
+  const getIncidents = async () => {
+    const {data} = await useFetch(url_incidents,{
+      headers: {
+        'Authorization': 'Bearer ' + accessToken.value,
+        },
+      method: 'GET',
+    });
+    console.log('incidents:',data.value);
+    incidents_count.value = data.value.length
+  }   
+
+
   // acción de fichar
   const fichar = (e) => {
     estadoFichaje.value = ultimaAccion.value == 'E' ? 'S': 'E';
@@ -75,8 +107,7 @@
     console.log('locatedAt:',locatedAtFormated)
     console.log('estado fichaje:',estadoFichaje.value);
     
-    const url2 = config.public.api + '/employees/sign';
-    const {data} = useFetch(url2,{
+    const {data} = useFetch(url_signing,{
       headers: {
       'Authorization': 'Bearer ' + accessToken.value,
       },
@@ -115,9 +146,9 @@
 onMounted(() => {
     console.log(`the component is now mounted.`)
     console.log('ultimo fichaje:',ultimoFichaje.value)
-    if(!ultimoFichaje.value){
-    //refresh()
-    }
+    getPlanning()
+    getIncidents()
+
 })
 </script>
 
@@ -126,19 +157,34 @@ onMounted(() => {
     <div class="card">
       <figure><NuxtImg src="/images/fichar.png" alt="fichar"/></figure>
       <div class="card-body">
-        <h2 class="card-title flex justify-center py-5 gap-8">Mi control horario <span @click="navigateTo('/empleados/micalendar')">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z" />
-          </svg>
-        </span>
-        <span @click="navigateTo('/empleados/misfichajes')">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-          </svg>
-        </span></h2>
+        <div class="card-title flex justify-center py-5 gap-8">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+            </svg>
+          </span>
+          <span @click="navigateTo('/empleados/micalendar')">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z" />
+            </svg>
+          </span>
+          <span @click="navigateTo('/empleados/misfichajes')">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+          </span> 
+          <div class="indicator">
+            <span v-if="incidents_count>0" class="indicator-item status status-error animate-bounce" @click="navigateTo('/empleados/')"></span>
+            <div @click="navigateTo('/empleados/misincidentes')">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15h.008v.008H12v-.008zM12 18h.008v.008H12v-.008z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        
         <div class="flex gap-8 py-2">
-          Estado: {{ (ultimaAccion=='E')? 'TRABAJANDO 💪' : 'LIBRE 🌈'  }}  
-          
+          Estado: {{ (ultimaAccion=='E')? 'TRABAJANDO 💪' : 'LIBRE 🌈'  }}    
         </div> 
         <div class="flex gap-4 py-2">Momento: {{ ultimoFichaje }} ({{ timeAgo }})</div>
         <div class="flex gap-4 py-2">Lugar:
