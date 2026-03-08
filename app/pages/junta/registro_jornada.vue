@@ -176,7 +176,7 @@ const getEstadoLabel = (estado) => {
 }
 
 const gridColumns = [
-    { key: 'fecha', label: 'Fecha' },
+    { key: 'fecha_inc', label: 'Fecha' },
     { key: 'empleado', label: 'Empleado' },
     { key: 'incidencia', label: 'Incidencia' },
     { key: 'entrada_real', label: 'Entrada real' },
@@ -201,30 +201,30 @@ onMounted(async () => {
         <!-- Filtros -->
         <div class="flex flex-wrap gap-4 py-4 bg-base-200 p-4 rounded-lg mb-4">
             <div class="form-control">
-                <label class="label">
-                    <span class="label-text">Fecha inicio</span>
+                <label class="label px-5">
+                    <span class="label-text ">Fecha inicio</span>
                 </label>
                 <input type="date" v-model="fecha_inicio" class="input input-bordered w-40" />
             </div>
             <div class="form-control">
-                <label class="label">
+                <label class="label px-5">
                     <span class="label-text">Fecha fin</span>
                 </label>
                 <input type="date" v-model="fecha_fin" class="input input-bordered w-40" />
             </div>
             <div class="form-control">
-                <label class="label">
+                <label class="label px-5">
                     <span class="label-text">Empleado</span>
                 </label>
                 <select v-model="empleado_seleccionado" class="select select-bordered w-48">
                     <option value="">Todos los empleados</option>
                     <option v-for="emp in empleados" :key="emp.id" :value="emp.id">
-                        {{ emp.name }} {{ emp.surname || '' }}
+                        {{ emp.name.split(" ")[0]  }} 
                     </option>
                 </select>
             </div>
             <div class="form-control">
-                <label class="label">
+                <label class="label px-5">
                     <span class="label-text">Estado</span>
                 </label>
                 <select v-model="estado_filtro" class="select select-bordered w-40">
@@ -252,7 +252,7 @@ onMounted(async () => {
 
         <!-- Tabla de incidentes -->
         <div class="overflow-x-auto">
-            <table v-if="incidentes.length > 0" class="table table-zebra w-full">
+            <table v-if="incidentes.length > 0" class="table table-sm table-zebra w-full">
                 <thead>
                     <tr>
                         <th>
@@ -278,7 +278,7 @@ onMounted(async () => {
                                 v-model="selectedIds"
                             />
                         </th>
-                        <td>{{ entry.fecha }}</td>
+                        <td>{{ entry.fecha_inc }}</td>
                         <td>{{ entry.empleado }}</td>
                         <td>{{ entry.incidencia }}</td>
                         <td>{{ formatDateTime(entry.entrada_real) }}</td>
@@ -323,7 +323,7 @@ onMounted(async () => {
             </table>
         </div>
 
-        <div v-if="incidentes.length === 0 && !loading" class="alert alert-info mt-4">
+        <div v-if="incidentes.length === 0 && !loading" class="alert alert-soft mt-4">
             No se encontraron incidentes con los filtros seleccionados.
         </div>
     </div>

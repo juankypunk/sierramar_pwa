@@ -218,7 +218,7 @@ onMounted(() => {
           <tbody>
             <tr>
               <th class="w-1/3">Fecha</th>
-              <td>{{ formatDate(rowdata.fecha) }}</td>
+              <td>{{ rowdata.fecha }}</td>
             </tr>
             <tr>
               <th>Incidencia</th>
@@ -269,7 +269,7 @@ onMounted(() => {
       </form>
       <h3 class="font-bold text-lg">Declaración responsable</h3>
       
-      <p>Fecha del incidente: {{ formatDate(rowdata.fecha) }} ({{ rowdata.incidencia }})</p>
+      <p>Fecha del incidente: {{ rowdata.fecha }} ({{ rowdata.incidencia }})</p>
       <p class="text-sm py-5">Indica las horas de entrada y salida que propones para corregirlo, así como una breve explicación de lo ocurrido.</p>
       <div>
       <FormKit type="form" 
