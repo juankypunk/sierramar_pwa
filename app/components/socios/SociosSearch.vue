@@ -208,7 +208,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
                 <div class="tabs tabs-border">
-                    <input type="radio" name="my_tabs_2" class="tab" aria-label="Contacto" checked="checked" />
+                    <label class="tab" aria-label="Contacto">
+                        <input type="radio" name="my_tabs_2" class="tab" aria-label="Contacto" checked="checked" />
+                        Contacto
+                    </label>
                     <div class="tab-content border-base-300 bg-base-100 p-10">
                         <table class="table table-sm table-zebra w-full">
                             <tbody>
@@ -222,7 +225,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                             </tbody>
                         </table>
                     </div>
-                    <input type="radio" name="my_tabs_2" class="tab" aria-label="Banco" />
+                    <label class="tab" aria-label="Banco">
+                        <input type="radio" name="my_tabs_2" class="tab" aria-label="Banco" />                    
+                        Banco
+                    </label>
                     <div class="tab-content border-base-300 bg-base-100 p-10">
                         <table class="table table-sm table-zebra w-full">
                             <tbody>

@@ -176,26 +176,12 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         </div>
 
 
-        <div>
-            <details ref="collapseStatistics" class="collapse collapse-arrow">
-                <summary class="collapse-title text-xl font-medium">Estadísticas de consumo (selecciona aquí una lectura)</summary>
-                <div v-if="statistics" class="collapse-content"> 
-                    <MyGrid
-                        :data="statistics"
-                        :columns="gridStatisticsColumns"
-                        v-model:rowdata="rowStatisticsData"
-                        @update:rowdata="handleStatisticsRowUpdate"
-                        table-size="table-xs"
-                    >
-                    </MyGrid>     
-                </div>
-            </details>
-        </div>
+        
 
-        <div v-if="rowStatisticsData">
+        <div v-if="rowStatisticsData" class="py-20">
             <div class="stats shadow w-full">
                 <div class="stat">
-                    <div class="stat-title">Consumo de agua RESIDENTES <span class="badge badge-success">{{ rowStatisticsData.lectura }} </span></div>
+                    <div class="stat-title flex justify-between text-2xl">Consumo de agua RESIDENTES <span class="badge badge-info px-5">{{ rowStatisticsData.lectura }} </span></div>
                     <div class="stat-value flex justify-center gap-6 py-10">
                         <span class="px-3 text-4xl text-blue-600">{{new Intl.NumberFormat('es-ES', { 
                                       minimumFractionDigits: 0,
@@ -216,6 +202,21 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             </div>
         </div>
         
+        <div>
+            <details ref="collapseStatistics" class="collapse collapse-arrow">
+                <summary class="collapse-title text-xl font-medium">Selecciona otra lectura</summary>
+                <div v-if="statistics" class="collapse-content"> 
+                    <MyGrid
+                        :data="statistics"
+                        :columns="gridStatisticsColumns"
+                        v-model:rowdata="rowStatisticsData"
+                        @update:rowdata="handleStatisticsRowUpdate"
+                        table-size="table-xs"
+                    >
+                    </MyGrid>     
+                </div>
+            </details>
+        </div>
 
         <details class="collapse collapse-arrow">
             <summary class="collapse-title text-xl font-medium">Listado lectura <span class="badge">{{ rowStatisticsData.lectura }} </span> (click para abrir)</summary>
