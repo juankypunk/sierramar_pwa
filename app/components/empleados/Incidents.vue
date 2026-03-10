@@ -192,6 +192,12 @@ onMounted(() => {
   </div> 
         
   <div v-if="incidentes.length > 0" class="py-5">
+    <div role="alert" class="alert alert-info alert-soft mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info h-6 w-6 shrink-0">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <span>Haz clic sobre un incidente para ver sus detalles y gestionarlo</span>
+    </div>
     <MyGrid
         :data="incidentes"
         :columns="gridColumns"
@@ -213,40 +219,49 @@ onMounted(() => {
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
       <h3 class="font-bold text-lg">Detalles del incidente</h3>
-      <div class="overflow-x-auto py-4">
-        <table class="table table-zebra w-full">
-          <tbody>
-            <tr>
-              <th class="w-1/3">Fecha</th>
-              <td>{{ rowdata.fecha }}</td>
-            </tr>
-            <tr>
-              <th>Incidencia</th>
-              <td>{{ rowdata.incidencia }}</td>
-            </tr>
-            <tr>
-              <th>Entrada</th>
-              <td>{{ formatDate(rowdata.payload?.entrada) }}</td>
-            </tr>
-            <tr>
-              <th>Salida</th>
-              <td>{{ formatDate(rowdata.payload?.salida) }}</td>
-            </tr>
-            <tr>
-              <th>Duración</th>
-              <td>{{ formatDuration(rowdata.payload?.duracion) }}</td>
-            </tr>
-            <tr>
-              <th>Estado</th>
-              <td>{{ rowdata.estado }}</td>
-            </tr>
-            <tr>
-              <th>Detectado</th>
-              <td>{{ formatDate(rowdata.detectado) }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="tabs tabs-border">
+        <label class="tab" aria-label="Detalles">
+          <input type="radio" name="incident_tabs" class="tab" aria-label="Detalles" checked="checked" />
+          Detalles
+        </label>
+        <div class="tab-content border-base-300 bg-base-100 p-10">
+          <div class="overflow-x-auto py-4">
+            <table class="table table-zebra w-full">
+              <tbody>
+                <tr>
+                  <th class="w-1/3">Fecha</th>
+                  <td>{{ rowdata.fecha }}</td>
+                </tr>
+                <tr>
+                  <th>Incidencia</th>
+                  <td>{{ rowdata.incidencia }}</td>
+                </tr>
+                <tr>
+                  <th>Entrada</th>
+                  <td>{{ formatDate(rowdata.entrada_real) }}</td>
+                </tr>
+                <tr>
+                  <th>Salida</th>
+                  <td>{{ formatDate(rowdata.salida_real) }}</td>
+                </tr>
+                <tr>
+                  <th>Duración</th>
+                  <td>{{ rowdata.duracion }}</td>
+                </tr>
+                <tr>
+                  <th>Estado</th>
+                  <td>{{ rowdata.estado }}</td>
+                </tr>
+                <tr>
+                  <th>Detectado</th>
+                  <td>{{ formatDate(rowdata.detectado) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+      
       <form method="dialog" class="modal-action"> 
         <div v-if="rowdata.estado === 'abierto'" class="flex justify-end gap-4 ">
           <FormKit
