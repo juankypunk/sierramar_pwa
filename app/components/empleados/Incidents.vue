@@ -83,7 +83,7 @@ const getIncidents = async () => {
 }
 
 const searchQuery = ref('')
-const gridColumns = ["incidencia", "fecha","detectado", "estado"]
+const gridColumns = ["fecha","incidencia", "estado"]
 
 
 
@@ -216,7 +216,7 @@ onMounted(() => {
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
-      <h3 class="font-bold text-lg">Detalles del incidente</h3>
+      <h3 class="font-bold text-lg">Incidente</h3>
       <div class="tabs tabs-border">
         <label class="tab" aria-label="Detalles">
           <input type="radio" name="incident_tabs" class="tab" aria-label="Detalles" checked="checked" />
@@ -224,41 +224,64 @@ onMounted(() => {
         </label>
         <div class="tab-content border-base-300 bg-base-100 p-10">
           <div class="overflow-x-auto py-4">
-          <table class="table table-zebra w-full">
-          <tbody>
-            <tr>
-              <th class="w-1/3">Fecha</th>
-              <td>{{ rowdata.fecha }}</td>
-            </tr>
-            <tr>
-              <th>Incidencia</th>
-              <td>{{ rowdata.incidencia }}</td>
-            </tr>
-            <tr>
-              <th>Entrada</th>
-              <td>{{ formatDate(rowdata.entrada_real) }}</td>
-            </tr>
-            <tr>
-              <th>Salida</th>
-              <td>{{ formatDate(rowdata.salida_real) }}</td>
-            </tr>
-            <tr>
-              <th>Duración</th>
-              <td>{{ rowdata.duracion }}</td>
-            </tr>
-            <tr>
-              <th>Estado</th>
-              <td>{{ rowdata.estado }}</td>
-            </tr>
-            <tr>
-              <th>Detectado</th>
-              <td>{{ formatDate(rowdata.detectado) }}</td>
-            </tr>
-          </tbody>
-        </table>
-        </div>
-        
+            <table class="table table-zebra w-full">
+            <tbody>
+              <tr>
+                <th>Fecha</th>
+                <td>{{ rowdata.fecha }}</td>
+              </tr>
+              <tr>
+                <th>Incidencia</th>
+                <td>{{ rowdata.incidencia }}</td>
+              </tr>
+              <tr>
+                <th>Entrada</th>
+                <td>{{ formatDate(rowdata.entrada_real) }}</td>
+              </tr>
+              <tr>
+                <th>Salida</th>
+                <td>{{ formatDate(rowdata.salida_real) }}</td>
+              </tr>
+              <tr>
+                <th>Duración</th>
+                <td>{{ rowdata.duracion }}</td>
+              </tr>
+              <tr>
+                <th>Estado</th>
+                <td>{{ rowdata.estado }}</td>
+              </tr>
+              <tr>
+                <th>Detectado</th>
+                <td>{{ formatDate(rowdata.detectado) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>    
       </div>
+      <label class="tab">
+          <input type="radio" name="incident_tabs" class="tab" />
+          Declaración
+        </label>
+        <div class="tab-content border-base-300 bg-base-100 p-10">
+          <div class="overflow-x-auto py-4">
+             <table class="table table-zebra w-full">
+                <tbody>
+                  <tr>
+                    <th>Entrada propuesta</th>
+                    <td>{{ formatDate(rowdata.entrada_propuesta) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Salida propuesta</th>
+                    <td>{{ formatDate(rowdata.salida_propuesta ) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Declaración</th>
+                    <td>{{ rowdata.declaracion }}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
     </div>
       
       <form method="dialog" class="modal-action"> 
