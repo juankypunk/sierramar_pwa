@@ -13,7 +13,7 @@ const estado_filtro = ref('')
 
 const incidentes = ref([])
 const empleados = ref([])
-const selectedIds = ref([])
+const rowIncidentData = ref({})
 const loading = ref(false)
 
 const estados = [
@@ -61,6 +61,8 @@ async function buscar() {
             },
         })
         incidentes.value = data || []
+        console.log('Incidentes obtenidos:', incidentes.value)
+        console.log('Longitud:', incidentes.value.length)
     } catch (error) {
         console.error('Error al obtener incidentes:', error)
     } finally {
@@ -96,51 +98,9 @@ async function rechazar(incident) {
     }
 }
 
-async function aceptarMultiple() {
-    for (const id of selectedIds.value) {
-        try {
-            await $fetch(`${config.public.api}/employees/incidents/${id}/approve`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + accessToken.value,
-                },
-            })
-            const incident = incidentes.value.find(i => i.id === id)
-            if (incident) incident.status = 'aprobado'
-        } catch (error) {
-            console.error(`Error al aceptar incidente ${id}:`, error)
-        }
-    }
-    selectedIds.value = []
-}
 
-async function rechazarMultiple() {
-    for (const id of selectedIds.value) {
-        try {
-            await $fetch(`${config.public.api}/employees/incidents/${id}/reject`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + accessToken.value,
-                },
-            })
-            const incident = incidentes.value.find(i => i.id === id)
-            if (incident) incident.status = 'rechazado'
-        } catch (error) {
-            console.error(`Error al rechazar incidente ${id}:`, error)
-        }
-    }
-    selectedIds.value = []
-}
 
-function toggleSelectAll(event) {
-    if (event.target.checked) {
-        selectedIds.value = incidentes.value.map(i => i.id)
-    } else {
-        selectedIds.value = []
-    }
-}
-
-const formatDateTime = (ts) => {
+const formatDate = (ts) => {
     if (!ts) return '-'
     const d = new Date(ts)
     if (isNaN(d.getTime())) return ts
@@ -153,39 +113,25 @@ const formatDateTime = (ts) => {
     })
 }
 
-const getEstadoBadgeClass = (estado) => {
-    switch (estado) {
-        case 'abierto': return 'badge-warning'
-        case 'declarado': return 'badge-info'
-        case 'aprobado': return 'badge-success'
-        case 'rechazado': return 'badge-error'
-        case 'cerrado_auto': return 'badge-neutral'
-        default: return ''
-    }
-}
-
-const getEstadoLabel = (estado) => {
-    switch (estado) {
-        case 'abierto': return 'Abierto'
-        case 'declarado': return 'Declarado'
-        case 'aprobado': return 'Aprobado'
-        case 'rechazado': return 'Rechazado'
-        case 'cerrado_auto': return 'Cerrado auto'
-        default: return estado
+const showIncidentDetail = () => {
+    console.log('Fila seleccionada:', rowIncidentData.value)
+    if (rowIncidentData.value && rowIncidentData.value.id) {
+        // Aquí podrías abrir un modal o navegar a una página de detalles
+        console.log('Mostrando detalles para incidente ID:', rowIncidentData.value)
+        const dialog = document.getElementById('incident_detail')
+        if (dialog) {
+            dialog.showModal()
+        }
+    } else {
+        console.warn('No se ha seleccionado un incidente válido')
     }
 }
 
 const gridColumns = [
-    { key: 'fecha_inc', label: 'Fecha' },
-    { key: 'empleado', label: 'Empleado' },
-    { key: 'incidencia', label: 'Incidencia' },
-    { key: 'entrada_real', label: 'Entrada real' },
-    { key: 'salida_real', label: 'Salida real' },
-    { key: 'entrada_propuesta', label: 'Entrada propuesta' },
-    { key: 'salida_propuesta', label: 'Salida propuesta' },
-    { key: 'declaracion', label: 'Declaración' },
-    { key: 'estado', label: 'Estado' },
-    { key: 'acciones', label: 'Acciones' }
+    'fecha',
+    'empleado',
+    'incidencia',
+    'estado',
 ]
 
 onMounted(async () => {
@@ -240,91 +186,107 @@ onMounted(async () => {
             </div>
         </div>
 
-        <!-- Acciones masivas -->
-        <div v-if="selectedIds.length > 0" class="flex gap-2 mb-4">
-            <button @click="aceptarMultiple" class="btn btn-success btn-sm">
-                ✓ Aceptar seleccionados ({{ selectedIds.length }})
-            </button>
-            <button @click="rechazarMultiple" class="btn btn-error btn-sm">
-                ✕ Rechazar seleccionados ({{ selectedIds.length }})
-            </button>
-        </div>
-
+        
         <!-- Tabla de incidentes -->
-        <div class="overflow-x-auto">
-            <table v-if="incidentes.length > 0" class="table table-sm table-zebra w-full">
-                <thead>
-                    <tr>
-                        <th>
-                            <input 
-                                type="checkbox" 
-                                class="checkbox" 
-                                :checked="selectedIds.length === incidentes.length && incidentes.length > 0"
-                                @change="toggleSelectAll"
-                            />
-                        </th>
-                        <th v-for="col in gridColumns" :key="col.key">
-                            {{ col.label }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="entry in incidentes" :key="entry.id">
-                        <th>
-                            <input 
-                                type="checkbox" 
-                                class="checkbox" 
-                                :value="entry.id" 
-                                v-model="selectedIds"
-                            />
-                        </th>
-                        <td>{{ entry.fecha_inc }}</td>
-                        <td>{{ entry.empleado }}</td>
-                        <td>{{ entry.incidencia }}</td>
-                        <td>{{ formatDateTime(entry.entrada_real) }}</td>
-                        <td>{{ formatDateTime(entry.salida_real) }}</td>
-                        <td>{{ formatDateTime(entry.entrada_propuesta) }}</td>
-                        <td>{{ formatDateTime(entry.salida_propuesta) }}</td>
-                        <td>
-                            <span class="truncate max-w-xs block" :title="entry.declaracion">
-                                {{ entry.declaracion || '-' }}
-                            </span>
-                        </td>
-                        <td>
-                            <span :class="['badge', getEstadoBadgeClass(entry.estado)]">
-                                {{ getEstadoLabel(entry.estado) }}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="flex gap-1">
-                                <button
-                                    v-if="entry.estado === 'declarado'"
-                                    @click="aceptar(entry)"
-                                    class="btn btn-xs btn-success"
-                                    title="Aceptar"
-                                >
-                                    ✓
-                                </button>
-                                <button
-                                    v-if="entry.estado === 'declarado'"
-                                    @click="rechazar(entry)"
-                                    class="btn btn-xs btn-error"
-                                    title="Rechazar"
-                                >
-                                    ✕
-                                </button>
-                                <span v-if="entry.estado !== 'declarado'" class="text-gray-400 text-xs">
-                                    -
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <MyGrid :columns="gridColumns" 
+            :data="incidentes" 
+            :table-size="'table-xs'" 
+            :show-row-count="false"
+            v-model:rowdata="rowIncidentData"  
+            @update:rowdata="showIncidentDetail()"  
+        />
+    </div>
 
-        <div v-if="incidentes.length === 0 && !loading" class="alert alert-soft mt-4">
-            No se encontraron incidentes con los filtros seleccionados.
+    <dialog v-if="rowIncidentData.id" id="incident_detail" class="modal">
+    <div v-if="rowIncidentData" class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg">Incidente #{{ rowIncidentData.id }}</h3>
+      <div class="tabs tabs-border">
+        <label class="tab" aria-label="Detalles">
+          <input type="radio" name="incident_tabs" class="tab" aria-label="Detalles" checked="checked" />
+          Detalles
+        </label>
+        <div class="tab-content border-base-300 bg-base-100 p-10">
+          <div class="overflow-x-auto py-4">
+            <table class="table table-zebra w-full">
+            <tbody>
+              <tr>
+                <th>Fecha</th>
+                <td>{{ rowIncidentData.fecha }}</td>
+              </tr>
+              <tr>
+                <th>Incidencia</th>
+                <td>{{ rowIncidentData.incidencia }}</td>
+              </tr>
+              <tr>
+                <th>Entrada</th>
+                <td v-if="rowIncidentData.entrada_real">{{ formatDate(rowIncidentData.entrada_real) }}</td>
+              </tr>
+              <tr>
+                <th>Salida</th>
+                <td v-if="rowIncidentData.salida_real">{{ formatDate(rowIncidentData.salida_real) }}</td>
+              </tr>
+              <tr>
+                <th>Duración</th>
+                <td>{{ rowIncidentData.duracion }}</td>
+              </tr>
+              <tr>
+                <th>Estado</th>
+                <td>{{ rowIncidentData.estado }}</td>
+              </tr>
+              <tr>
+                <th>Detectado</th>
+                <td v-if="rowIncidentData.detectado">{{ rowIncidentData.detectado }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>    
+      </div>
+      <label class="tab">
+          <input type="radio" name="incident_tabs" class="tab" />
+          Declaración
+        </label>
+        <div class="tab-content border-base-300 bg-base-100 p-10">
+          <div class="overflow-x-auto py-4">
+             <table class="table table-zebra w-full">
+                <tbody>
+                  <tr>
+                    <th>Entrada propuesta</th>
+                    <td v-if="rowIncidentData.entrada_propuesta">{{ formatDate(rowIncidentData.entrada_propuesta) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Salida propuesta</th>
+                    <td v-if="rowIncidentData.salida_propuesta">{{ formatDate(rowIncidentData.salida_propuesta) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Declaración</th>
+                    <td v-if="rowIncidentData.declaracion">{{ rowIncidentData.declaracion }}</td>
+                  </tr>
+                  <tr>
+                    <th>Fecha</th>
+                    <td v-if="rowIncidentData.declarado">{{ rowIncidentData.declarado }}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
         </div>
     </div>
+      
+      <form method="dialog" class="modal-action"> 
+        <div v-if="rowIncidentData.estado === 'abierto'" class="flex justify-end gap-4 ">
+          <FormKit
+            type="button"
+            label="Hacer declaración"
+            @click="openStatementDialog()"
+          />
+        </div> 
+        <div v-else class="flex justify-end">
+          <button class="btn">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
 </template>
