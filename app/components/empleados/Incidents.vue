@@ -192,7 +192,7 @@ onMounted(() => {
   </div> 
         
   <div v-if="incidentes.length > 0" class="py-5">
-    <div role="alert" class="alert alert-info alert-soft mb-4">
+    <div role="alert" class="alert alert-info alert-outline mb-4">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info h-6 w-6 shrink-0">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
       </svg>
@@ -203,6 +203,7 @@ onMounted(() => {
         :columns="gridColumns"
         :filter-key="searchQuery"
         v-model:rowdata="rowdata"
+        :show-row-count="false"
         @update:rowdata="showDialog(rowdata)"
     >
     </MyGrid>
@@ -216,7 +217,7 @@ onMounted(() => {
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
-      <h3 class="font-bold text-lg">Incidente</h3>
+      <h3 class="font-bold text-lg">Incidente #{{ rowdata.id }}</h3>
       <div class="tabs tabs-border">
         <label class="tab" aria-label="Detalles">
           <input type="radio" name="incident_tabs" class="tab" aria-label="Detalles" checked="checked" />
@@ -277,6 +278,10 @@ onMounted(() => {
                   <tr>
                     <th>Declaración</th>
                     <td>{{ rowdata.declaracion }}</td>
+                  </tr>
+                  <tr>
+                    <th>Fecha</th>
+                    <td>{{ formatDate(rowdata.declarado) }}</td>
                   </tr>
                 </tbody>
               </table>
