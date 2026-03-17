@@ -59,7 +59,7 @@ async function sendEmail(formData, node) {
     const { data, error, response } = await useMyFetch('').post(payload).json()
     
     if (response.value && response.value.ok) {
-      const successMessage = data.value?.message || 'Correo enviado correctamente.'
+      const successMessage = data.value?.message || 'Correo enviado con éxito.'
       emit('success', successMessage)
       node.reset()
     } else {
@@ -78,7 +78,7 @@ async function sendEmail(formData, node) {
     
     <div v-if="userFetchError" class="alert alert-error"><span>{{ userFetchError }}</span></div>
 
-    <FormKit v-else type="form" @submit="sendEmail" submit-label="Enviar Correo">
+    <FormKit v-else type="form" @submit="sendEmail" submit-label="Enviar Correo" autocomplete="off">
       <FormKit type="email" name="to" label="Email" :value="userEmail" readonly validation="required|email" />
       <FormKit type="text" name="subject" label="Asunto" placeholder="Asunto del correo" validation="required" />
       <FormKit type="textarea" name="html" label="Mensaje (HTML permitido)" placeholder="Escribe aquí tu mensaje..." validation="required" :rows="10" />

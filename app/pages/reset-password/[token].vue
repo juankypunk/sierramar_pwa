@@ -78,12 +78,12 @@ onMounted(async () => {
             </figure>
         </div>
             <div class="w-full p-6 rounded-lg shadow">
-                <h2 class="mb-1 text-xl font-bold leading-tight tracking-tight">
-                    Cambiar contraseña
+                <h2 class="mb-1 text-xl font-bold leading-tight tracking-tight py-4">
+                    Crear contraseña para Sierramar
                 </h2>
                 <FormKit type="form" 
                     :value="formData"
-                    submit-label="Cambiar contraseña" 
+                    submit-label="Aceptar" 
                     @submit="handleSubmit"
                 >
                     <FormKit

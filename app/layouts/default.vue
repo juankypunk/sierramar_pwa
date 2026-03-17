@@ -13,7 +13,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 <script setup>
     import {jwtDecode} from "jwt-decode"
     import { usePushSubscription } from '~/composables/usePushSubscription'
-    const pushEnabled = ref(false)
+    const pushEnabled = useCookie('push_enabled', { default: () => false })
     const pushStatus = ref('')
     const { subscribe, unsubscribe, checkStatus } = usePushSubscription()
 
@@ -25,6 +25,8 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             if (status && status.length > 0) {
                 pushEnabled.value = true
                 pushStatus.value = 'Notificaciones activadas'
+            } else {
+                pushEnabled.value = false
             }
         }
     })
@@ -32,7 +34,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     async function handlePushSubscription() {
         pushStatus.value = ''
         const token = useAccessToken().value
-        
         if (pushEnabled.value) {
             const result = await subscribe(token)
             if (result.error) {
@@ -53,6 +54,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             }
         }
     }
+    
     const { logout, isAuthenticated } = useAuth()
     const user_data = ref(jwtDecode(useAccessToken().value))
     const remember_me = useCookie('remember_me')

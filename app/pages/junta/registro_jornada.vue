@@ -15,6 +15,7 @@ const incidentes = ref([])
 const empleados = ref([])
 const rowIncidentData = ref({})
 const loading = ref(false)
+const formResolution = ref({})  
 
 const estados = [
     { value: '', label: 'Todos' },
@@ -70,6 +71,23 @@ async function buscar() {
     }
 }
 
+async function submitResolution(formData) {
+    try {
+        await $fetch(`${config.public.api}/employees/incidents/${rowIncidentData.value.id}/resolve`, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken.value,
+            },
+            body: formData
+        })
+        rowIncidentData.value.estado = 'resuelto'
+        closeResolutionDialog()
+    } catch (error) {
+        console.error('Error al resolver incidente:', error)
+    }
+}   
+
+
 async function aceptar(incident) {
     try {
         await $fetch(`${config.public.api}/employees/incidents/${incident.id}/approve`, {
@@ -114,18 +132,23 @@ const formatDate = (ts) => {
 }
 
 const showIncidentDetail = () => {
-    console.log('Fila seleccionada:', rowIncidentData.value)
-    if (rowIncidentData.value && rowIncidentData.value.id) {
-        // Aquí podrías abrir un modal o navegar a una página de detalles
-        console.log('Mostrando detalles para incidente ID:', rowIncidentData.value)
-        const dialog = document.getElementById('incident_detail')
-        if (dialog) {
-            dialog.showModal()
-        }
-    } else {
-        console.warn('No se ha seleccionado un incidente válido')
-    }
+    //console.log('Fila seleccionada:', rowIncidentData.value)
+    incident_detail.showModal()
 }
+
+function closeIncidentDialog() {
+  document.getElementById('incident_detail').close()
+}
+
+function openResolutionDialog() {
+  closeIncidentDialog()
+  document.getElementById('resolution_dialog').showModal()
+}
+
+function closeResolutionDialog() {
+  document.getElementById('resolution_dialog').close()
+}
+
 
 const gridColumns = [
     'fecha',
@@ -197,8 +220,8 @@ onMounted(async () => {
         />
     </div>
 
-    <dialog v-if="rowIncidentData.id" id="incident_detail" class="modal">
-    <div v-if="rowIncidentData" class="modal-box">
+    <dialog id="incident_detail" class="modal">
+    <div class="modal-box">
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
@@ -275,16 +298,52 @@ onMounted(async () => {
     </div>
       
       <form method="dialog" class="modal-action"> 
-        <div v-if="rowIncidentData.estado === 'abierto'" class="flex justify-end gap-4 ">
+        <div v-if="rowIncidentData.estado === 'declarado'" class="flex justify-end gap-4 ">
           <FormKit
             type="button"
-            label="Hacer declaración"
-            @click="openStatementDialog()"
+            label="Resolver"
+            @click="openResolutionDialog()"
           />
         </div> 
         <div v-else class="flex justify-end">
           <button class="btn">Cerrar</button>
         </div>
+      </form>
+    </div>
+  </dialog>
+
+  <dialog id="resolution_dialog" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg">Resolución</h3>
+      
+      <p>Fecha del incidente: {{ rowIncidentData.fecha }} ({{ rowIncidentData.incidencia }})</p>
+      <p>Empleado: {{ rowIncidentData.empleado }}</p>
+      <div class="py-4">
+        <FormKit type="form" 
+            v-model="formResolution"
+            @submit="submitResolution" 
+            submit-label="Enviar"
+            :submit-attrs="{
+            help: ''
+            }"
+        >
+            <FormKit
+                v-model="value"
+                name="decision"
+                type="radio"
+                label="Corrección propuesta"
+                :options="['aceptada', 'rechazada']"
+                help="¿aceptas la corrección propuesta por el empleado?"
+                /> 
+            <FormKit type="textarea" name="statement_text" label="Motivación" validation="required" :rows="4" />
+        </FormKit>
+      </div>
+      
+      <form method="dialog" class="modal-action">
+        <button class="btn">Cancelar</button>
       </form>
     </div>
   </dialog>
