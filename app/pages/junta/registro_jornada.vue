@@ -26,7 +26,7 @@ const estados = [
     { value: 'cerrado_auto', label: 'Cerrado automático' },
 ]
 
-const url_empleados = computed(() => `${config.public.api}/employees/byname`)
+const url_empleados = computed(() => `${config.public.api}/employees/getall`)
 
 async function getEmpleados() {
     try {
@@ -165,7 +165,7 @@ onMounted(async () => {
 
 <template>
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">Gestión de Incidentes de Fichajes</h1>
+        <h1 class="text-2xl font-bold mb-4">Incidentes de Fichajes</h1>
         
         <!-- Filtros -->
         <div class="flex flex-wrap gap-4 py-4 bg-base-200 p-4 rounded-lg mb-4">

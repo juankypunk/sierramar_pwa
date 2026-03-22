@@ -46,7 +46,6 @@ console.log('month:',current_month.value)
 watch(current_month, (new_month) => {
   console.log(`month_start is ${new_month}`)  
   console.log('inicio es:',inicio.value)
-  current_month.value=new_month
   getSignings()
 })
 
@@ -66,64 +65,69 @@ const url_extraworkedhours = computed(() => {
 const searchQuery = ref('')
 const gridColumns = ["fecha", "entrada", "salida", "tiempo"]
 
-function getSignings() {
+async function getSignings() {
+  console.log('llamado getSignings!')  
 // datos de los últimos fichajes
-  const {data} = useFetch(url_fichajes,{
-    headers: {
-      'Authorization': 'Bearer ' + accessToken.value,
+  try {
+    const data = await $fetch(url_fichajes.value, {
+      headers: {
+        'Authorization': 'Bearer ' + accessToken.value,
       },
-    method: 'POST',
-    body: {
-      range_start: inicio.value,
-      range_end: fin.value
-    },
-    onResponse({ response }) {
-        // Process the response data
-        if(response.status===200){
-            console.log('desde response en getSignings:',response._data)
-            fichajes.value = response._data   
-            getWorkedHours() 
-            getExtraWorkedHours()      
-        }else if(response.status===204) {
-          console.log('no hay datos')
-          fichajes.value = ''
-          workedhours.value = 0
-        }else{
-          //navigateTo('/')
-        }
-      }
-  })
-}
-
-function getWorkedHours(){
-  console.log('dentro de getworked:',url_workedhours.value)
-  const {data2} = useFetch(url_workedhours.value,{
-    headers: {
-      'Authorization': 'Bearer ' + accessToken.value,
-    },
-    method: 'POST',
+      method: 'POST',
       body: {
-       range_start: inicio.value,
-       range_end: fin.value
-    },
-    onResponse({ response }) {
-      // Process the response data
-      if(response.status===200){
-        console.log('desde workedhours:',response._data)
-        workedhours.value = response._data[0].horas_trabajadas         
-      }else if(response.status===204) {
-        console.log('no hay datos')
-        workedhours.value = 0
-      }else{
-        //navigateTo('/')
+        range_start: inicio.value,
+        range_end: fin.value
       }
+    })
+    
+    if (data) {
+      console.log('desde response en getSignings:', data)
+      fichajes.value = data
+      getWorkedHours()
+      getExtraWorkedHours()
+    } else {
+      console.log('no hay datos')
+      fichajes.value = ''
+      workedhours.value = 0
     }
-  })
+  } catch (error) {
+    console.error('Error al obtener fichajes:', error)
+    fichajes.value = ''
+    workedhours.value = 0
+  }
 }
 
-function getExtraWorkedHours(){
+async function getWorkedHours(){
+  console.log('dentro de getworked:',url_workedhours.value)
+  try {
+    const data = await $fetch(url_workedhours.value, {
+      headers: {
+        'Authorization': 'Bearer ' + accessToken.value,
+      },
+      method: 'POST',
+      body: {
+        range_start: inicio.value,
+        range_end: fin.value
+      }
+    })
+
+    if (data) {
+      console.log('desde workedhours:', data)
+      workedhours.value = data[0].horas_trabajadas
+    } else {
+      console.log('no hay datos')
+      workedhours.value = 0
+    }
+  } catch (error) {
+    console.error(error)
+    workedhours.value = 0
+  }
+}
+
+async function getExtraWorkedHours(){
   console.log('dentro de getworked:',url_extraworkedhours.value)
-  const {data3} = useFetch(url_extraworkedhours.value,{
+  try {
+    const data = await $fetch(url_extraworkedhours.value, {
     headers: {
       'Authorization': 'Bearer ' + accessToken.value,
     },
@@ -132,19 +136,19 @@ function getExtraWorkedHours(){
       range_start: inicio.value,
       range_end: fin.value
     },
-    onResponse({ response }) {
-      // Process the response data
-      if(response.status===200){
-        console.log('desde extraworkedhours:',response._data)
-        extraworkedhours.value = response._data[0].horas_extra_trabajadas         
-      }else if(response.status===204) {
-        console.log('no hay datos')
-        extraworkedhours.value = 0
-      }else{
-        //navigateTo('/')
-      }
+    })
+
+    if (data) {
+      console.log('desde extraworkedhours:', data)
+      extraworkedhours.value = data[0].horas_extra_trabajadas
+    } else {
+      console.log('no hay datos')
+      extraworkedhours.value = 0
     }
-  })
+  } catch (error) {
+    console.error(error)
+    extraworkedhours.value = 0
+  }
 }
 
 function increaseMonth(){
