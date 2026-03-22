@@ -20,20 +20,20 @@
     "@nuxtjs/color-mode": "latest",
     "@nuxtjs/leaflet": "^1.3.2",
     "@nuxtjs/tailwindcss": "latest",
-    "@types/node": "^25.2.2",
+    "@types/node": "^25.5.0",
     "@vite-pwa/nuxt": "^1.1.0",
     "@vueuse/core": "^14.2.0",
     "@vueuse/nuxt": "^14.2.0",
-    "autoprefixer": "^10.4.24",
+    "autoprefixer": "^10.4.27",
     "chart.js": "^4.5.1",
-    "daisyui": "latest",
+    "daisyui": "^5.5.19",
     "jwt-decode": "^4.0.0",
     "md5": "^2.3.0",
-    "nuxt": "latest",
-    "postcss": "^8.5.6",
-    "vue": "^3.5.27",
+    "nuxt": "^4.4.2",
+    "postcss": "^8.5.8",
+    "vue": "^3.5.30",
     "vue-cal": "^4.10.2",
     "vue-chartjs": "^5.3.3",
-    "vue-router": "^4.6.4"
+    "vue-router": "^5.0.4"
   }
 }

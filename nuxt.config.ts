@@ -127,5 +127,24 @@ export default defineNuxtConfig({
   },
   plugins: ["~/plugins/ChartJsPlugin.client.ts"],
 
-  ssr: false
+  ssr: false,
+  
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        '@formkit/core',
+        'workbox-window',
+        '@formkit/icons',
+        'chart.js',
+        'workbox-precaching',
+        'workbox-routing',
+        'workbox-strategies',
+        'workbox-expiration',
+        'workbox-cacheable-response',
+        'jwt-decode',
+      ]
+    }
+  }
 })
