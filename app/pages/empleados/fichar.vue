@@ -82,7 +82,12 @@ import {jwtDecode} from 'jwt-decode'
       method: 'GET',
     });
     console.log('incidents:',data.value);
-    incidents_count.value = data.value.length
+    if(data.value.length>0){
+      console.log('tienes incidentes abiertos')
+          incidents_count.value = data.value.length
+    }else{
+      console.log('no tienes incidentes abiertos')
+    }
   }   
 
 
