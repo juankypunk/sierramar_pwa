@@ -1,10 +1,22 @@
 <script setup>
+
+import { jwtDecode } from "jwt-decode"
+
 definePageMeta({
     middleware: ["auth"],
 })
 
 const config = useRuntimeConfig()
 const accessToken = useAccessToken()
+const user_data = ref('')
+
+if(accessToken.value){
+    console.log('accessToken:',accessToken.value)
+    const decoded = jwtDecode(accessToken.value)
+    console.log('decoded:',decoded)
+    user_data.value = decoded
+}
+
 
 const fecha_inicio = ref('')
 const fecha_fin = ref('')
@@ -15,7 +27,17 @@ const incidentes = ref([])
 const empleados = ref([])
 const rowIncidentData = ref({})
 const loading = ref(false)
-const formResolution = ref({})  
+const formResolution = ref({
+    incident_id: '',
+    id_user: '',
+    proposed_entry: '',
+    proposed_exit: '',
+    statement_text: '',
+    resolved_by: '',
+    decision: '',
+    resolution_comment: '',
+})  
+
 
 const estados = [
     { value: '', label: 'Todos' },
@@ -72,50 +94,32 @@ async function buscar() {
 }
 
 async function submitResolution(formData) {
+    console.log('Datos del formulario de resolución:', formData)
+    
+    const resolutionPayload = {
+        ...formData,
+        incident_id: rowIncidentData.value.id,
+        proposed_entry: rowIncidentData.value.entrada_propuesta,
+        proposed_exit: rowIncidentData.value.salida_propuesta,
+        statement_text: rowIncidentData.value.declaracion,
+        resolved_by: user_data.value.id,
+
+    }
+
     try {
-        await $fetch(`${config.public.api}/employees/incidents/${rowIncidentData.value.id}/resolve`, {
+        await $fetch(`${config.public.api}/employees/incidents/createresolution`, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + accessToken.value,
             },
-            body: formData
+            body: resolutionPayload
         })
-        rowIncidentData.value.estado = 'resuelto'
         closeResolutionDialog()
+        buscar()
     } catch (error) {
         console.error('Error al resolver incidente:', error)
     }
 }   
-
-
-async function aceptar(incident) {
-    try {
-        await $fetch(`${config.public.api}/employees/incidents/${incident.id}/approve`, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + accessToken.value,
-            },
-        })
-        incident.status = 'aprobado'
-    } catch (error) {
-        console.error('Error al aceptar incidente:', error)
-    }
-}
-
-async function rechazar(incident) {
-    try {
-        await $fetch(`${config.public.api}/employees/incidents/${incident.id}/reject`, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + accessToken.value,
-            },
-        })
-        incident.status = 'rechazado'
-    } catch (error) {
-        console.error('Error al rechazar incidente:', error)
-    }
-}
-
 
 
 const formatDate = (ts) => {
@@ -331,14 +335,13 @@ onMounted(async () => {
             }"
         >
             <FormKit
-                v-model="value"
                 name="decision"
                 type="radio"
                 label="Corrección propuesta"
-                :options="['aceptada', 'rechazada']"
+                :options="['aprobado', 'rechazado']"
                 help="¿aceptas la corrección propuesta por el empleado?"
                 /> 
-            <FormKit type="textarea" name="statement_text" label="Motivación" validation="required" :rows="4" />
+            <FormKit type="textarea" name="resolution_comment" label="Motivación" validation="required" :rows="4" />
         </FormKit>
       </div>
       

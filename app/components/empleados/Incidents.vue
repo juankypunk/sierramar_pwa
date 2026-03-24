@@ -60,7 +60,7 @@ const url_incidents = computed(() => {
   return config.public.api + `/employees/${id.value}/getincidents`    
 })
 const url_statement = computed(() => {
-  return config.public.api + `/employees/${id.value}/createstatement`    
+  return config.public.api + `/employees/incidents/createstatement`    
 })  
 
 const getIncidents = async () => {
@@ -144,6 +144,7 @@ async function submitStatement(data) {
     }
   })
   closeStatementDialog()
+  getIncidents()  // Refresca la lista de incidentes para mostrar el nuevo estado
 } 
 
 const formatDate = (date) => {

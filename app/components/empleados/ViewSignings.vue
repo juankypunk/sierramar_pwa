@@ -63,7 +63,7 @@ const url_extraworkedhours = computed(() => {
       return `${config.public.api}/employees/${id.value}/getextraworkedhours`
 })
 const searchQuery = ref('')
-const gridColumns = ["fecha", "entrada", "salida", "tiempo"]
+const gridColumns = ["fecha", "entrada", "salida", "duración", "incidencia"]
 
 async function getSignings() {
   console.log('llamado getSignings!')  
@@ -194,7 +194,7 @@ onMounted(() => {
       <div class="badge badge-primary badge-outline">{{ extraworkedhours }}</div>
     </div>
     <div class="tooltip" data-tip="horas/mes">
-      <div class="badge badge-outline">{{ workedhours }}</div>
+      <div class="badge badge-outline">{{ workedhours }} </div>
     </div>
   </div>
     
@@ -226,6 +226,8 @@ onMounted(() => {
         :filter-key="searchQuery"
         v-model:rowdata="rowdata"
         @update:rowdata="showDialog(rowdata)"
+        :show-row-count="false"
+
     >
     </MyGrid>
   </div>

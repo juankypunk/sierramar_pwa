@@ -5,8 +5,7 @@ definePageMeta({
 })
 const route = useRoute()
 const hoy = new Date();
-const fechaFormateada = hoy.format('DD-MM-YYYY');
-
+//const fechaFormateada = hoy.format('DD-MM-YYYY');
 
 </script>
 <template>
@@ -18,7 +17,7 @@ const fechaFormateada = hoy.format('DD-MM-YYYY');
   </div>
   <EmpleadosViewSignings :id="route.params.id"/>
   <div class="flex justify-center">
-    <p class="px-5 py-5">En Sierramar, a {{ fechaFormateada }}</p>
+    <p class="px-5 py-5">En Sierramar, a {{ hoy.toLocaleDateString() }}</p>
   </div>
   <div class="flex justify-center">
     <div class="px-24">
