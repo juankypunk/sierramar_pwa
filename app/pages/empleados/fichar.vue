@@ -251,7 +251,7 @@ onMounted(() => {
           <li><strong>Calendario:</strong> Accede al icono de calendario para ver tu planificación mensual y días festivos.</li>
           <li><strong>Historial:</strong> Consulta tus registros pasados y horas totales pulsando el icono del reloj.</li>
           <li><strong>Incidentes:</strong> Si aparece un aviso rojo, tienes una incidencia de fichaje que requiere tu atención (una declaración responsable).</li>
-          <li><strong>Compensación:</strong> En la parte superior verás las horas acreditables por festivos que han coincidido con tus descansos.</li>
+          <li><strong>Compensación:</strong> En el calendario verás también las horas acreditables por festivos que han coincidido con tus descansos.</li>
         </ul>
       </div>
       <div class="modal-action">
