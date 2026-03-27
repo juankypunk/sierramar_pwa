@@ -282,8 +282,8 @@ onMounted(() => {
           <li><strong>Fichar:</strong> Pulsa el botón principal para registrar tu entrada o salida. Recuerda que el sistema registra tu ubicación.</li>
           <li><strong>Calendario:</strong> Accede al icono de calendario para ver tu planificación mensual y días festivos.</li>
           <li><strong>Historial:</strong> Consulta tus registros pasados y horas totales pulsando el icono del reloj.</li>
-          <li><strong>Incidentes:</strong> Si aparece una bolita roja en el triángulo de incidentes, tienes una incidencia de fichaje que requiere tu atención (una declaración responsable). 
-            También puedes crear una nueva incidencia si lo necesitas pulsando sobre el icono de '+'.</li>
+          <li><strong>Incidencias:</strong> Si ves una bolita roja sobre el icono del triángulo, tienes una incidencia de fichaje que requiere tu atención (una declaración responsable). 
+            Si lo necesitas, también puedes crear una incidencia pulsando sobre el icono de '+'.</li>
           <li><strong>Compensación:</strong> En el calendario verás también las horas acreditables por festivos que han coincidido con tus descansos.</li>
         </ul>
       </div>

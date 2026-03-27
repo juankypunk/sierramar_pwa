@@ -188,7 +188,7 @@ onMounted(() => {
 <div class="container mx-auto">
   <div class="flex justify-start" >
     <h1 class="px-5">Trabajador:</h1>
-    <UserName :id="id" :shortname="true" @click=""/>
+    <UserName :id="props.id.toString()" :shortname="true" @click=""/>
     <div class="px-2">{{ months[current_month] }} {{ current_year }}</div>
     <div v-if="extraworkedhours" class="tooltip px-2" data-tip="extras/mes">
       <div class="badge badge-primary badge-outline">{{ extraworkedhours }}</div>

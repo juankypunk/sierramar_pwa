@@ -197,7 +197,7 @@ onMounted(() => {
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info h-6 w-6 shrink-0">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
       </svg>
-      <span>Haz clic sobre un incidente para ver sus detalles y gestionarlo</span>
+      <span>Haz clic sobre una incidencia para ver sus detalles y/o gestionarla</span>
     </div>
     <MyGrid
         :data="incidentes"
@@ -210,7 +210,7 @@ onMounted(() => {
     </MyGrid>
   </div>
   <div v-else class="py-5">
-    No hay incidentes registrados en este periodo.
+    No hay incidencias registradas en este periodo.
   </div>
 
   <dialog id="incident_detail" class="modal">
@@ -218,7 +218,7 @@ onMounted(() => {
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
-      <h3 class="font-bold text-lg">Incidente #{{ rowdata.id }}</h3>
+      <h3 class="font-bold">Incidencia #{{ rowdata.id }}</h3>
       <div class="tabs tabs-border">
         <label class="tab" aria-label="Detalles">
           <input type="radio" name="incident_tabs" class="tab" aria-label="Detalles" checked="checked" />
@@ -260,6 +260,7 @@ onMounted(() => {
           </table>
         </div>    
       </div>
+
       <label class="tab">
           <input type="radio" name="incident_tabs" class="tab" />
           Declaración
@@ -312,8 +313,8 @@ onMounted(() => {
       </form>
       <h3 class="font-bold text-lg">Declaración responsable</h3>
       
-      <p>Fecha del incidente: {{ rowdata.fecha }} ({{ rowdata.incidencia }})</p>
-      <p class="text-sm py-5">Indica las horas de entrada y salida que propones para corregirlo, así como una breve explicación de lo ocurrido.</p>
+      <p>Fecha de la incidencia: {{ rowdata.fecha }} ({{ rowdata.incidencia }})</p>
+      <p class="text-sm py-5">Indica las horas de entrada y salida que propones para corregirla, así como una breve explicación de lo ocurrido.</p>
       <div>
       <FormKit type="form" 
         v-model="formStatement"

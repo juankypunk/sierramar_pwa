@@ -169,7 +169,7 @@ onMounted(async () => {
 
 <template>
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">Incidentes de Fichajes</h1>
+        <h1 class="text-2xl font-bold mb-4">Incidencias en registro de jornadas</h1>
         
         <!-- Filtros -->
         <div class="flex flex-wrap gap-4 py-4 bg-base-200 p-4 rounded-lg mb-4">
@@ -323,7 +323,7 @@ onMounted(async () => {
       </form>
       <h3 class="font-bold text-lg">Resolución</h3>
       
-      <p>Fecha del incidente: {{ rowIncidentData.fecha }} ({{ rowIncidentData.incidencia }})</p>
+      <p>Fecha de la incidencia: {{ rowIncidentData.fecha }} ({{ rowIncidentData.incidencia }})</p>
       <p>Empleado: {{ rowIncidentData.empleado }}</p>
       <div class="py-4">
         <FormKit type="form" 

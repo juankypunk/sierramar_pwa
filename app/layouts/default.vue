@@ -226,7 +226,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
                             </span>
-                            <span class="badge" @click="navigateTo('/junta/registro_jornada')">Incidentes fichajes</span>
+                            <span class="badge" @click="navigateTo('/junta/registro_jornada')">Incidencias en fichajes</span>
                         </div>
                         </label>
                     </li>

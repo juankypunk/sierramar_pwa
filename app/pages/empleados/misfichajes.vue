@@ -5,9 +5,7 @@ definePageMeta({
 })
 const accessToken = useAccessToken();
 const user_data = jwtDecode(accessToken.value);
-const id = ref('');
-id.value = user_data.id.toString();
-console.log('empleado: ',id.value.toString());
+console.log('empleado: ',user_data.id);
 </script>
 
 <template>

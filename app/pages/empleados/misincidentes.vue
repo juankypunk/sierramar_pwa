@@ -19,7 +19,7 @@ console.log('empleado: ',id.value.toString());
             </svg>
         </span>
     </div>
-    <h2 class="text-2xl font-bold mb-4 flex justify-center">Incidentes en registro de jornada</h2>
+    <h2 class="text-2xl font-bold mb-4 flex justify-center">Incidencias en registro de jornada</h2>
     <EmpleadosIncidents :id="user_data.id.toString()"/> 
 </div>
 </template>
