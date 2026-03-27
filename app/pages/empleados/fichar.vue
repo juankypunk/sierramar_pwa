@@ -161,6 +161,31 @@ function showInfoDialog() {
   if (dialog) dialog.showModal()
 }
 
+function showManualIncidentDialog() {
+  const dialog = document.getElementById('manual_incident_modal')
+  if (dialog) dialog.showModal()
+}
+
+async function submitManualIncident(formData, node) {
+  try {
+    await $fetch(`${config.public.api}/employees/newincident`, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken.value,
+      },
+      body: {
+        id_user: user_data.id,
+        ...formData
+      }
+    })
+    document.getElementById('manual_incident_modal').close()
+    node.reset()
+    getIncidents()
+  } catch (error) {
+    console.error('Error al crear incidente manual:', error)
+  }
+}
+
 onMounted(() => {
     console.log(`the component is now mounted.`)
     console.log('ultimo fichaje:',ultimoFichaje.value)
@@ -190,6 +215,13 @@ onMounted(() => {
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
           </span> 
+          <span @click="showManualIncidentDialog" class="cursor-pointer">
+            <div class="tooltip" data-tip="Informar incidencia">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </div>
+          </span>
           <div class="indicator">
             <span v-if="incidents_count>0" class="indicator-item status status-error animate-bounce" @click="navigateTo('/empleados/misincidentes')"></span>
             <div @click="navigateTo('/empleados/misincidentes')">
@@ -250,7 +282,8 @@ onMounted(() => {
           <li><strong>Fichar:</strong> Pulsa el botón principal para registrar tu entrada o salida. Recuerda que el sistema registra tu ubicación.</li>
           <li><strong>Calendario:</strong> Accede al icono de calendario para ver tu planificación mensual y días festivos.</li>
           <li><strong>Historial:</strong> Consulta tus registros pasados y horas totales pulsando el icono del reloj.</li>
-          <li><strong>Incidentes:</strong> Si aparece un aviso rojo, tienes una incidencia de fichaje que requiere tu atención (una declaración responsable).</li>
+          <li><strong>Incidentes:</strong> Si aparece una bolita roja en el triángulo de incidentes, tienes una incidencia de fichaje que requiere tu atención (una declaración responsable). 
+            También puedes crear una nueva incidencia si lo necesitas pulsando sobre el icono de '+'.</li>
           <li><strong>Compensación:</strong> En el calendario verás también las horas acreditables por festivos que han coincidido con tus descansos.</li>
         </ul>
       </div>
@@ -259,6 +292,31 @@ onMounted(() => {
           <button class="btn btn-primary">Entendido</button>
         </form>
       </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+
+  <dialog id="manual_incident_modal" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg mb-4">Informar Incidencia</h3>
+      <p class="text-sm mb-6">Utiliza este formulario si has tenido algún problema para fichar (olvido, falta de cobertura, etc.)</p>
+      
+      <FormKit type="form" @submit="submitManualIncident" submit-label="Enviar" :submit-attrs="{ classes: { input: 'btn btn-primary w-full' } }">
+        <FormKit type="datetime-local" name="proposed_entry" label="Entrada que propones" validation="required" />
+        <FormKit type="datetime-local" name="proposed_exit" label="Salida que propones" validation="required" />
+        <FormKit 
+          type="textarea" 
+          name="statement_text" 
+          label="Explicación de lo ocurrido" 
+          placeholder="Ej: Olvidé fichar al entrar..." 
+          validation="required|length:10" 
+        />
+      </FormKit>
     </div>
     <form method="dialog" class="modal-backdrop">
       <button>close</button>
