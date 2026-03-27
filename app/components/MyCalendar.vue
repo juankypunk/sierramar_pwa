@@ -53,6 +53,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     const current_month = ref(d.getMonth())
     console.log('range_start:',range_start)
     console.log('range_end:',range_end)
+    // Definición de los rangos para el mes actual (usados en EmpleadosCompensationHours)
+    const today = new Date();
+    const currentMonthStart = computed(() => new Date(today.getFullYear(), today.getMonth(), 1))
+    const currentMonthEnd = computed(() => new Date(today.getFullYear(), today.getMonth() + 1, 0))
+
     
     const inicio = computed(() => {
       return new Date(current_year.value,current_month.value)
@@ -102,7 +107,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 //planning.value=data.value;
                 currentEvents.value = data.value;
                 events.value = [...public_holidays.value, ...currentEvents.value,];
-                if(id.value){
+                if(props.id){
                     getHolidays();
                 }
             }else{
@@ -153,14 +158,26 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 <template>
     <div class="container mx-auto">
-      <FormKit v-if="calendarios"
-            type="select"
-            label="Calendarios disponibles"
-            placeholder=""
-            v-model="calendarSelected"
-            :options="calendarios"
-            @update:model-value="getPlanning"
-          />
+        <div class="flex justify-between">
+            <FormKit v-if="calendarios"
+                type="select"
+                label="Calendarios disponibles"
+                placeholder=""
+                v-model="calendarSelected"
+                :options="calendarios"
+                @update:model-value="getPlanning"
+            />
+            
+            <div v-if="props.id" class="flex justify-center py-5" >
+            <EmpleadosCompensationHours 
+                :id="props.id" 
+                :range_start="currentMonthStart" 
+                :range_end="currentMonthEnd"
+                label="normal"
+                /> 
+            </div>
+        </div>
+        
         <vue-cal 
             hide-view-selector
             locale="es"

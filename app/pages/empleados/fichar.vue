@@ -16,7 +16,7 @@ import {jwtDecode} from 'jwt-decode'
   const url_events = config.public.api + '/employees/' + user_data.id + '/events'
   const url_signing = config.public.api + '/employees/sign';
   const url_incidents = config.public.api + '/employees/' + user_data.id + '/getincidents'
-
+  
   const estadoFichaje = ref('')
   const buttonColor = ref('')
   const ultimoFichaje = ref('')
@@ -47,8 +47,7 @@ import {jwtDecode} from 'jwt-decode'
           mylink.value = myMap.value + ultimoLugar.value
           buttonColor.value = ultimaAccion.value == 'E' ? 'background-color: orange; color: white' : 'background-color: green; color: white'
           console.log('Lugar Fichaje:',ultimoLugar.value)
-          console.log('myurl:',myurl.value)
-          console.log('mylink:',mylink.value)
+          console.log('mylink:', mylink.value)
         }else if(response.status===204) {
           console.log('primer fichaje, todavía no hay datos')
         }else{
@@ -57,7 +56,15 @@ import {jwtDecode} from 'jwt-decode'
       }
   });
 
-  console.log('ultimo estado:',ultimoFichaje.value.accion)
+  console.log('ultimo estado:', ultimoFichaje.value)
+
+  const today = new Date();
+  const currentDayStart = computed(() => new Date(today.getFullYear(), today.getMonth(), today.getDate()));
+  const currentDayEnd = computed(() => new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)); // Inicio del día siguiente
+
+  // Definición de los rangos para el mes actual (usados en EmpleadosCompensationHours)
+  const currentMonthStart = computed(() => new Date(today.getFullYear(), today.getMonth(), 1))
+  const currentMonthEnd = computed(() => new Date(today.getFullYear(), today.getMonth() + 1, 0))
 
   const getPlanning = async () => {
     const {data} = await useFetch(url_events,{
@@ -66,14 +73,15 @@ import {jwtDecode} from 'jwt-decode'
         },
       method: 'POST',
       body: {
-        "range_start": "3-3-2026",
-        "range_end": "4-3-2026",
+        "range_start": currentDayStart.value,
+        "range_end": currentDayEnd.value,
         "label": "normal",
       },
     });
     console.log('events:',data.value);
   }
   
+
   const getIncidents = async () => {
     const {data} = await useFetch(url_incidents,{
       headers: {
@@ -148,12 +156,16 @@ import {jwtDecode} from 'jwt-decode'
   });  
 }
 
+function showInfoDialog() {
+  const dialog = document.getElementById('info_modal')
+  if (dialog) dialog.showModal()
+}
+
 onMounted(() => {
     console.log(`the component is now mounted.`)
     console.log('ultimo fichaje:',ultimoFichaje.value)
     getPlanning()
     getIncidents()
-
 })
 </script>
 
@@ -163,7 +175,7 @@ onMounted(() => {
       <figure><NuxtImg src="/images/fichar.png" alt="fichar"/></figure>
       <div class="card-body">
         <div class="card-title flex justify-center py-5 gap-8">
-          <span>
+          <span @click="showInfoDialog" class="cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
             </svg>
@@ -187,6 +199,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
+
         
         <div class="flex gap-8 py-2">
           Estado: {{ (ultimaAccion=='E')? 'TRABAJANDO 💪' : 'LIBRE 🌈'  }}    
@@ -224,6 +237,33 @@ onMounted(() => {
       </div>
     </div>
   </div>
+
+  <dialog id="info_modal" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg text-primary">Guía de Uso</h3>
+      <div class="py-4 space-y-4 text-sm">
+        <p>Bienvenido al portal del empleado de Sierramar. Aquí tienes un resumen de lo que puedes hacer:</p>
+        <ul class="list-disc pl-5 space-y-2">
+          <li><strong>Fichar:</strong> Pulsa el botón principal para registrar tu entrada o salida. Recuerda que el sistema registra tu ubicación.</li>
+          <li><strong>Calendario:</strong> Accede al icono de calendario para ver tu planificación mensual y días festivos.</li>
+          <li><strong>Historial:</strong> Consulta tus registros pasados y horas totales pulsando el icono del reloj.</li>
+          <li><strong>Incidentes:</strong> Si aparece un aviso rojo, tienes una incidencia de fichaje que requiere tu atención (una declaración responsable).</li>
+          <li><strong>Compensación:</strong> En la parte superior verás las horas acreditables por festivos que han coincidido con tus descansos.</li>
+        </ul>
+      </div>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn btn-primary">Entendido</button>
+        </form>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
 
 </template>
 

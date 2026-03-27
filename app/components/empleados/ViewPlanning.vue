@@ -198,7 +198,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 
 <template>
-    <div class="container mx-auto">        
+    <div class="container mx-auto"> 
         <div class="flex justify-between" >
             <div class="flex justify-start gap-2">
                 <h1 class="">Trabajador:</h1>
@@ -207,9 +207,17 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             <div class="flex gap-4">
                 <div class="">{{ months[current_month] }} {{ current_year }}</div>
                 <div class="tooltip" data-tip="horas previstas">
-                    <span class="badge badge-outline">{{ scheduledhours }} horas</span>
+                    <span class="badge badge-outline">{{ scheduledhours }}</span>
                 </div>
             </div>
+            <div v-if="props.id" >
+            <EmpleadosCompensationHours 
+                :id="props.id" 
+                :range_start="inicio" 
+                :range_end="fin"
+                label="normal"
+                /> 
+            </div>            
             <!--
             <div class="flex">
                 <span @click="" class="tooltip" data-tip="descargar CSV">
@@ -220,7 +228,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             </div>
             -->
         </div>
-        <div class="flex justify-center py-2 gap-2">
+        <div class="flex justify-center gap-2">
             <div @click="decreaseMonth()" >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                      <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -237,10 +245,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
-            </div>
-            
-            
+            </div>                   
         </div>
+
         <div class="flex justify-between py-5" >
             <div>
                 <FormKit 
@@ -251,81 +258,83 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                     :options="calendarios"
                     @update:model-value="getPlanning()"
                 />
-            </div>
+            </div> 
             <div class="">
                 <button class="btn tooltip" data-tip="Nuevo evento" @click="showDialogNewEvent()">+</button>
             </div>
         </div>
     </div>
     
-    <div v-if="planning" class="py-5">
-    <MyGrid
-        :data="planning"
-        :columns="gridColumns"
-        :filter-key="searchQuery"
-        v-model:rowdata="rowdata"
-        table-size="table-sm"
-        @update:rowdata="showDialogCurrentEvent()"
-    >
-    </MyGrid>
-
+    <div v-if="planning" class="px-10">
+        <MyGrid 
+            :data="planning"
+            :columns="gridColumns"
+            :filter-key="searchQuery"
+            v-model:rowdata="rowdata"
+            table-size="table-sm"
+            @update:rowdata="showDialogCurrentEvent()"
+            :show-row-count="false"
+        >
+        </MyGrid>
+    </div>
+    
     <dialog id="newevent_form" class="modal">
         <div class="modal-box">
-        <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-        </form>
-        <h3 class="font-bold text-lg">Nuevo evento</h3>
-        <div class="py-4">
-            <FormKit 
-            type="form" 
-            @submit="createEvent" 
-            v-model="newEvent"
-            submit-label="Aceptar"
-            :actions="true"
-            :submit-attrs="{
-            help: ''
-            }"
-            >
-            <FormKit
-                type="text"
-                name="empleado"
-                label="Título"
-                help=""
-            />
-            <FormKit
-                type="datetime-local"
-                name="inicia_formated"
-                label="Inicia"
-                help=""
-            />
-            <FormKit
-                type="datetime-local"
-                name="termina_formated"
-                label="Termina"
-                help=""
-            />
-            <FormKit
-                type="select"
-                name="recurrence"
-                label="Repetición"
-                :options="[
-                {label:'No se repite',value:'none'},
-                {label:'Diariamente',value:'daily'},
-                {label:'Semanalmente',value:'weekly'},
-                {label:'Cada dos semanas',value:'2weeks'},
-                {label:'De lunes a viernes',value:'weekdays'},
-                {label:'Mensualmente',value:'monthly'},
-                ]"
-            />
-            <FormKit
-                type="text"
-                name="label"
-                label="Etiqueta"
-            />
-        </FormKit>    
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg">Nuevo evento</h3>
+            <div class="py-4">
+                <FormKit 
+                type="form" 
+                @submit="createEvent" 
+                v-model="newEvent"
+                submit-label="Aceptar"
+                :actions="true"
+                :submit-attrs="{
+                help: ''
+                }"
+                >
+                <FormKit
+                    type="text"
+                    name="empleado"
+                    label="Título"
+                    help=""
+                />
+                <FormKit
+                    type="datetime-local"
+                    name="inicia_formated"
+                    label="Inicia"
+                    help=""
+                />
+                <FormKit
+                    type="datetime-local"
+                    name="termina_formated"
+                    label="Termina"
+                    help=""
+                />
+                <FormKit
+                    type="select"
+                    name="recurrence"
+                    label="Repetición"
+                    :options="[
+                    {label:'No se repite',value:'none'},
+                    {label:'Diariamente',value:'daily'},
+                    {label:'Semanalmente',value:'weekly'},
+                    {label:'Cada dos semanas',value:'2weeks'},
+                    {label:'De lunes a viernes',value:'weekdays'},
+                    {label:'Mensualmente',value:'monthly'},
+                    ]"
+                />
+                <FormKit
+                    type="text"
+                    name="label"
+                    label="Etiqueta"
+                />
+                </FormKit>    
         </div> 
         <form method="dialog">
-            <!-- if there is a button in form, it will close the modal -->
+                <!-- if there is a button in form, it will close the modal -->
         </form>
         </div>
     </dialog>
@@ -399,5 +408,5 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
       </form>
     </div>
   </dialog>
-  </div>
+  
 </template>
