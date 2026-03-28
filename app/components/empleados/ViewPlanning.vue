@@ -217,13 +217,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             <div class="tooltip" data-tip="horas previstas">
                     <span class="badge badge-outline">{{ scheduledhours }}</span>
             </div>
-            <span @click="showDialogNewEvent" class="cursor-pointer">
-            <div class="tooltip" data-tip="crear incidencia">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-            </div>
-          </span>
                                   
             <!--
             <div class="flex">
@@ -254,30 +247,34 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 </svg>
             </div>                   
         </div>
-
-        <div  >
-            <div class="flex justify-between py-5" >
-                <FormKit 
-                    type="select"
-                    label="Calendarios disponibles"
-                    placeholder=""
-                    v-model="calendarSelected"
-                    :options="calendarios"
-                    @update:model-value="getPlanning()"
-                />
-                    <EmpleadosCompensationHours 
-                        :id="props.id" 
-                        :range_start="inicio" 
-                        :range_end="fin"
-                        label="normal"
-                    /> 
-            </div> 
-            
-        </div>
-        
+        <div class="flex justify-between" >
+            <FormKit 
+                type="select"
+                label="Calendarios disponibles"
+                placeholder=""
+                v-model="calendarSelected"
+                :options="calendarios"
+                @update:model-value="getPlanning()"
+            />
+            <span @click="showDialogNewEvent" class="cursor-pointer">
+                <div class="tooltip" data-tip="crear incidencia">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                </div>
+            </span>
+             
+        </div> 
     </div>
-    
-    <div v-if="planning" class="px-10">
+    <div class="px-10">
+        <EmpleadosCompensationHours 
+            :id="props.id" 
+            :range_start="inicio" 
+            :range_end="fin"
+            label="normal"
+        />
+    </div>
+    <div v-if="planning" class="px-10 py-5">
         <MyGrid 
             :data="planning"
             :columns="gridColumns"

@@ -82,7 +82,7 @@ const getHolidayCompensationHours = async () => {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
         <div>
-            <h3 class="font-bold">Compensación: {{ compensationhours }}h ({{ compensableDaysCount }} día)</h3>
+            <h3 class="font-bold">Compensación acreditada: {{ compensationhours }} ({{ compensableDaysCount }} día)</h3>
             <div class="text-xs">
                 por festivo(s) en descanso: 
                 <span class="italic">{{ formattedHolidayDates }}</span>
