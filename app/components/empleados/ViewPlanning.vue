@@ -205,7 +205,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 <template>
     <div class="container mx-auto"> 
-        <div class="flex justify-between" >
+        <div class="flex justify-between px-5" >
             <div class="flex justify-start gap-2">
                 <UserName :id="id" :shortname="true" @click=""/>
             </div>
@@ -246,7 +246,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 </svg>
             </div>                   
         </div>
-        <div class="flex justify-between" >
+        <div class="flex justify-between px-5" >
             <FormKit 
                 type="select"
                 label="Calendarios disponibles"
@@ -273,7 +273,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             label="normal"
         />
     </div>
-    <div v-if="planning" class="px-10 py-5">
+    <div v-if="planning" class="px-5 py-5">
         <MyGrid 
             :data="planning"
             :columns="gridColumns"
