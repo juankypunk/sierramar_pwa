@@ -42,7 +42,13 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     const fin = computed(() => {
         return new Date(current_year.value,current_month.value + 1);
     })
-    
+    const inicio_str = computed(() => {
+        return inicio.value.toLocaleDateString('es-ES').replace(/\//g, '-')  // DD-MM-YYYY
+    })
+    const fin_str = computed(() => {
+        return fin.value.toLocaleDateString('es-ES').replace(/\//g, '-')  // DD-MM-YYYY
+    })
+
     watch(current_month, (new_month) => {
         console.log(`month_start is ${new_month}`);
         console.log('inicio es:',inicio.value);
@@ -206,11 +212,19 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             </div>
             <div class="flex gap-4">
                 <div class="">{{ months[current_month] }} {{ current_year }}</div>
-                <div class="tooltip" data-tip="horas previstas">
-                    <span class="badge badge-outline">{{ scheduledhours }}</span>
-                </div>
+                
             </div>
-                        
+            <div class="tooltip" data-tip="horas previstas">
+                    <span class="badge badge-outline">{{ scheduledhours }}</span>
+            </div>
+            <span @click="showDialogNewEvent" class="cursor-pointer">
+            <div class="tooltip" data-tip="crear incidencia">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </div>
+          </span>
+                                  
             <!--
             <div class="flex">
                 <span @click="" class="tooltip" data-tip="descargar CSV">
@@ -228,11 +242,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                 </svg>
             </div>
             <span v-if="inicio" class="">
-                {{ inicio.format('DD-MM-YYYY') }}
+                {{ inicio_str}}
              </span>
             <span>-</span>
             <span v-if="fin" class="">
-                 {{ fin.format('DD-MM-YYYY') }}        
+                 {{ fin_str }}        
             </span>
             <div @click="increaseMonth()" >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -258,10 +272,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                         label="normal"
                     /> 
             </div> 
-            <div class="">
-                <button class="btn tooltip" data-tip="Nuevo evento" @click="showDialogNewEvent()">+</button>
-            </div>
+            
         </div>
+        
     </div>
     
     <div v-if="planning" class="px-10">
