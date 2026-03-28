@@ -210,14 +210,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                     <span class="badge badge-outline">{{ scheduledhours }}</span>
                 </div>
             </div>
-            <div v-if="props.id" >
-            <EmpleadosCompensationHours 
-                :id="props.id" 
-                :range_start="inicio" 
-                :range_end="fin"
-                label="normal"
-                /> 
-            </div>            
+                        
             <!--
             <div class="flex">
                 <span @click="" class="tooltip" data-tip="descargar CSV">
@@ -248,8 +241,8 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
             </div>                   
         </div>
 
-        <div class="flex justify-between py-5" >
-            <div>
+        <div  >
+            <div class="flex justify-between py-5" >
                 <FormKit 
                     type="select"
                     label="Calendarios disponibles"
@@ -258,6 +251,12 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
                     :options="calendarios"
                     @update:model-value="getPlanning()"
                 />
+                    <EmpleadosCompensationHours 
+                        :id="props.id" 
+                        :range_start="inicio" 
+                        :range_end="fin"
+                        label="normal"
+                    /> 
             </div> 
             <div class="">
                 <button class="btn tooltip" data-tip="Nuevo evento" @click="showDialogNewEvent()">+</button>

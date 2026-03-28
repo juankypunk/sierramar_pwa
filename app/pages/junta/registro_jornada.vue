@@ -292,7 +292,7 @@ onMounted(async () => {
                     <td v-if="rowIncidentData.declaracion">{{ rowIncidentData.declaracion }}</td>
                   </tr>
                   <tr>
-                    <th>Fecha</th>
+                    <th>Fecha declaración</th>
                     <td v-if="rowIncidentData.declarado">{{ rowIncidentData.declarado }}</td>
                   </tr>
                 </tbody>

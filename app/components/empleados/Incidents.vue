@@ -249,12 +249,12 @@ onMounted(() => {
                 <td>{{ rowdata.duracion }}</td>
               </tr>
               <tr>
-                <th>Estado</th>
-                <td>{{ rowdata.estado }}</td>
-              </tr>
-              <tr>
                 <th>Detectado</th>
                 <td>{{ formatDate(rowdata.detectado) }}</td>
+              </tr>
+              <tr>
+                <th>Estado</th>
+                <td>{{ rowdata.estado }}</td>
               </tr>
             </tbody>
           </table>
@@ -282,7 +282,7 @@ onMounted(() => {
                     <td>{{ rowdata.declaracion }}</td>
                   </tr>
                   <tr>
-                    <th>Fecha</th>
+                    <th>Fecha declaración</th>
                     <td>{{ formatDate(rowdata.declarado) }}</td>
                   </tr>
                 </tbody>
