@@ -207,7 +207,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     <div class="container mx-auto"> 
         <div class="flex justify-between" >
             <div class="flex justify-start gap-2">
-                <h1 class="">Trabajador:</h1>
                 <UserName :id="id" :shortname="true" @click=""/>
             </div>
             <div class="flex gap-4">

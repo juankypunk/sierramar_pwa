@@ -29,7 +29,7 @@
         </ul>
       </div>
 
-      <h1 class="card-title">Cuadrante de <UserName :id="route.params.id" :shortname="true"/></h1>
+      <h1 class="card-title"><UserName :id="route.params.id" :shortname="true"/></h1>
       <MyCalendar 
         :id="parseInt(route.params.id)"
       />
