@@ -246,15 +246,55 @@ onMounted(() => {
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
-      <h3 class="font-bold text-lg">Detalles del fichaje</h3>
-      <div class="flex justify-start py-4">
-        <div class="px-4">Entrada: {{ rowdata.entrada }} horas </div>
-        <div class="px-4">Lugar:  <NuxtLink :to="`${link_entrada}`" class="link link-primary" target="_blank">mapa</NuxtLink></div>
-      </div>
-      <div v-if="rowdata.salida" class="flex justify-start py-4">
-        <div class="px-4">Salida: {{ rowdata.salida }} horas</div>
-        <div class="px-4">Lugar:  <NuxtLink :to="`${link_salida}`" class="link link-primary" target="_blank">mapa</NuxtLink></div>
-      </div>      
+      <div class="tabs tabs-border">
+                    <label class="tab" aria-label="Contacto">
+                        <input type="radio" name="my_tabs_2" class="tab" aria-label="Contacto" checked="checked" />
+                        Fichaje
+                    </label>
+                    <div class="tab-content border-base-300 bg-base-100 p-10">
+                        <table class="table table-sm table-zebra w-full">
+                            <tbody>
+                                <tr>
+                                  <td class="font-bold">Entrada</td><td>{{ rowdata.entrada }}</td>
+                                    <td class="font-bold">
+                                      <NuxtLink :to="`${link_entrada}`" class="link link-primary" target="_blank">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                        </svg>
+                                      </NuxtLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                  <td class="font-bold">Salida</td><td>{{ rowdata.salida }}</td>
+                                  <td class="font-bold">
+                                    <NuxtLink :to="`${link_salida}`" class="link link-primary" target="_blank">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                      </svg>
+                                    </NuxtLink>
+                                  </td>
+                                </tr>
+                                <tr><td class="font-bold">Duración</td><td>{{ rowdata.duración }}</td></tr>
+                              </tbody>
+                        </table>
+                    </div>
+                    <label v-if="rowdata.incidencia" class="tab" aria-label="Banco">
+                        <input type="radio" name="my_tabs_2" class="tab" aria-label="Banco" />                    
+                        Incidencia
+                    </label>
+                    <div v-if="rowdata.incidencia" class="tab-content border-base-300 bg-base-100 p-10">
+                        <table class="table table-sm table-zebra w-full">
+                            <tbody>
+                                <tr><td class="font-bold">Id. incidencia</td><td>{{ rowdata.incident_id }}</td></tr>
+                                <tr><td class="font-bold">Descripción</td><td>{{ rowdata.incidencia }}</td></tr>
+                                <tr><td class="font-bold">Estado </td><td>{{ rowdata.estado_incidencia }}</td></tr>
+                                <tr><td class="font-bold">Resolución</td><td>{{ rowdata.comentario_resolucion }}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>       
     </div>
   </dialog>
 </div>
