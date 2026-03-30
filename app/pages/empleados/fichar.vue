@@ -409,8 +409,8 @@ onMounted(() => {
           <li>
             <strong>Incidencias:</strong> Si ves una bolita roja sobre el icono del
             triángulo, tienes una incidencia de fichaje que requiere tu atención (una
-            declaración responsable). Si lo necesitas, también puedes crear una incidencia
-            pulsando sobre el icono de '+'.
+            declaración responsable). En caso necesario, puedes crear una pulsando sobre
+            el icono de '+'.
           </li>
           <li>
             <strong>Permisos:</strong> En el icono del sol verás permisos disfrutados,
