@@ -52,9 +52,7 @@ async function handleRequest(formData, node) {
   try {
     // Aquí se implementará la llamada al endpoint de solicitudes cuando esté disponible
     console.log("Enviando solicitud:", formData);
-    alert(
-      "Solicitud enviada correctamente. Pendiente de validación por la administración."
-    );
+    alert("Funcionalidad de envío de solicitudes aún no implementada.");
     node.reset();
     loadData(); // Recargar lista tras enviar
   } catch (error) {

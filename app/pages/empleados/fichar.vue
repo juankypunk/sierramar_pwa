@@ -413,8 +413,9 @@ onMounted(() => {
             pulsando sobre el icono de '+'.
           </li>
           <li>
-            <strong>Compensación:</strong> En el calendario verás también las horas
-            acreditables por festivos que han coincidido con tus descansos.
+            <strong>Permisos:</strong> En el icono del sol verás permisos disfrutados,
+            vacaciones y también las horas acreditables por festivos que han coincidido
+            con tus descansos.
           </li>
         </ul>
       </div>
