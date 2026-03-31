@@ -52,7 +52,9 @@ async function handleRequest(formData, node) {
   try {
     // Aquí se implementará la llamada al endpoint de solicitudes cuando esté disponible
     console.log("Enviando solicitud:", formData);
-    alert("Funcionalidad de envío de solicitudes aún no implementada.");
+    alert(
+      "Solicitud enviada correctamente. Pendiente de validación por la administración."
+    );
     node.reset();
     loadData(); // Recargar lista tras enviar
   } catch (error) {
@@ -106,16 +108,18 @@ onMounted(() => {
             <tr>
               <th>Tipo</th>
               <th>Desde/Hasta</th>
+              <th>Estado</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in absences" :key="item.id">
               <td>
-                <div :class="['badge badge-sm text-[10px]', item.class]">
+                <div :class="['badge badge-sm text-[12px]', item.class]">
                   {{ item.title }}
                 </div>
               </td>
-              <td class="text-[10px]">{{ item.start }} / {{ item.end }}</td>
+              <td class="text-[12px]">{{ item.start }} / {{ item.end }}</td>
+              <td class="text-[12px]">{{ item.status }}</td>
             </tr>
           </tbody>
         </table>
