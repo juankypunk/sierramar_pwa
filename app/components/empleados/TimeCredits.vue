@@ -32,6 +32,31 @@ const vacationDaysUsed = computed(() => {
 
 const vacationDaysPending = computed(() => 30 - vacationDaysUsed.value);
 
+// Cálculo de días de asuntos particulares consumidos y pendientes
+const aappDaysUsed = computed(() => {
+  return absences.value
+    .filter(
+      (a) =>
+        (a.title?.toLowerCase() === "asuntos propios" ||
+          a.title?.toLowerCase() === "asuntos_propios") &&
+        a.status === "aprobado"
+    )
+    .reduce((total, absence) => {
+      const partsStart = absence.start.split("-");
+      const partsEnd = absence.end.split("-");
+      const start = new Date(partsStart[2], partsStart[1] - 1, partsStart[0]);
+      const end = new Date(partsEnd[2], partsEnd[1] - 1, partsEnd[0]);
+
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) return total;
+
+      const diffTime = Math.abs(end - start);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      return total + diffDays;
+    }, 0);
+});
+
+const aappDaysPending = computed(() => 1 - aappDaysUsed.value);
+
 // Obtenemos los datos iniciales
 async function loadData() {
   loading.value = true;
@@ -113,6 +138,14 @@ onMounted(() => {
         <div class="stat place-items-center">
           <div class="stat-title text-xs uppercase font-bold opacity-60">Vacaciones</div>
           <div class="stat-value text-secondary text-2xl">{{ vacationDaysPending }}</div>
+          <div class="stat-desc">Días pendientes</div>
+        </div>
+
+        <div class="stat place-items-center">
+          <div class="stat-title text-xs uppercase font-bold opacity-60">
+            Asuntos Part.
+          </div>
+          <div class="stat-value text-accent text-2xl">{{ aappDaysPending }}</div>
           <div class="stat-desc">Días pendientes</div>
         </div>
       </div>
