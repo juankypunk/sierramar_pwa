@@ -48,6 +48,28 @@ const inicio_str = computed(() => {
 const fin_str = computed(() => {
   return fin.value.toLocaleDateString("es-ES").replace(/\//g, "-"); // DD-MM-YYYY
 });
+
+const inicio_iso = computed(() => {
+  const d = inicio.value;
+  return (
+    d.getFullYear() +
+    "-" +
+    String(d.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(d.getDate()).padStart(2, "0")
+  );
+});
+const fin_iso = computed(() => {
+  const d = fin.value;
+  return (
+    d.getFullYear() +
+    "-" +
+    String(d.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(d.getDate()).padStart(2, "0")
+  );
+});
+
 const myMap = ref("https://www.google.com/maps/place/");
 const link_entrada = ref("");
 const link_salida = ref("");
@@ -88,8 +110,8 @@ async function getSignings() {
       },
       method: "POST",
       body: {
-        range_start: inicio.value,
-        range_end: fin.value,
+        range_start: inicio_iso.value,
+        range_end: fin_iso.value,
       },
     });
 
@@ -119,8 +141,8 @@ async function getWorkedHours() {
       },
       method: "POST",
       body: {
-        range_start: inicio.value,
-        range_end: fin.value,
+        range_start: inicio_iso.value,
+        range_end: fin_iso.value,
       },
     });
 
@@ -146,8 +168,8 @@ async function getExtraWorkedHours() {
       },
       method: "POST",
       body: {
-        range_start: inicio.value,
-        range_end: fin.value,
+        range_start: inicio_iso.value,
+        range_end: fin_iso.value,
       },
     });
 
