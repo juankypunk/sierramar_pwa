@@ -10,6 +10,28 @@ const compensationData = ref(null);
 const absences = ref([]);
 const loading = ref(true);
 
+// Cálculo de días de vacaciones consumidos y pendientes
+const vacationDaysUsed = computed(() => {
+  return absences.value
+    .filter((a) => a.title?.toLowerCase() === "vacaciones" && a.status === "aprobado")
+    .reduce((total, absence) => {
+      // Parseamos el formato DD-MM-YYYY que devuelve la API
+      const partsStart = absence.start.split("-");
+      const partsEnd = absence.end.split("-");
+      const start = new Date(partsStart[2], partsStart[1] - 1, partsStart[0]);
+      const end = new Date(partsEnd[2], partsEnd[1] - 1, partsEnd[0]);
+
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) return total;
+
+      // Calculamos la diferencia en días incluyendo ambos extremos
+      const diffTime = Math.abs(end - start);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      return total + diffDays;
+    }, 0);
+});
+
+const vacationDaysPending = computed(() => 30 - vacationDaysUsed.value);
+
 // Obtenemos los datos iniciales
 async function loadData() {
   loading.value = true;
@@ -90,7 +112,7 @@ onMounted(() => {
 
         <div class="stat place-items-center">
           <div class="stat-title text-xs uppercase font-bold opacity-60">Vacaciones</div>
-          <div class="stat-value text-secondary text-2xl">--</div>
+          <div class="stat-value text-secondary text-2xl">{{ vacationDaysPending }}</div>
           <div class="stat-desc">Días pendientes</div>
         </div>
       </div>
