@@ -43,10 +43,19 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
         return new Date(current_year.value,current_month.value + 1);
     })
     const inicio_str = computed(() => {
-        return inicio.value.toLocaleDateString('es-ES').replace(/\//g, '-')  // DD-MM-YYYY
+      return inicio.value.toLocaleDateString('es-ES').replace(/\//g, '-')  // DD-MM-YYYY
     })
     const fin_str = computed(() => {
-        return fin.value.toLocaleDateString('es-ES').replace(/\//g, '-')  // DD-MM-YYYY
+      return fin.value.toLocaleDateString('es-ES').replace(/\//g, '-')  // DD-MM-YYYY
+    })
+
+    const inicio_iso = computed(() => {
+      const d = inicio.value
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0')
+    })
+    const fin_iso = computed(() => {
+      const d = fin.value
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0')
     })
 
     watch(current_month, (new_month) => {
@@ -99,7 +108,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
     const getPlanning = () => {
         // listado de eventos
-        const { onFetchResponse, error, data } = useMyFetch('/planning').post({range_start: inicio.value,range_end: fin.value, label: calendarSelected.value}).json();
+        const { onFetchResponse, error, data } = useMyFetch('/planning').post({range_start: inicio_iso.value,range_end: fin_iso.value, label: calendarSelected.value}).json();
         onFetchResponse((response)=>{
             if(response.status===200){
                 console.log('desde onFetchResponse',data.value);
@@ -114,7 +123,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
     const getScheduledHours = () => {
         // total horas trabajadas
-        const { onFetchResponse, error, data } = useMyFetch('/scheduledhours').post({range_start: inicio.value,range_end: fin.value, label: calendarSelected.value}).json();
+        const { onFetchResponse, error, data } = useMyFetch('/scheduledhours').post({range_start: inicio_iso.value,range_end: fin_iso.value, label: calendarSelected.value}).json();
         onFetchResponse((response)=>{
             console.log('duration',data.value[0].duration);
             scheduledhours.value=data.value[0].duration;

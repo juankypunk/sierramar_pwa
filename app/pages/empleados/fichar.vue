@@ -197,7 +197,7 @@ async function submitManualIncident(formData, node) {
 onMounted(() => {
   console.log(`the component is now mounted.`);
   console.log("ultimo fichaje:", ultimoFichaje.value);
-  getPlanning();
+  //getPlanning();
   getIncidents();
 });
 </script>
