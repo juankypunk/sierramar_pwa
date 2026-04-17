@@ -33,6 +33,7 @@ const months = ref([
 const d = new Date();
 const current_year = ref(d.getFullYear());
 const current_month = ref(d.getMonth());
+const scheduledhours = ref(0);
 const workedhours = ref(0);
 const extraworkedhours = ref(0);
 
@@ -91,6 +92,10 @@ const url_fichajes = computed(() => {
   return config.public.api + `/employees/${id.value}/getsignings`;
 });
 
+const url_scheduledhours = computed(() => {
+  return `${config.public.api}/employees/${id.value}/scheduledhours`;
+});
+
 const url_workedhours = computed(() => {
   return `${config.public.api}/employees/${id.value}/getworkedhours`;
 });
@@ -120,6 +125,7 @@ async function getSignings() {
       fichajes.value = data;
       getWorkedHours();
       getExtraWorkedHours();
+      getScheduledHours();
     } else {
       console.log("no hay datos");
       fichajes.value = "";
@@ -156,6 +162,34 @@ async function getWorkedHours() {
   } catch (error) {
     console.error(error);
     workedhours.value = 0;
+  }
+}
+
+async function getScheduledHours() {
+  console.log("dentro de getScheduledHours:", url_scheduledhours.value);
+  try {
+    const data = await $fetch(url_scheduledhours.value, {
+      headers: {
+        Authorization: "Bearer " + accessToken.value,
+      },
+      method: "POST",
+      body: {
+        range_start: inicio_iso.value,
+        range_end: fin_iso.value,
+        label: "trabajo",
+      },
+    });
+
+    if (data) {
+      console.log("desde scheduledhours:", data);
+      scheduledhours.value = data[0].duration;
+    } else {
+      console.log("no hay datos");
+      scheduledhours.value = 0;
+    }
+  } catch (error) {
+    console.error(error);
+    scheduledhours.value = 0;
   }
 }
 
@@ -225,13 +259,19 @@ onMounted(() => {
       <h1 class="px-5">Trabajador:</h1>
       <UserName :id="props.id.toString()" :shortname="true" @click="" />
       <div class="px-2">{{ months[current_month] }} {{ current_year }}</div>
-      <div v-if="extraworkedhours" class="tooltip px-2" data-tip="extras/mes">
-        <div class="badge badge-primary badge-outline">
-          {{ extraworkedhours }}
+      <div v-if="scheduledhours" class="tooltip px-2" data-tip="programadas/mes">
+        <div class="badge badge-secondary badge-outline">
+          programadas: {{ scheduledhours }}
         </div>
       </div>
       <div class="tooltip" data-tip="horas/mes">
-        <div class="badge badge-outline">{{ workedhours }}</div>
+        <div class="badge badge-outline">fichadas: {{ workedhours }}</div>
+      </div>
+
+      <div v-if="extraworkedhours" class="tooltip px-2" data-tip="extras/mes">
+        <div class="badge badge-primary badge-outline">
+          extras: {{ extraworkedhours }}
+        </div>
       </div>
     </div>
 
