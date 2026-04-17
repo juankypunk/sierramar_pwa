@@ -102,6 +102,22 @@ const url_workedhours = computed(() => {
 const url_extraworkedhours = computed(() => {
   return `${config.public.api}/employees/${id.value}/getextraworkedhours`;
 });
+
+/**
+ * Convierte un formato de tiempo "HH:mm" a un número decimal para cálculos.
+ * Ejemplo: "174:30" -> 174.5
+ */
+const timeToDecimal = (timeStr) => {
+  if (!timeStr) return 0;
+  if (typeof timeStr === "number") return timeStr;
+  const [hours, minutes] = timeStr.split(":").map(Number);
+  return (hours || 0) + (minutes || 0) / 60;
+};
+
+const scheduledhours_num = computed(() => timeToDecimal(scheduledhours.value));
+const workedhours_num = computed(() => timeToDecimal(workedhours.value));
+const extraworkedhours_num = computed(() => timeToDecimal(extraworkedhours.value));
+
 const searchQuery = ref("");
 const gridColumns = ["fecha", "entrada", "salida", "duración", "incidencia"];
 
@@ -254,68 +270,131 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container mx-auto">
-    <div class="flex justify-start">
-      <h1 class="px-5">Trabajador:</h1>
-      <UserName :id="props.id.toString()" :shortname="true" @click="" />
-      <div class="px-2">{{ months[current_month] }} {{ current_year }}</div>
-      <div v-if="scheduledhours" class="tooltip px-2" data-tip="programadas/mes">
-        <div class="badge badge-secondary badge-outline">
-          programadas: {{ scheduledhours }}
-        </div>
-      </div>
-      <div class="tooltip" data-tip="horas/mes">
-        <div class="badge badge-outline">fichadas: {{ workedhours }}</div>
+  <div class="container mx-auto p-4">
+    <!-- Encabezado con Trabajador y Selector de Mes -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div class="flex items-center gap-3">
+        <h1 class="text-xl font-bold opacity-70">Trabajador:</h1>
+        <UserName
+          :id="props.id.toString()"
+          :shortname="false"
+          class="text-xl font-bold text-primary"
+        />
       </div>
 
-      <div v-if="extraworkedhours" class="tooltip px-2" data-tip="extras/mes">
-        <div class="badge badge-primary badge-outline">
-          extras: {{ extraworkedhours }}
-        </div>
+      <div
+        class="flex items-center gap-4 bg-base-200 p-2 rounded-xl border border-base-300"
+      >
+        <button class="btn btn-circle btn-sm btn-ghost" @click="decreaseMonth()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
+          </svg>
+        </button>
+        <span class="font-bold min-w-32 text-center uppercase tracking-widest text-sm">
+          {{ months[current_month] }} {{ current_year }}
+        </span>
+        <button class="btn btn-circle btn-sm btn-ghost" @click="increaseMonth()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8.25 4.5l7.5 7.5-7.5 7.5"
+            />
+          </svg>
+        </button>
       </div>
     </div>
 
-    <div class="flex justify-start py-1">
-      <h1 class="px-5">Periodo:</h1>
-      <div @click="decreaseMonth()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
+    <!-- Resumen de Horas (Stats) -->
+    <div
+      class="stats stats-vertical lg:stats-horizontal shadow w-full border border-base-300 bg-base-100 mb-8"
+    >
+      <div class="stat">
+        <div class="stat-title text-xs font-bold uppercase opacity-50">
+          Cumplimiento de Jornada
+        </div>
+        <div class="stat-value text-success text-2xl">
+          {{ workedhours }}
+          <span class="text-lg font-normal opacity-40">/ {{ scheduledhours }}h</span>
+        </div>
+        <div class="stat-desc flex flex-col gap-1 pt-1">
+          <progress
+            class="progress progress-success w-full"
+            :value="workedhours_num"
+            :max="scheduledhours_num || 1"
+          ></progress>
+          <div
+            class="flex justify-between text-[10px] font-bold uppercase tracking-tighter"
+          >
+            <span v-if="scheduledhours_num">
+              {{ Math.round((workedhours_num / (scheduledhours_num || 1)) * 100) }}%
+              completado
+            </span>
+            <span class="opacity-60">{{ scheduledhours }}h</span>
+          </div>
+        </div>
       </div>
-      <span v-if="inicio" class="px-2">
-        {{ inicio_str }}
-      </span>
-      <span>-</span>
-      <span v-if="fin" class="px-2">
-        {{ fin_str }}
-      </span>
-      <div @click="increaseMonth()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
+      <!--
+      <div class="stat">
+        <div class="stat-title text-xs font-bold uppercase opacity-50">Horas Extra</div>
+        <div class="stat-value text-primary text-2xl">
+          {{ extraworkedhours }}
+          <span class="text-lg font-normal opacity-40">/ 80h</span>
+        </div>
+        <div class="stat-desc flex flex-col gap-1 pt-1">
+          <progress
+            class="progress progress-primary w-full"
+            :value="extraworkedhours_num"
+            max="80"
+          ></progress>
+          <div
+            class="flex justify-between text-[10px] font-bold uppercase tracking-tighter"
+          >
+            <span> {{ Math.round((extraworkedhours_num / 80) * 100) }}% del límite </span>
+            <span class="opacity-60">Límite: 80h</span>
+          </div>
+        </div>
       </div>
+      -->
+    </div>
+
+    <!-- Rango de fechas detallado -->
+    <div class="flex items-center gap-2 mb-4 text-xs opacity-50 px-2 italic">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-4 h-4"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+        />
+      </svg>
+      <span>{{ inicio_str }}</span>
+      <span>al</span>
+      <span>{{ fin_str }}</span>
     </div>
 
     <div v-if="fichajes" class="py-5">
@@ -328,10 +407,6 @@ onMounted(() => {
         :show-row-count="false"
       >
       </MyGrid>
-    </div>
-    <div class="flex justify-center">
-      <div class="px-5">Horas extra: {{ extraworkedhours }}</div>
-      <div class="px-5">Total horas: {{ workedhours }}</div>
     </div>
 
     <dialog id="signing_detail" class="modal">
