@@ -428,7 +428,7 @@ onMounted(() => {
             Fichaje
           </label>
           <div class="tab-content border-base-300 bg-base-100 p-10">
-            <table class="table table-sm table-zebra w-full">
+            <table class="table table-xs table-zebra w-full">
               <tbody>
                 <tr>
                   <td class="font-bold">Entrada</td>
