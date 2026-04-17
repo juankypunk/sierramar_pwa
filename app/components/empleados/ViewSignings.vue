@@ -274,7 +274,6 @@ onMounted(() => {
     <!-- Encabezado con Trabajador y Selector de Mes -->
     <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
       <div class="flex items-center gap-3">
-        <h1 class="text-xl font-bold opacity-70">Trabajador:</h1>
         <UserName
           :id="props.id.toString()"
           :shortname="true"
