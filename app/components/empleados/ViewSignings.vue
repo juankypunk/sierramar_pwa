@@ -277,7 +277,7 @@ onMounted(() => {
         <h1 class="text-xl font-bold opacity-70">Trabajador:</h1>
         <UserName
           :id="props.id.toString()"
-          :shortname="false"
+          :shortname="true"
           class="text-xl font-bold text-primary"
         />
       </div>
