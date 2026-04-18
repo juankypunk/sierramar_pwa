@@ -147,11 +147,11 @@ onMounted(() => {
             <span class="font-bold">Empleado:</span>
             <span>{{ rowAbsenceData.empleado }}</span>
             <span class="font-bold">Tipo:</span>
-            <span class="badge badge-outline">{{ rowAbsenceData.title }}</span>
+            <span class="badge badge-outline">{{ rowAbsenceData.tipo }}</span>
             <span class="font-bold">Periodo:</span>
             <span>{{ rowAbsenceData.inicio }} al {{ rowAbsenceData.fin }}</span>
             <span class="font-bold">Estado:</span>
-            <span class="capitalize">{{ rowAbsenceData.status }}</span>
+            <span class="capitalize">{{ rowAbsenceData.estado }}</span>
           </div>
 
           <div v-if="rowAbsenceData.comments" class="bg-base-200 p-3 rounded-lg">
@@ -163,15 +163,21 @@ onMounted(() => {
         </div>
 
         <div
-          v-if="rowAbsenceData.status === 'pendiente'"
+          v-if="rowAbsenceData.estado === 'pendiente'"
           class="modal-action flex justify-between"
         >
-          <button @click="resolver('rechazado')" class="btn btn-error btn-outline">
-            Denegar
-          </button>
-          <button @click="resolver('aprobado')" class="btn btn-success">
-            Aprobar Solicitud
-          </button>
+          <FormKit
+            type="button"
+            label="Denegar"
+            @click="resolver('rechazado')"
+            :classes="{ input: '$reset btn btn-error btn-outline' }"
+          />
+          <FormKit
+            type="button"
+            label="Aprobar Solicitud"
+            @click="resolver('aprobado')"
+            :classes="{ input: '$reset btn btn-success' }"
+          />
         </div>
         <div v-else class="modal-action">
           <form method="dialog">

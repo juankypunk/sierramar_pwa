@@ -97,8 +97,19 @@ async function loadData() {
 
 async function handleRequest(formData, node) {
   try {
-    // Aquí se implementará la llamada al endpoint de solicitudes cuando esté disponible
-    console.log("Enviando solicitud:", formData);
+    await $fetch(`${config.public.api}/employees/${props.id}/absences/request`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + accessToken.value,
+      },
+      body: {
+        title: formData.type,
+        fecha_inicio: formData.start_date,
+        fecha_fin: formData.end_date,
+        comments: formData.comments,
+      },
+    });
+
     alert(
       "Solicitud enviada correctamente. Pendiente de validación por la administración."
     );
@@ -106,6 +117,7 @@ async function handleRequest(formData, node) {
     loadData(); // Recargar lista tras enviar
   } catch (error) {
     console.error("Error al enviar solicitud:", error);
+    alert("Hubo un error al procesar tu solicitud. Por favor, inténtalo de nuevo.");
   }
 }
 
@@ -203,7 +215,8 @@ onMounted(() => {
           :options="[
             { label: 'Vacaciones', value: 'vacaciones' },
             { label: 'Asuntos Propios', value: 'asuntos_propios' },
-            { label: 'Compensación de Festivo', value: 'compensacion' },
+            { label: 'Compensación de Festivo', value: 'compensacion_festivo' },
+            { label: 'Devolución de Horas', value: 'devolucion_horas' },
             { label: 'Permiso Retribuido (Médico, etc)', value: 'permiso' },
           ]"
         />
