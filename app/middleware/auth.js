@@ -11,25 +11,35 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 */
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const { isAuthenticated, refreshAccessToken } = useAuth()
+  const { accessToken, refreshAccessToken } = useAuth()
   
-  const refreshToken = useCookie('refreshToken')
   const remember_me = useCookie('remember_me')
 
   console.log('Middleware auth - cookies:', {
     remember_me: remember_me.value,
-    refreshToken: refreshToken.value,
     path: to.path
   })
 
-  if (!isAuthenticated.value && remember_me.value == true) {
-    console.log('dentro de middleware auth')
-    // Intentar refresh
+  const isExpired = () => {
+    if (!accessToken.value) return true;
+    try {
+      const decoded = jwtDecode(accessToken.value);
+      // Consideramos expirado si falta menos de 1 minuto para mayor seguridad
+      return (decoded.exp * 1000) < (Date.now() + 60000);
+    } catch {
+      return true;
+    }
+  };
+
+  const tokenStatusExpired = isExpired();
+
+  if (tokenStatusExpired && remember_me.value == true) {
+    console.log('Middleware auth: Token caducado o inexistente, intentando refrescar...');
     const success = await refreshAccessToken()
     if (!success) {
       return navigateTo('/login')
     }
-  } else if (!isAuthenticated.value) {
+  } else if (tokenStatusExpired) {
     return navigateTo('/login')
   }
 })
