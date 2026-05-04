@@ -1,5 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  future: {
+    compatibilityVersion: 4,
+  },
+  experimental: {
+    viteEnvironmentApi: true,
+  },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   modules: [
@@ -144,6 +150,9 @@ export default defineNuxtConfig({
         'workbox-expiration',
         'workbox-cacheable-response',
         'jwt-decode',
+        '@vue-leaflet/vue-leaflet',
+        'leaflet', // CJS
+        'vue-chartjs',
       ]
     }
   }
