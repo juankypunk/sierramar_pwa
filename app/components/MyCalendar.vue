@@ -46,7 +46,9 @@ const absences = ref([]);
 const extra_hours = ref([]);
 const scheduled_hours = ref(0);
 const range_start = new Date().subtractDays(60);
-const range_end = range_start.addDays(105);
+const range_end = range_start.addDays(150);
+console.log("range_start:", range_start);
+console.log("range_end:", range_end);
 const months = ref([
   "Enero",
   "Febrero",
@@ -64,8 +66,7 @@ const months = ref([
 const d = new Date();
 const current_year = ref(d.getFullYear());
 const current_month = ref(d.getMonth());
-console.log("range_start:", range_start);
-console.log("range_end:", range_end);
+
 // Definición de los rangos para el mes actual (usados en EmpleadosCompensationHours)
 const today = new Date();
 const currentMonthStart = computed(

@@ -11,18 +11,18 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 -->
 
 <script setup>
-    const route= useRoute();
-    useHead({
-        title: 'Calendar'
-    })
-    definePageMeta({
-        middleware: ["auth"],
-    })
-    </script>
+const route = useRoute();
+useHead({
+  title: "Calendar",
+});
+definePageMeta({
+  middleware: ["auth"],
+});
+</script>
 
 <template>
-    <div class="container mx-auto">
-      <h1 class="card-title">Cuadrante de los conserjes</h1>
-      <MyCalendar />
-    </div>
+  <div class="container mx-auto">
+    <h1 class="card-title">Calendario empleados</h1>
+    <MyCalendar />
+  </div>
 </template>
