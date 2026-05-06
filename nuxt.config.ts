@@ -153,6 +153,8 @@ export default defineNuxtConfig({
         '@vue-leaflet/vue-leaflet',
         'leaflet', // CJS
         'vue-chartjs',
+        'vue-cal',
+        'events', // CJS
       ]
     }
   }
