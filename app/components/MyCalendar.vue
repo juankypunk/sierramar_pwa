@@ -154,7 +154,7 @@ const getAbsences = () => {
       events.value = [
         ...public_holidays.value,
         ...currentEvents.value,
-        //  ...absences.value,
+        ...absences.value,
       ];
       getExtraHours();
     } else {
@@ -176,7 +176,7 @@ const getExtraHours = () => {
       events.value = [
         ...public_holidays.value,
         ...currentEvents.value,
-        //...absences.value,
+        ...absences.value,
         ...extra_hours.value,
       ];
     } else {
@@ -255,7 +255,7 @@ onMounted(() => {
   border: 1px solid rgb(223, 230, 186);
   color: #fff;
 }
-.vuecal__event.holidays {
+.vuecal__event.vacaciones {
   background-color: rgb(231, 199, 92);
   border: 1px solid rgb(223, 230, 186);
   color: #fff;

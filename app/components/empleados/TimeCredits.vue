@@ -80,14 +80,17 @@ async function loadData() {
     compensationData.value = data;
 
     // Cargar historial de ausencias/permisos
-    absences.value = await $fetch(`${config.public.api}/employees/${props.id}/absences`, {
-      method: "POST",
-      headers: { Authorization: "Bearer " + accessToken.value },
-      body: {
-        range_start: startOfYear,
-        range_end: endOfYear,
-      },
-    });
+    absences.value = await $fetch(
+      `${config.public.api}/employees/${props.id}/absences_requested`,
+      {
+        method: "POST",
+        headers: { Authorization: "Bearer " + accessToken.value },
+        body: {
+          range_start: startOfYear,
+          range_end: endOfYear,
+        },
+      }
+    );
   } catch (error) {
     console.error("Error al cargar resumen de créditos:", error);
   } finally {
@@ -107,6 +110,7 @@ async function handleRequest(formData, node) {
         fecha_inicio: formData.start_date,
         fecha_fin: formData.end_date,
         comments: formData.comments,
+        class: formData.type, // Puedes mapear esto a clases CSS específicas si lo deseas
       },
     });
 
