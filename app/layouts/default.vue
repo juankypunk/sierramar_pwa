@@ -351,7 +351,7 @@ function closeDrawer() {
                   </svg>
                 </span>
                 <span class="badge" @click="navigateTo('/empleados/calendar')"
-                  >Cuadrante conserjes</span
+                  >Cuadrantes</span
                 >
               </div>
             </label>
@@ -376,7 +376,7 @@ function closeDrawer() {
                   </svg>
                 </span>
                 <span class="badge" @click="navigateTo('/junta/gestion_ausencias')"
-                  >Gestión de ausencias</span
+                  >Gestión de permisos</span
                 >
               </div>
             </label>

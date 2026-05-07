@@ -17,7 +17,7 @@ import "vue-cal/dist/vuecal.css";
 import { createFetch } from "@vueuse/core";
 import { useFetch } from "@vueuse/core";
 const props = defineProps({
-  id: Number,
+  id: String,
 });
 const accessToken = useAccessToken();
 const user_data = jwtDecode(accessToken.value);
@@ -45,10 +45,6 @@ const public_holidays = ref([]);
 const absences = ref([]);
 const extra_hours = ref([]);
 const scheduled_hours = ref(0);
-const range_start = new Date().subtractDays(60);
-const range_end = range_start.addDays(150);
-console.log("range_start:", range_start);
-console.log("range_end:", range_end);
 const months = ref([
   "Enero",
   "Febrero",
@@ -67,21 +63,61 @@ const d = new Date();
 const current_year = ref(d.getFullYear());
 const current_month = ref(d.getMonth());
 
-// Definición de los rangos para el mes actual (usados en EmpleadosCompensationHours)
-const today = new Date();
-const currentMonthStart = computed(
-  () => new Date(today.getFullYear(), today.getMonth(), 1)
-);
-const currentMonthEnd = computed(
-  () => new Date(today.getFullYear(), today.getMonth() + 1, 0)
-);
+const range_start = computed(() => {
+  return new Date(current_year.value, current_month.value, 1);
+});
+const range_end = computed(() => {
+  return new Date(current_year.value, current_month.value + 1, 0);
+});
 
-const inicio = computed(() => {
-  return new Date(current_year.value, current_month.value);
+const inicio_str = computed(() => {
+  return range_start.value.toLocaleDateString("es-ES").replace(/\//g, "-"); // DD-MM-YYYY
 });
-const fin = computed(() => {
-  return new Date(current_year.value, current_month.value + 1);
+const fin_str = computed(() => {
+  return range_end.value.toLocaleDateString("es-ES").replace(/\//g, "-"); // DD-MM-YYYY
 });
+
+const range_start_iso = computed(() => {
+  const d = range_start.value;
+  return (
+    d.getFullYear() +
+    "-" +
+    String(d.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(d.getDate()).padStart(2, "0")
+  );
+});
+const range_end_iso = computed(() => {
+  const d = range_end.value;
+  return (
+    d.getFullYear() +
+    "-" +
+    String(d.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(d.getDate()).padStart(2, "0")
+  );
+});
+
+watch(current_month, () => {
+  getPlanning();
+  getPublicHolidays();
+});
+
+function increaseMonth() {
+  current_month.value++;
+  if (current_month.value == 12) {
+    current_month.value = 0;
+    current_year.value++;
+  }
+}
+
+function decreaseMonth() {
+  current_month.value--;
+  if (current_month.value == -1) {
+    current_month.value = 11;
+    current_year.value--;
+  }
+}
 
 const useMyFetch = createFetch({
   baseUrl: url_planning.value,
@@ -96,11 +132,27 @@ const useMyFetch = createFetch({
   },
 });
 
+const getScheduledHours = () => {
+  // total horas trabajadas
+  const { onFetchResponse, data } = useMyFetch("scheduledhours")
+    .post({
+      range_start: range_start_iso.value,
+      range_end: range_end_iso.value,
+      label: calendarSelected.value,
+    })
+    .json();
+  onFetchResponse((response) => {
+    if (data.value && data.value[0]) {
+      scheduled_hours.value = data.value[0].duration;
+    }
+  });
+};
+
 const getPublicHolidays = () => {
   const { onFetchResponse, data } = useFetch(url_public_holidays.value, {
     headers: { Authorization: "Bearer " + accessToken.value },
   })
-    .post({ range_start: range_start, range_end: range_end })
+    .post({ range_start: range_start_iso.value, range_end: range_end_iso.value })
     .json();
   onFetchResponse((response) => {
     console.log("festivos:", data.value);
@@ -122,8 +174,8 @@ const getPlanning = () => {
   // listado de eventos
   const { onFetchResponse, error, data } = useMyFetch("events")
     .post({
-      range_start: range_start,
-      range_end: range_end,
+      range_start: range_start_iso.value,
+      range_end: range_end_iso.value,
       label: calendarSelected.value,
     })
     .json();
@@ -133,6 +185,7 @@ const getPlanning = () => {
       //planning.value=data.value;
       currentEvents.value = data.value;
       events.value = [...public_holidays.value, ...currentEvents.value];
+      getScheduledHours();
       if (props.id) {
         getAbsences();
       }
@@ -144,7 +197,7 @@ const getPlanning = () => {
 const getAbsences = () => {
   // listado de eventos
   const { onFetchResponse, error, data } = useMyFetch("absences")
-    .post({ range_start: range_start, range_end: range_end })
+    .post({ range_start: range_start_iso.value, range_end: range_end_iso.value })
     .json();
   onFetchResponse((response) => {
     if (response.status === 200) {
@@ -156,7 +209,7 @@ const getAbsences = () => {
         ...currentEvents.value,
         ...absences.value,
       ];
-      getExtraHours();
+      //getExtraHours();
     } else {
       console.log("no hay datos de vacaciones");
     }
@@ -166,7 +219,7 @@ const getAbsences = () => {
 const getExtraHours = () => {
   // listado de eventos
   const { onFetchResponse, error, data } = useMyFetch("extrahours")
-    .post({ range_start: range_start, range_end: range_end })
+    .post({ range_start: range_start_iso.value, range_end: range_end_iso.value })
     .json();
   onFetchResponse((response) => {
     if (response.status === 201) {
@@ -196,7 +249,56 @@ onMounted(() => {
 
 <template>
   <div class="container mx-auto">
-    <div class="flex justify-between">
+    <div class="flex justify-between px-5 py-2">
+      <div class="flex justify-start gap-2">
+        <UserName v-if="props.id" :id="props.id" :shortname="true" />
+      </div>
+      <div class="flex gap-4">
+        <div class="">{{ months[current_month] }} {{ current_year }}</div>
+      </div>
+      <div class="tooltip" data-tip="horas previstas">
+        <span class="badge badge-outline">{{ scheduled_hours }}</span>
+      </div>
+    </div>
+    <div class="flex justify-center gap-2 mb-4">
+      <div @click="decreaseMonth()" class="cursor-pointer">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      </div>
+      <span class="">{{ inicio_str }}</span>
+      <span>-</span>
+      <span class="">{{ fin_str }}</span>
+      <div @click="increaseMonth()" class="cursor-pointer">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <div class="flex justify-between px-5">
       <FormKit
         v-if="calendarios"
         type="select"
@@ -210,8 +312,8 @@ onMounted(() => {
       <div v-if="props.id" class="flex justify-center py-5">
         <EmpleadosCompensationHours
           :id="props.id"
-          :range_start="currentMonthStart"
-          :range_end="currentMonthEnd"
+          :range_start="range_start"
+          :range_end="range_end"
           label="normal"
         />
       </div>
@@ -226,6 +328,7 @@ onMounted(() => {
       :disable-views="['years', 'year']"
       events-on-month-view="short"
       :events="events"
+      :selected-date="range_start"
       @ready="getPlanning"
       style="height: 600px"
     >
