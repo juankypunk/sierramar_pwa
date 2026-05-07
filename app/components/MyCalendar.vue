@@ -322,13 +322,14 @@ onMounted(() => {
     <vue-cal
       locale="es"
       class="vuecal--blue-theme"
-      active-view="week"
+      active-view="month"
       :views="['month', 'week']"
       hide-title-bar
       showAllDayEvents="false"
       :disable-views="['years', 'year', 'day']"
       events-on-month-view="short"
       :events="events"
+      :selected-date="range_start"
       @ready="getPlanning"
       style="height: 600px"
     >
