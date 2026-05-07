@@ -320,12 +320,13 @@ onMounted(() => {
     </div>
 
     <vue-cal
-      hide-view-selector
       locale="es"
       class="vuecal--blue-theme"
-      active-view="week"
+      active-view="month"
+      :views="['month', 'week']"
+      hide-title-bar="true"
       showAllDayEvents="false"
-      :disable-views="['years', 'year']"
+      :disable-views="['years', 'year', 'day']"
       events-on-month-view="short"
       :events="events"
       :selected-date="range_start"
@@ -353,7 +354,7 @@ onMounted(() => {
   border: 1px solid rgb(190, 230, 186);
   color: #fff;
 }
-.vuecal__event.extraHours {
+.vuecal__event.extraHours .vuecal__event.devolucion_horas {
   background-color: rgb(231, 199, 92);
   border: 1px solid rgb(223, 230, 186);
   color: #fff;
@@ -387,11 +388,6 @@ onMounted(() => {
 .vuecal__event.publicholiday {
   background-color: rgb(216, 145, 143);
   border: 1px solid rgb(245, 178, 176);
-  color: #fff;
-}
-.vuecal__event.holidays {
-  background-color: rgb(164, 204, 241);
-  border: 1px solid rgb(159, 203, 233);
   color: #fff;
 }
 </style>
