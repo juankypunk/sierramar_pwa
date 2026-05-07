@@ -185,9 +185,9 @@ const getPlanning = () => {
       //planning.value=data.value;
       currentEvents.value = data.value;
       events.value = [...public_holidays.value, ...currentEvents.value];
-      getScheduledHours();
       if (props.id) {
         getAbsences();
+        getScheduledHours();
       }
     } else {
       console.log("no hay datos");
@@ -256,7 +256,7 @@ onMounted(() => {
       <div class="flex gap-4">
         <div class="">{{ months[current_month] }} {{ current_year }}</div>
       </div>
-      <div class="tooltip" data-tip="horas previstas">
+      <div v-if="props.id" class="tooltip" data-tip="horas previstas">
         <span class="badge badge-outline">{{ scheduled_hours }}</span>
       </div>
     </div>
