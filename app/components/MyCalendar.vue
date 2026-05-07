@@ -354,7 +354,7 @@ onMounted(() => {
   border: 1px solid rgb(190, 230, 186);
   color: #fff;
 }
-.vuecal__event.extraHours .vuecal__event.devolucion_horas {
+.vuecal__event.extraHours {
   background-color: rgb(231, 199, 92);
   border: 1px solid rgb(223, 230, 186);
   color: #fff;
