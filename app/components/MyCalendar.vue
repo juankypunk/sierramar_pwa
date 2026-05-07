@@ -243,7 +243,7 @@ onMounted(() => {
   console.log(`the component is now mounted`);
   getPublicHolidays();
   getEventsLabel();
-  //getPlanning();
+  getPlanning();
 });
 </script>
 
