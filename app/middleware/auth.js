@@ -14,6 +14,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const { accessToken, refreshAccessToken } = useAuth()
   
   const remember_me = useCookie('remember_me')
+  const refreshToken = useCookie('refreshToken')
 
   console.log('Middleware auth - cookies:', {
     remember_me: remember_me.value,
@@ -35,6 +36,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   if (tokenStatusExpired && remember_me.value == true) {
     console.log('Middleware auth: Token caducado o inexistente, intentando refrescar...');
+    const success = await refreshAccessToken()
+    if (!success) {
+      return navigateTo('/login')
+    }
+  } else if (tokenStatusExpired && refreshToken.value) {
     const success = await refreshAccessToken()
     if (!success) {
       return navigateTo('/login')

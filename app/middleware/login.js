@@ -21,9 +21,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     path: to.path
   })
 
-  if (!isAuthenticated.value && remember_me.value == true) {
-    console.log('dentro de login middleware')
-    // Intentar refresh
+  // Refresca si hay refreshToken, no solo si remember_me
+  if (!isAuthenticated.value && refreshToken.value) {
+    console.log('dentro de login middleware (refreshToken presente)')
     const success = await refreshAccessToken()
     if (!success) {
       //return navigateTo('/')

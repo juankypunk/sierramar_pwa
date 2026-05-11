@@ -28,6 +28,14 @@ export const useAuth = () => {
 
       if (data.value) {
         accessToken.value = data.value.accessToken
+        // Guardar refreshToken en cookie, persistente si remember_me
+        const refreshTokenCookie = useCookie('refreshToken', {
+          maxAge: credentials.remember_me ? 60 * 60 * 24 * 7 : undefined, // 7 días o sesión
+          path: '/',
+          sameSite: 'lax',
+          secure: process.env.NODE_ENV === 'production'
+        })
+        refreshTokenCookie.value = data.value.refreshToken
         return true
       }
       return false
