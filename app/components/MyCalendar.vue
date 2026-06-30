@@ -67,7 +67,7 @@ const range_start = computed(() => {
   return new Date(current_year.value, current_month.value, 1);
 });
 const range_end = computed(() => {
-  return new Date(current_year.value, current_month.value + 1, 0);
+  return new Date(current_year.value, current_month.value + 1);
 });
 
 const inicio_str = computed(() => {
